@@ -1,0 +1,13 @@
+tmp*
+*~
+*.swp
+*.pyc
+*.o
+*.exe
+*.so
+*.a
+a.out
+*.so
+*.a
+*.dylib
+build
