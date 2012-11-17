@@ -51,7 +51,7 @@ namespace qpy {
 /// method whenever the invocation of a method of a QObject derived 
 /// class instance is requested from Python code. 
 struct QArgConstructor {
-    /// Create a QGenericArgument from Lua values on the Lua stack.
+    /// Create a QGenericArgument from Python values.
     virtual QGenericArgument Create( PyObject* ) const = 0;
     /// Virtual destructor.
     virtual ~QArgConstructor() {}
@@ -76,7 +76,7 @@ public:
         return new IntQArgConstructor( *this );
     }
 private:
-    /// Storage for value read from Lua stack.
+    /// Storage for value read from Python.
     mutable int i_;
 };
 /// QArgConstructor implementation for @c integer type.
@@ -96,7 +96,7 @@ public:
         return new VoidStarQArgConstructor( *this );
     }
 private:
-    /// Storage for value read from Lua stack.
+    /// Storage for value read from Python.
     mutable void* i_;
 };
 /// QArgConstructor implementation for @c integer type.
@@ -115,7 +115,7 @@ public:
         return new ObjectStarQArgConstructor( *this );
     }
 private:
-    /// Storage for value read from Lua stack.
+    /// Storage for value read from Python.
     mutable QObject* i_;
 };
 
@@ -287,15 +287,7 @@ public:
     PyObject* Create() const {
         return ac_->Create();
     }
-    /// @brief Push values stored in passed memory location on the Lua stack.
-    ///
-    /// This is the method invoked when a Lua callback is called through
-    /// @c QObject::qt_metacall (e.g. through a triggered signal). When Lua 
-    /// functions are called through @c qt_metacall the list of arguments is stored 
-    /// inside an array of void pointers; each parameter must therefore be converted to 
-    /// the proper C++ type first and then translated to a Lua values.
-    /// @param L Lua state
-    /// @param value memory location to read from
+    /// @brief retunr placeholder for storing Qt return argument
     QGenericReturnArgument Arg() const { return ac_->Argument(); }
     /// Type name.
     const QString& Type() const { 

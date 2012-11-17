@@ -66,8 +66,8 @@ inline void RaisePyError( const char* errMsg = 0,
 /// This class is the interface exposed by QPy to client code.
 /// Use the provided methods to add QObject-derived type, QObject instances and
 /// other types the Python context.
-/// LuaContext is also used internally by other classes to add QObjects returned
-/// by methods or received from signals to the Lua context.
+/// PyContext is also used internally by other classes to add QObjects returned
+/// by methods or received from signals to the Python context.
 class PyContext {
     /// @brief Stores information used at method invocation time.
     /// 
