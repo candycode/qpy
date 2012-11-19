@@ -6,12 +6,17 @@ static PyMethodDef empty_module_methods[] = {
     {NULL}  /* Sentinel */
 };
 int main( int argc, char** argv ) {
+
+    if( argc != 2 ) {
+        std::cout << "Usage: " << argv[ 0 ] << " <python file>" << std::endl;
+        exit( 1 );
+    }
     
     Py_Initialize();
-    PyObject* m = Py_InitModule3( "qpy", empty_module_methods, "Example QPy module" );
+    qpy::PyContext py;
+    PyObject* m = Py_InitModule3( "qpy", py.ModuleFunctions(), "Example QPy module" );
     PyObject* mainModule = PyImport_AddModule( "__main__" );
     PyModule_AddObject( mainModule, "qpy", m ); 
-    qpy::PyContext py;
     py.Add< QpyTestObject >( m );
 
     QpyTestObject* to = new QpyTestObject( 71 );

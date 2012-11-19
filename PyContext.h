@@ -28,6 +28,7 @@
 /// @brief Python context manager to add QObject derived types and instancess
 
 #include <Python.h>
+#include <structmember.h>
 #include <stdexcept>
 #include <cassert>
 #include <iostream>
@@ -111,6 +112,7 @@ private:
     typedef QList< Type > Types;
     struct PyQObject {
         PyObject_HEAD
+        char qobjectTag;
         QObject* obj;
         Type* type;
         PyObject* invoke; //method invocation function
@@ -188,6 +190,21 @@ public:
     }
     template < typename T > void Add( PyObject* module ) {
         AddType( &T::staticMetaObject, module );    
+    }
+    PyMethodDef* ModuleFunctions() {
+        static PyMethodDef functions[] = {
+                                                { "acquire", reinterpret_cast< PyCFunction >( PyQObjectAcquire ), METH_VARARGS,
+                                                  "Acquire ownership of QObject derived object; "
+                                                  "garbage collected by Python" },
+                                                { "release", reinterpret_cast< PyCFunction >( PyQObjectRelease ), METH_VARARGS,
+                                                  "Release ownership of QObject derived object; "
+                                                  "will *not* be garbage collected by Python" },
+                                                { "is_qobject", reinterpret_cast< PyCFunction >( PyQObjectIsQObject ), METH_VARARGS,
+                                                  "Checks if object is a QObject" },
+                                                {0}
+                                            };
+        return functions;
+  
     }  
     PyObject* AddObject( QObject* qobj, 
                          PyObject* targetModule, // where instance is added 
@@ -222,6 +239,39 @@ private:
         return 0;    
     }    
 private:
+    static PyObject* PyQObjectIsQObject( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* obj = 0;
+        PyArg_ParseTuple( args, "O", &obj );
+        if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+            return PyBool_FromLong( 1 ); 
+        } else {
+            return PyBool_FromLong( 0 );
+        }
+    }
+    static PyObject* PyQObjectAcquire( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* obj = 0;
+        PyArg_ParseTuple( args, "O", &obj );
+        if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
+            pyqobj->owned = false;
+            Py_RETURN_NONE;
+        } else {
+           RaisePyError( "Not a PyQObject", PyExc_TypeError );
+           return 0;
+        }         
+    }
+    static PyObject* PyQObjectRelease( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* obj = 0;
+        PyArg_ParseTuple( args, "O", &obj );
+        if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
+            pyqobj->owned = true;
+            Py_RETURN_NONE;
+        } else {
+           RaisePyError( "Not a PyQObject", PyExc_TypeError );
+           return 0;
+        }         
+    }
     static PyObject* PyQObjectGetter( PyQObject* qobj, void* closure /*method id*/ ) {
         int mid = int( reinterpret_cast< size_t >( closure ) );
         qobj->tmp.selectedMethodId = mid;
@@ -334,6 +384,9 @@ private:
 
 private:
     PyTypeObject CreatePyType( const Type& type ) {
+        static PyMemberDef members[] = { { const_cast< char* >( "__qpy_qobject_tag" ), T_BOOL, 
+                               offsetof( PyQObject, qobjectTag ), 0, const_cast< char* >( "Identifies object as QPy QObject wrapper" ) },
+                               { 0 } };
         PyTypeObject t = {
             PyObject_HEAD_INIT(NULL)
             0,                         /*ob_size*/
@@ -363,8 +416,8 @@ private:
             0,                     /* tp_weaklistoffset */
             0,                     /* tp_iter */
             0,                     /* tp_iternext */
-            0,//Class1_methods,             /* tp_methods */
-            0,             /* tp_members */
+            0,             /* tp_methods */
+            members,             /* tp_members */
             const_cast< PyGetSetDef* >( &type.pyMethods[ 0 ] ),                         /* tp_getset */
             0,                         /* tp_base */
             0,                         /* tp_dict */

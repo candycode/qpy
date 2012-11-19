@@ -16,3 +16,6 @@ to2.Print()
 
 myqobj.Print()
 
+print( qpy.is_qobject( myqobj ) ) 
+
+
