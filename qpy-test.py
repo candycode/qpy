@@ -16,6 +16,11 @@ to2.Print()
 
 myqobj.Print()
 
-print( qpy.is_qobject( myqobj ) ) 
+print(qpy.is_qobject(myqobj))
+
+print(qpy.is_foreign_owned(myqobj))
+
+print(qpy.is_foreign_owned(to))
+
 
 

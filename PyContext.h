@@ -201,6 +201,9 @@ public:
                                                   "will *not* be garbage collected by Python" },
                                                 { "is_qobject", reinterpret_cast< PyCFunction >( PyQObjectIsQObject ), METH_VARARGS,
                                                   "Checks if object is a QObject" },
+                                                { "is_foreign_owned", reinterpret_cast< PyCFunction >( PyQObjectIsForeignOwned ), METH_VARARGS,
+                                                  "Checks if QObject is foreign owned.\nForeign owned objects shall not be garbge collected by Python." },  
+
                                                 {0}
                                             };
         return functions;
@@ -216,7 +219,7 @@ public:
         assert( pt );
         PyQObject* obj = reinterpret_cast< PyQObject* >( 
                                 PyObject_CallObject( reinterpret_cast< PyObject* >( pt ), 0  ) );
-        obj->owned = pythonOwned;
+        obj->owned = !pythonOwned;
         obj->obj = qobj;
         // this method is might be called also to wrap QObject* returned by methods; in this case
         // it should not add the object explicitly into the module
@@ -239,6 +242,17 @@ private:
         return 0;    
     }    
 private:
+    static PyObject* PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* obj = 0;
+        PyArg_ParseTuple( args, "O", &obj );
+        if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
+            return PyBool_FromLong( int( pyqobj->owned ) );
+        } else {
+            RaisePyError( "Not a PyQObject", PyExc_TypeError );
+            return 0;
+        }
+    }
     static PyObject* PyQObjectIsQObject( PyObject* self, PyObject* args, PyObject* kwargs ) {
         PyObject* obj = 0;
         PyArg_ParseTuple( args, "O", &obj );
