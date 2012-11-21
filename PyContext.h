@@ -256,7 +256,15 @@ private:
     //             RaisePyError( ( std::string( "Cannot find method" ) 
     //                             + std::string( sourceMethod ) ).c_str() );
     //         }
-    //         pyqobj->type->pyContext->Connect( pyqobj->obj, sourceMethod, targetFunction );
+    //         QMetaMethod mm = pyqobj->type->metaObject.method( mi );
+    //         QList< QByteArray > params = mm.parameterTypes();
+    //         QList< LArgWrapper > types;
+    //         for( QList< QByteArray >::const_iterator i = params.begin();
+    //             i != params.end(); ++i ) {
+    //             types.push_back( PyArgWrapper( i->constData() ) );
+    //         }
+    //         // MAKE SURE THE CONNECT METHOD CHECKS IF METHOD ALREADY CONNECTED         
+    //         pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction );
     //         Py_RETURN_NONE;
     //     } else {
     //         RaisePyError( "Not a PyQObject", PyExc_TypeError );
