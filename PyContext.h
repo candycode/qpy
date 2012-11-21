@@ -116,7 +116,7 @@ private:
         QObject* obj;
         Type* type;
         PyObject* invoke; //method invocation function
-        bool owned;
+        bool foreignOwned;
         struct Tmp {
             int selectedMethodId;
         } tmp;
@@ -193,19 +193,19 @@ public:
     }
     PyMethodDef* ModuleFunctions() {
         static PyMethodDef functions[] = {
-                                                { "acquire", reinterpret_cast< PyCFunction >( PyQObjectAcquire ), METH_VARARGS,
-                                                  "Acquire ownership of QObject derived object; "
-                                                  "garbage collected by Python" },
-                                                { "release", reinterpret_cast< PyCFunction >( PyQObjectRelease ), METH_VARARGS,
-                                                  "Release ownership of QObject derived object; "
-                                                  "will *not* be garbage collected by Python" },
-                                                { "is_qobject", reinterpret_cast< PyCFunction >( PyQObjectIsQObject ), METH_VARARGS,
-                                                  "Checks if object is a QObject" },
-                                                { "is_foreign_owned", reinterpret_cast< PyCFunction >( PyQObjectIsForeignOwned ), METH_VARARGS,
-                                                  "Checks if QObject is foreign owned.\nForeign owned objects shall not be garbge collected by Python." },  
+                                            { "acquire", reinterpret_cast< PyCFunction >( PyQObjectAcquire ), METH_VARARGS,
+                                              "Acquire ownership of QObject derived object; "
+                                              "garbage collected by Python" },
+                                            { "release", reinterpret_cast< PyCFunction >( PyQObjectRelease ), METH_VARARGS,
+                                              "Release ownership of QObject derived object; "
+                                              "will *not* be garbage collected by Python" },
+                                            { "is_qobject", reinterpret_cast< PyCFunction >( PyQObjectIsQObject ), METH_VARARGS,
+                                              "Checks if object is a QObject" },
+                                            { "is_foreign_owned", reinterpret_cast< PyCFunction >( PyQObjectIsForeignOwned ), METH_VARARGS,
+                                              "Checks if QObject is foreign owned.\nForeign owned objects shall not be garbge collected by Python." },  
 
-                                                {0}
-                                            };
+                                            {0}
+                                        };
         return functions;
   
     }  
@@ -219,7 +219,7 @@ public:
         assert( pt );
         PyQObject* obj = reinterpret_cast< PyQObject* >( 
                                 PyObject_CallObject( reinterpret_cast< PyObject* >( pt ), 0  ) );
-        obj->owned = !pythonOwned;
+        obj->foreignOwned = !pythonOwned;
         obj->obj = qobj;
         // this method is might be called also to wrap QObject* returned by methods; in this case
         // it should not add the object explicitly into the module
@@ -242,12 +242,37 @@ private:
         return 0;    
     }    
 private:
+    // static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
+    //     //source and target methods
+    //     PyObject* sourceObject = 0;
+    //     const char* sourceMethod = 0;
+    //     PyObject* targetFunction = 0;
+    //     PyQObject* srcQObject = 0;
+    //     PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
+    //     if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+    //         PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
+    //         const int mi = pyqobj->type->metaObject.indexOfMethod( sourceMethod ); 
+    //         if( mi < 0 ) {
+    //             RaisePyError( ( std::string( "Cannot find method" ) 
+    //                             + std::string( sourceMethod ) ).c_str() );
+    //         }
+    //         pyqobj->type->pyContext->Connect( pyqobj->obj, sourceMethod, targetFunction );
+    //         Py_RETURN_NONE;
+    //     } else {
+    //         RaisePyError( "Not a PyQObject", PyExc_TypeError );
+    //         return 0;
+    //     }    
+    //     // source method id
+    //     // check that source method is a signal
+    //     // target object
+    //     // target method id
+    // }
     static PyObject* PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs ) {
         PyObject* obj = 0;
         PyArg_ParseTuple( args, "O", &obj );
         if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
-            return PyBool_FromLong( int( pyqobj->owned ) );
+            return PyBool_FromLong( int( pyqobj->foreignOwned ) );
         } else {
             RaisePyError( "Not a PyQObject", PyExc_TypeError );
             return 0;
@@ -267,7 +292,7 @@ private:
         PyArg_ParseTuple( args, "O", &obj );
         if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
-            pyqobj->owned = false;
+            pyqobj->foreignOwned = false;
             Py_RETURN_NONE;
         } else {
            RaisePyError( "Not a PyQObject", PyExc_TypeError );
@@ -279,7 +304,7 @@ private:
         PyArg_ParseTuple( args, "O", &obj );
         if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
-            pyqobj->owned = true;
+            pyqobj->foreignOwned = true;
             Py_RETURN_NONE;
         } else {
            RaisePyError( "Not a PyQObject", PyExc_TypeError );
@@ -301,7 +326,7 @@ private:
         PyQObject* self = reinterpret_cast< PyQObject* >( type->tp_alloc( type, 0 ) );
         if( !self ) return 0;
         self->obj = 0;
-        self->owned = false;
+        self->foreignOwned = false;
         self->type = reinterpret_cast< Type* >(
             PyCapsule_GetPointer( PyDict_GetItemString( type->tp_dict, "__qpy_type_info" ), "qpy type info" ) );
         return reinterpret_cast< PyObject* >( self );
@@ -329,7 +354,7 @@ private:
                     PyQObject* obj = reinterpret_cast< PyQObject* > (
                                          PyObject_CallObject( reinterpret_cast< PyObject* >( &(self->type->pyType) ), 0 ) );
                    // PyModule_AddObject( self->type->pyModule, 0, reinterpret_cast< PyObject* >( obj ) );
-                    obj->owned = false;
+                    obj->foreignOwned = false;
                     obj->obj = ptr;
                     //PyQObjectInit( obj, 0, 0 );
                     return reinterpret_cast< PyObject* >( obj );
@@ -350,7 +375,7 @@ private:
     }   
 
     static int PyQObjectInit( PyQObject* self, PyObject* args, PyObject* kwds ) {
-        if( !self->owned ) {
+        if( !self->foreignOwned ) {
             std::vector< QGenericArgument > ga( MAX_GENERIC_ARGS );
             const int sz = int( PyTuple_Size( args ) );
             const QArgWrappers* pArgWrappers = 0;
@@ -391,7 +416,7 @@ private:
     }
 
     static void PyQObjectDealloc( PyQObject* self ) {
-        if( !self->owned ) self->obj->deleteLater();
+        if( !self->foreignOwned ) self->obj->deleteLater();
         Py_XDECREF( self->invoke );
         self->ob_type->tp_free( ( PyObject*) self );
     }
