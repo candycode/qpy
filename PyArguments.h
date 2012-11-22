@@ -126,6 +126,9 @@ class PyArgConstructor {
 public:
     /// @brief Create PyObject from value returned from QObject method.
     virtual PyObject* Create() const = 0;
+    /// @brief Create PyObject from parameter passed to Python callback
+    /// when signal triggered
+    virtual PyObject* Create( void* ) const = 0;
     /// Virtual destructor.
     virtual ~PyArgConstructor() {}
     /// Return copy of object.
@@ -161,6 +164,10 @@ public:
     IntPyArgConstructor( const IntPyArgConstructor& other ) : i_( other.i_ ) {
         SetArg( i_ );
     }
+    PyObject* Create( void* p ) const {
+        int i = *reinterpret_cast< int* >( p );
+        return PyInt_FromLong( i );
+    }
     PyObject* Create() const {
         return PyInt_FromLong( i_ );
     }
@@ -179,6 +186,7 @@ public:
     PyObject* Create() const { 
         Py_RETURN_NONE;
     } 
+    PyObject* Create( void* ) const { return 0; }
     VoidPyArgConstructor* Clone() const {
         return new VoidPyArgConstructor( *this );
     }
@@ -195,6 +203,9 @@ public:
         SetArg( obj_ );   
     }
     PyObject* Create() const {
+        Py_RETURN_NONE;
+    }
+    PyObject* Create( void* ) const {
         Py_RETURN_NONE;
     }
     ObjectStarPyArgConstructor* Clone() const {
@@ -286,6 +297,13 @@ public:
     /// This is the method invoked to return values from a QObject method invocation.
     PyObject* Create() const {
         return ac_->Create();
+    }
+    /// @brief return value converted from void* .
+    ///
+    /// This is the method invoked when a Python function is called as the result
+    /// of a triggered signal.
+    PyObject* Create( void* p ) const {
+        return ac_->Create( p );
     }
     /// @brief retunr placeholder for storing Qt return argument
     QGenericReturnArgument Arg() const { return ac_->Argument(); }

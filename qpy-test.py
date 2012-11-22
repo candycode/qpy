@@ -22,5 +22,6 @@ print(qpy.is_foreign_owned(myqobj))
 
 print(qpy.is_foreign_owned(to))
 
+print(to.__dict__)
 
 

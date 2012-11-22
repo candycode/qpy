@@ -117,6 +117,7 @@ private:
         Type* type;
         PyObject* invoke; //method invocation function
         bool foreignOwned;
+        PyObject* pyModule;
         struct Tmp {
             int selectedMethodId;
         } tmp;
@@ -221,6 +222,7 @@ public:
                                 PyObject_CallObject( reinterpret_cast< PyObject* >( pt ), 0  ) );
         obj->foreignOwned = !pythonOwned;
         obj->obj = qobj;
+        obj->pyModule = targetModule;
         // this method is might be called also to wrap QObject* returned by methods; in this case
         // it should not add the object explicitly into the module
         if( instanceName ) {
@@ -243,7 +245,6 @@ private:
     }    
 private:
     // static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
-    //     //source and target methods
     //     PyObject* sourceObject = 0;
     //     const char* sourceMethod = 0;
     //     PyObject* targetFunction = 0;
@@ -258,22 +259,18 @@ private:
     //         }
     //         QMetaMethod mm = pyqobj->type->metaObject.method( mi );
     //         QList< QByteArray > params = mm.parameterTypes();
-    //         QList< LArgWrapper > types;
+    //         QList< PyArgWrapper > types;
     //         for( QList< QByteArray >::const_iterator i = params.begin();
     //             i != params.end(); ++i ) {
     //             types.push_back( PyArgWrapper( i->constData() ) );
     //         }
     //         // MAKE SURE THE CONNECT METHOD CHECKS IF METHOD ALREADY CONNECTED         
-    //         pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction );
+    //         pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->pyModule, pyqobj->obj, mi, types, targetFunction );
     //         Py_RETURN_NONE;
     //     } else {
     //         RaisePyError( "Not a PyQObject", PyExc_TypeError );
     //         return 0;
     //     }    
-    //     // source method id
-    //     // check that source method is a signal
-    //     // target object
-    //     // target method id
     // }
     static PyObject* PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs ) {
         PyObject* obj = 0;
