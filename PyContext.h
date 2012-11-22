@@ -207,8 +207,9 @@ public:
                                             { "is_foreign_owned", reinterpret_cast< PyCFunction >( PyQObjectIsForeignOwned ), METH_VARARGS,
                                               "Checks if QObject is foreign owned.\nForeign owned objects shall not be garbge collected by Python" },
                                             { "connect", reinterpret_cast< PyCFunction >( PyQObjectConnect ), METH_VARARGS,
-                                              "Connect Qt signal to Python function or method" },     
-
+                                              "Connect Qt signal to Python function or method" },
+                                            { "disconnect", reinterpret_cast< PyCFunction >( PyQObjectDisconnect ), METH_VARARGS,
+                                              "Disconnect Qt signal from Python function or method" },        
                                             {0}
                                         };
         return functions;
@@ -268,13 +269,29 @@ private:
                 i != params.end(); ++i ) {
                 types.push_back( PyArgWrapper( i->constData() ) );
             }
-            if( 0 * PyMethod_Check( targetFunction ) ) {
-                pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, PyMethod_Function( targetFunction ),
-                                                              pyqobj->type->pyModule );        
-            } else {
-                pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
-                                                              pyqobj->type->pyModule );
+            pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
+                                                          pyqobj->type->pyModule );
+           
+            Py_RETURN_NONE;
+        } else {
+            RaisePyError( "Not a PyQObject", PyExc_TypeError );
+            return 0;
+        }    
+    }
+    static PyObject* PyQObjectDisconnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* sourceObject = 0;
+        const char* sourceMethod = 0;
+        PyObject* targetFunction = 0;
+        PyQObject* srcQObject = 0;
+        PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
+            const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+            if( mi < 0 ) {
+                RaisePyError( ( std::string( "Cannot find method" ) 
+                                + std::string( sourceMethod ) ).c_str() );
             }
+            pyqobj->type->pyContext->dispatcher_.Disconnect( pyqobj->obj, mi, targetFunction );
             Py_RETURN_NONE;
         } else {
             RaisePyError( "Not a PyQObject", PyExc_TypeError );

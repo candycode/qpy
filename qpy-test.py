@@ -41,6 +41,11 @@ qpy.connect(to, 'aSignal(int)', aclass.cback)
 
 to.aSignal(321)
 
+qpy.disconnect(to, 'aSignal(int)', aclass.cback)
+qpy.disconnect(to, 'aSignal(int)', cback)
+
+to.aSignal(123)
+
 print('done!')
 
 
