@@ -31,11 +31,11 @@
 namespace qpy {
 
 //------------------------------------------------------------------------------
-bool PyCallbackDispatcher::Connect( PyObject* module,
-                                    QObject *obj, 
+bool PyCallbackDispatcher::Connect( QObject *obj, 
                                     int signalIdx,
                                     const CBackParameterTypes& paramTypes,
-                                    PyCBack pyCBack ) {
+                                    PyCBack pyCBack,
+                                    PyObject* module ) {
     // check if Python function reference already stored in database;
     // if not create a new 'dynamic method' and map function reference
     // to the newly created method;

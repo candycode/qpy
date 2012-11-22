@@ -41,6 +41,8 @@
 #include <vector>
 #include <QDebug>
 #include "PyArguments.h"
+#include "PyCallbackDispatcher.h"
+
 
 #define PY_CHECK( f ) {if( f != 0 ) throw std::runtime_error( "Python error" );}
 
@@ -244,34 +246,35 @@ private:
         return 0;    
     }    
 private:
-    // static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
-    //     PyObject* sourceObject = 0;
-    //     const char* sourceMethod = 0;
-    //     PyObject* targetFunction = 0;
-    //     PyQObject* srcQObject = 0;
-    //     PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
-    //     if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
-    //         PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
-    //         const int mi = pyqobj->type->metaObject.indexOfMethod( sourceMethod ); 
-    //         if( mi < 0 ) {
-    //             RaisePyError( ( std::string( "Cannot find method" ) 
-    //                             + std::string( sourceMethod ) ).c_str() );
-    //         }
-    //         QMetaMethod mm = pyqobj->type->metaObject.method( mi );
-    //         QList< QByteArray > params = mm.parameterTypes();
-    //         QList< PyArgWrapper > types;
-    //         for( QList< QByteArray >::const_iterator i = params.begin();
-    //             i != params.end(); ++i ) {
-    //             types.push_back( PyArgWrapper( i->constData() ) );
-    //         }
-    //         // MAKE SURE THE CONNECT METHOD CHECKS IF METHOD ALREADY CONNECTED         
-    //         pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->pyModule, pyqobj->obj, mi, types, targetFunction );
-    //         Py_RETURN_NONE;
-    //     } else {
-    //         RaisePyError( "Not a PyQObject", PyExc_TypeError );
-    //         return 0;
-    //     }    
-    // }
+    static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* sourceObject = 0;
+        const char* sourceMethod = 0;
+        PyObject* targetFunction = 0;
+        PyQObject* srcQObject = 0;
+        PyArg_ParseTuple( args, "OsO", &sourceObject, sourceMethod, &targetFunction );
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
+            const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+            if( mi < 0 ) {
+                RaisePyError( ( std::string( "Cannot find method" ) 
+                                + std::string( sourceMethod ) ).c_str() );
+            }
+            QMetaMethod mm = pyqobj->type->metaObject->method( mi );
+            QList< QByteArray > params = mm.parameterTypes();
+            QList< PyArgWrapper > types;
+            for( QList< QByteArray >::const_iterator i = params.begin();
+                i != params.end(); ++i ) {
+                types.push_back( PyArgWrapper( i->constData() ) );
+            }
+            // MAKE SURE THE CONNECT METHOD CHECKS IF METHOD ALREADY CONNECTED         
+            pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
+                                                          pyqobj->type->pyModule );
+            Py_RETURN_NONE;
+        } else {
+            RaisePyError( "Not a PyQObject", PyExc_TypeError );
+            return 0;
+        }    
+    }
     static PyObject* PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs ) {
         PyObject* obj = 0;
         PyArg_ParseTuple( args, "O", &obj );
@@ -332,6 +335,7 @@ private:
         if( !self ) return 0;
         self->obj = 0;
         self->foreignOwned = false;
+        self->pyModule = 0;
         self->type = reinterpret_cast< Type* >(
             PyCapsule_GetPointer( PyDict_GetItemString( type->tp_dict, "__qpy_type_info" ), "qpy type info" ) );
         return reinterpret_cast< PyObject* >( self );
@@ -473,11 +477,12 @@ private:
             PyQObjectNew,                 /* tp_new */
         };
         return t;
-    }    
+    }
 private:
     /// @brief QObject-Method database: Each QObject is stored together with the list
     /// of associated method signatures
     Types types_;
+    PyCallbackDispatcher dispatcher_;
 };
 
 }

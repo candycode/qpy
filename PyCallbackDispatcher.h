@@ -114,11 +114,11 @@ public:
     /// @param signalIdx signal index
     /// @param paramTypes signal signature
     /// @param pyCBack reference to Python target function
-    bool Connect( PyObject* module,
-                  QObject *obj, 
+    bool Connect( QObject *obj, 
                   int signalIdx,
                   const CBackParameterTypes& paramTypes,
-                  PyCBack pyCBack );
+                  PyCBack pyCBack,
+                  PyObject* module );
     /// Disconnect signal from Python function
     /// @param obj source QObject
     /// @param signalIdx signal index
