@@ -205,7 +205,9 @@ public:
                                             { "is_qobject", reinterpret_cast< PyCFunction >( PyQObjectIsQObject ), METH_VARARGS,
                                               "Checks if object is a QObject" },
                                             { "is_foreign_owned", reinterpret_cast< PyCFunction >( PyQObjectIsForeignOwned ), METH_VARARGS,
-                                              "Checks if QObject is foreign owned.\nForeign owned objects shall not be garbge collected by Python." },  
+                                              "Checks if QObject is foreign owned.\nForeign owned objects shall not be garbge collected by Python" },
+                                            { "connect", reinterpret_cast< PyCFunction >( PyQObjectConnect ), METH_VARARGS,
+                                              "Connect Qt signal to Python function or method" },     
 
                                             {0}
                                         };
@@ -251,7 +253,7 @@ private:
         const char* sourceMethod = 0;
         PyObject* targetFunction = 0;
         PyQObject* srcQObject = 0;
-        PyArg_ParseTuple( args, "OsO", &sourceObject, sourceMethod, &targetFunction );
+        PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
         if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
             const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 

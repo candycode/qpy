@@ -22,6 +22,26 @@ print(qpy.is_foreign_owned(myqobj))
 
 print(qpy.is_foreign_owned(to))
 
-print(to.__dict__)
+def cback(v):
+	print("Got {0}".format(v))
+
+qpy.connect(to, 'aSignal(int)', cback)
+
+to.aSignal(131)
+
+# class AClass(object):
+# 	def cback(self, v):
+# 		print("AClass.cback: Got {0}".format(v))
+
+# aclass = AClass()
+
+# assert aclass
+
+# qpy.connect(to, 'aSignal(int)', aclass, 'cback' )
+
+# to.aSignal(123)
+
+
+
 
 
