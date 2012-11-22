@@ -29,17 +29,19 @@ qpy.connect(to, 'aSignal(int)', cback)
 
 to.aSignal(131)
 
-# class AClass(object):
-# 	def cback(self, v):
-# 		print("AClass.cback: Got {0}".format(v))
+class AClass(object):
+ 	def cback(self, v):
+ 		print("AClass.cback: Got {0}".format(v))
 
-# aclass = AClass()
+aclass = AClass()
 
-# assert aclass
+assert aclass
 
-# qpy.connect(to, 'aSignal(int)', aclass, 'cback' )
+qpy.connect(to, 'aSignal(int)', aclass.cback)
 
-# to.aSignal(123)
+to.aSignal(321)
+
+print('done!')
 
 
 

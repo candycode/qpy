@@ -66,7 +66,14 @@ public:
     /// QObjects added to the Python contexts are not owned by Python.
     void Invoke( void **arguments );
     /// Return associated reference to Python function
-    PyObject* CBack() const{ return pyCBack_; } 
+    PyObject* CBack() const{ return pyCBack_; }
+    /// This is required to release the bound function when disconnect is invoked
+    /// since methods are never removed from the list to maintain consistency
+    /// between the method id and the position in the list itself
+    void DeleteCBack() { 
+        Py_XDECREF( pyCBack_ );
+        pyCBack_ = 0;
+    } 
 private:
     /// PyContext instance
     PyContext* pc_;
@@ -132,6 +139,7 @@ public:
     virtual ~PyCallbackDispatcher() {
         for( QList< PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
              i != pyCBackMethods_.end(); ++i ) {
+            Py_XDECREF( ( *i )->CBack() );
             delete *i;
         }
     }

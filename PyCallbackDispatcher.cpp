@@ -44,6 +44,7 @@ bool PyCallbackDispatcher::Connect( QObject *obj,
     if( methodIdx < 0 ) {
         methodIdx = pyCBackMethods_.size();
         cbackToMethodIndex_[ pyCBack ] = methodIdx;
+        Py_INCREF( pyCBack );
         pyCBackMethods_.push_back(
             new PyCBackMethod( pc_, module, paramTypes, pyCBack ) );
 }
@@ -60,7 +61,8 @@ bool PyCallbackDispatcher::Disconnect( QObject *obj,
     for( QList< PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
           i != pyCBackMethods_.end(); ++i, ++m ) {
          if( ( *i )->CBack() == pyCBack ) {
-             return QMetaObject::disconnect( obj, signalIdx, this, m + metaObject()->methodCount() );
+            ( *i )->DeleteCBack();
+            return QMetaObject::disconnect( obj, signalIdx, this, m + metaObject()->methodCount() );
          }
     }   
     return false;
@@ -86,11 +88,12 @@ void PyCBackMethod::Invoke( void **arguments ) {
            obj = pc_->AddObject( reinterpret_cast< QObject* >( *arguments ), pyModule_, pyModule_, 0 );
         } else {
            obj = i->Create( *arguments ); 
-        } 
+        }
         PyTuple_SetItem( tuple, t, obj ); 
     }
     //call Python function
-    PyObject_Call( pyCBack_, tuple, 0 );
+    
+    PyObject_CallObject( pyCBack_, tuple );
     Py_DECREF( tuple );
 }
 

@@ -268,9 +268,13 @@ private:
                 i != params.end(); ++i ) {
                 types.push_back( PyArgWrapper( i->constData() ) );
             }
-            // MAKE SURE THE CONNECT METHOD CHECKS IF METHOD ALREADY CONNECTED         
-            pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
-                                                          pyqobj->type->pyModule );
+            if( 0 * PyMethod_Check( targetFunction ) ) {
+                pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, PyMethod_Function( targetFunction ),
+                                                              pyqobj->type->pyModule );        
+            } else {
+                pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
+                                                              pyqobj->type->pyModule );
+            }
             Py_RETURN_NONE;
         } else {
             RaisePyError( "Not a PyQObject", PyExc_TypeError );
