@@ -15,6 +15,7 @@ int main( int argc, char** argv ) {
     Py_Initialize();
     qpy::PyContext py;
     PyObject* m = Py_InitModule3( "qpy", py.ModuleFunctions(), "Example QPy module" );
+    Py_INCREF( m );
     PyObject* mainModule = PyImport_AddModule( "__main__" );
     PyModule_AddObject( mainModule, "qpy", m ); 
     py.Add< QpyTestObject >( m );
