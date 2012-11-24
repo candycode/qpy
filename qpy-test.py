@@ -25,6 +25,8 @@ print(qpy.is_foreign_owned(to))
 def cback(v):
 	print("Got {0}".format(v))
 
+print("CONNECT")
+
 qpy.connect(to, 'aSignal(int)', cback)
 
 to.aSignal(131)
@@ -34,12 +36,17 @@ class AClass(object):
  		print("AClass.cback: Got {0}".format(v))
 
 aclass = AClass()
+aclass2 = AClass()
 
 assert aclass
 
+
+qpy.connect(to, 'aSignal(int)', aclass2.cback)
 qpy.connect(to, 'aSignal(int)', aclass.cback)
 
 to.aSignal(321)
+
+print("DISCONNECT")
 
 qpy.disconnect(to, 'aSignal(int)', aclass.cback)
 qpy.disconnect(to, 'aSignal(int)', cback)

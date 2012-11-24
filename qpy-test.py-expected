@@ -9,7 +9,11 @@ Value = 71
 True
 True
 False
+CONNECT
 Got 131
 Got 321
 AClass.cback: Got 321
+AClass.cback: Got 321
+DISCONNECT
+AClass.cback: Got 123
 done!

@@ -108,7 +108,8 @@ public:
     /// @return QGenericArgument instance whose @c data field points
     ///         to a private data member of this class' instance
     QGenericArgument Create( PyObject* pyobj ) const {
-        return QGenericArgument();
+        //obj = reinterpret_cast< PyQObject* >( pyobj )->obj;
+        return Q_ARG( QObject*, obj_ );
     }
     /// Make copy through copy constructor.
     ObjectStarQArgConstructor* Clone() const {
@@ -116,7 +117,7 @@ public:
     }
 private:
     /// Storage for value read from Python.
-    mutable QObject* i_;
+    mutable QObject* obj_;
 };
 
 //------------------------------------------------------------------------------

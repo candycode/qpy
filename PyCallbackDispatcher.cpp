@@ -60,7 +60,13 @@ bool PyCallbackDispatcher::Disconnect( QObject *obj,
     int m = 0;
     for( QList< PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
           i != pyCBackMethods_.end(); ++i, ++m ) {
-         if( ( *i )->CBack() == pyCBack ) {
+        bool found = false;
+        if( PyMethod_Check( pyCBack ) ) {
+            found = PyMethod_Function( ( *i )->CBack() ) == PyMethod_Function( pyCBack );
+        } else {
+            found = pyCBack == ( *i )->CBack();
+        } 
+        if( found ) {
             ( *i )->DeleteCBack();
             return QMetaObject::disconnect( obj, signalIdx, this, m + metaObject()->methodCount() );
          }

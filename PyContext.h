@@ -39,7 +39,6 @@
 #include <QString>
 #include <string>
 #include <vector>
-#include <QDebug>
 #include "PyArguments.h"
 #include "PyCallbackDispatcher.h"
 
@@ -252,12 +251,28 @@ private:
     static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
         PyObject* sourceObject = 0;
         const char* sourceMethod = 0;
+        PyObject* sourceMethodObj = 0;
         PyObject* targetFunction = 0;
         PyQObject* srcQObject = 0;
-        PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
+        if( PyTuple_Size( args ) == 3 ) {
+            PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
+        } else if( PyTuple_Size( args ) == 2 ) {
+            PyArg_ParseTuple( args, "OO", &sourceMethodObj, &targetFunction ); 
+        }
         if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
-            const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+            int mi = -1;
+            if( sourceMethod ) mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+            else {
+                const QMetaObject* mo = pyqobj->type->metaObject;
+                for( int i = 0; i != mo->methodCount(); ++i ) {
+                    QMetaMethod mm = mo->method( i );
+                    QString s = mm.signature();
+                    s.truncate( s.indexOf( "(" ) );
+                    if( s == QString( PyString_AsString( 
+                                        PyObject_GetAttrString( targetFunction, "__name__"  ) ) ) ) mi = i;   
+                }   
+            }
             if( mi < 0 ) {
                 RaisePyError( ( std::string( "Cannot find method" ) 
                                 + std::string( sourceMethod ) ).c_str() );
@@ -286,7 +301,7 @@ private:
         PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
         if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
-            const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+            const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod );
             if( mi < 0 ) {
                 RaisePyError( ( std::string( "Cannot find method" ) 
                                 + std::string( sourceMethod ) ).c_str() );
