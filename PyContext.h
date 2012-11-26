@@ -52,7 +52,6 @@ inline void RaisePyError( const char* errMsg = 0,
     PyErr_SetString( errType, errMsg );
 }
 
-
 ///@todo 
 /// - search for Q_PROPERTY doc, if available use that for __doc__ attr
 /// - add Q_PROPERTY support
@@ -119,9 +118,6 @@ private:
         PyObject* invoke; //method invocation function
         bool foreignOwned;
         PyObject* pyModule;
-        struct Tmp {
-            int selectedMethodId;
-        } tmp;
     };
 public:
     /// Constructor: Create @c qpy module with QPy interface.
@@ -254,44 +250,41 @@ private:
         PyObject* sourceMethodObj = 0;
         PyObject* targetFunction = 0;
         PyQObject* srcQObject = 0;
+        PyQObject* pyqobj = 0;
+        int mi = -1;
         if( PyTuple_Size( args ) == 3 ) {
             PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
+            if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+                pyqobj = reinterpret_cast< PyQObject* >( sourceObject );       
+                mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+            } else {
+                RaisePyError( "Not a PyQObject" );
+                return 0;
+            }       
         } else if( PyTuple_Size( args ) == 2 ) {
-            PyArg_ParseTuple( args, "OO", &sourceMethodObj, &targetFunction ); 
+            PyArg_ParseTuple( args, "OO", &sourceMethod, &targetFunction );
+            pyqobj = getterObject_;
+            mi = getterMethodId_;
+        } else {
+            RaisePyError( "3 or 4 arguments required" );
+            return 0;
+        }             
+        if( mi < 0 ) {
+            RaisePyError( ( std::string( "Cannot find method" ) 
+                          + std::string( sourceMethod ) ).c_str() );
         }
-        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
-            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
-            int mi = -1;
-            if( sourceMethod ) mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
-            else {
-                const QMetaObject* mo = pyqobj->type->metaObject;
-                for( int i = 0; i != mo->methodCount(); ++i ) {
-                    QMetaMethod mm = mo->method( i );
-                    QString s = mm.signature();
-                    s.truncate( s.indexOf( "(" ) );
-                    if( s == QString( PyString_AsString( 
-                                        PyObject_GetAttrString( targetFunction, "__name__"  ) ) ) ) mi = i;   
-                }   
-            }
-            if( mi < 0 ) {
-                RaisePyError( ( std::string( "Cannot find method" ) 
-                                + std::string( sourceMethod ) ).c_str() );
-            }
-            QMetaMethod mm = pyqobj->type->metaObject->method( mi );
-            QList< QByteArray > params = mm.parameterTypes();
-            QList< PyArgWrapper > types;
-            for( QList< QByteArray >::const_iterator i = params.begin();
-                i != params.end(); ++i ) {
-                types.push_back( PyArgWrapper( i->constData() ) );
-            }
+        QMetaMethod mm = pyqobj->type->metaObject->method( mi );
+        QList< QByteArray > params = mm.parameterTypes();
+        QList< PyArgWrapper > types;
+        for( QList< QByteArray >::const_iterator i = params.begin();
+             i != params.end(); ++i ) {
+            types.push_back( PyArgWrapper( i->constData() ) );
+        
             pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
                                                           pyqobj->type->pyModule );
+        }
            
-            Py_RETURN_NONE;
-        } else {
-            RaisePyError( "Not a PyQObject", PyExc_TypeError );
-            return 0;
-        }    
+        Py_RETURN_NONE;
     }
     static PyObject* PyQObjectDisconnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
         PyObject* sourceObject = 0;
@@ -359,7 +352,8 @@ private:
     }
     static PyObject* PyQObjectGetter( PyQObject* qobj, void* closure /*method id*/ ) {
         int mid = int( reinterpret_cast< size_t >( closure ) );
-        qobj->tmp.selectedMethodId = mid;
+        getterObject_ = qobj;
+        getterMethodId_ = mid;
         //should indeed have one function per type (var args, no args...) and return the proper one
         Py_INCREF( qobj->invoke );
         return qobj->invoke;
@@ -381,7 +375,7 @@ private:
     static PyObject* PyQObjectInvokeMethod( PyQObject* self, PyObject* args ) {
         std::vector< QGenericArgument > ga( MAX_GENERIC_ARGS );
         const int sz = int( PyTuple_Size( args ) );
-        const Method& m = self->type->methods[ self->tmp.selectedMethodId ];
+        const Method& m = self->type->methods[ getterMethodId_ ];
         for( int i = 0; i != sz; ++i ) {
             PyObject* obj = PyTuple_GetItem( args, i );
             ga[ i ] = m.argumentWrappers_[ i ].Arg( obj );
@@ -521,6 +515,8 @@ private:
     /// of associated method signatures
     Types types_;
     PyCallbackDispatcher dispatcher_;
+    static PyQObject* getterObject_; //thread_local if needed
+    static int getterMethodId_;      //thread_local if needed
 };
 
 }

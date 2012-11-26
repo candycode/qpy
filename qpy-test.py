@@ -41,7 +41,7 @@ aclass2 = AClass()
 assert aclass
 
 
-qpy.connect(to, 'aSignal(int)', aclass2.cback)
+qpy.connect(to.aSignal, aclass2.cback)
 qpy.connect(to, 'aSignal(int)', aclass.cback)
 
 to.aSignal(321)
