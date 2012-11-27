@@ -89,7 +89,10 @@ class PyContext {
     static const int MAX_GENERIC_ARGS = 10;
 public:
     typedef QList< Method > Methods;
-private:    
+public:  //must be public because type access might be needed
+         //from PyArguments; declaring some PyArguments as friend
+         //won't work when new argument constructors provided by
+         //client code need to be registered  
     struct Type {
         const QMetaObject* metaObject; 
         //for overloading purposes:
@@ -109,7 +112,7 @@ private:
         PyObject* pyModule;
         PyContext* pyContext;
     };
-    typedef QList< Type > Types;
+    typedef QList< Type > Types;   
     struct PyQObject {
         PyObject_HEAD
         char qobjectTag;
@@ -119,6 +122,9 @@ private:
         bool foreignOwned;
         PyObject* pyModule;
     };
+    //ObjectStarQArgConstructor needs acces to PyQObject type
+    class QArgConstructor;
+    friend class QArgConstructor;
 public:
     /// Constructor: Create @c qpy module with QPy interface.
     //PyContext() {}

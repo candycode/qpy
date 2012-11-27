@@ -29,7 +29,7 @@
 /// from PyObjects.
 
 #include <Python.h>
-
+#include <stdexcept>
 #include <QString>
 #include <QVariantMap>
 #include <QVariantList>
@@ -107,10 +107,8 @@ public:
     /// @param pyobj pointer to PyObject
     /// @return QGenericArgument instance whose @c data field points
     ///         to a private data member of this class' instance
-    QGenericArgument Create( PyObject* pyobj ) const {
-        //obj = reinterpret_cast< PyQObject* >( pyobj )->obj;
-        return Q_ARG( QObject*, obj_ );
-    }
+    QGenericArgument Create( PyObject* pyobj ) const;
+
     /// Make copy through copy constructor.
     ObjectStarQArgConstructor* Clone() const {
         return new ObjectStarQArgConstructor( *this );
