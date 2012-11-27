@@ -336,7 +336,7 @@ inline QArgWrappers GenerateQArgWrappers( const ArgumentTypes& at ) {
     }
     return aw;
 }
-/// @brief Create LArgWrapper instance from type name.
+/// @brief Create QArgWrapper instance from type name.
 inline PyArgWrapper GeneratePyArgWrapper( const QString& typeName ) {
     return PyArgWrapper( typeName );
 }
