@@ -1,0 +1,6 @@
+
+
+PyContext py;
+//optional, use default; py.SetArgFactory(...)
+py.RegisterArgConstructor( qtTypeName, qarg, pyarg, foreignOwned )
+py.RemoveArgConstructor( qtTypeName )

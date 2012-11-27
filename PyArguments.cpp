@@ -1,7 +1,6 @@
 #include "PyArguments.h"
 #include "PyContext.h"
 
-
 namespace qpy {
 
 QGenericArgument ObjectStarQArgConstructor::Create( PyObject* pyobj ) const {
