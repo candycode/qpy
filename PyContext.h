@@ -122,9 +122,6 @@ public:  //must be public because type access might be needed
         bool foreignOwned;
         PyObject* pyModule;
     };
-    //ObjectStarQArgConstructor needs acces to PyQObject type
-    class QArgConstructor;
-    friend class QArgConstructor;
 public:
     /// Constructor: Create @c qpy module with QPy interface.
     //PyContext() {}
@@ -241,7 +238,40 @@ public:
         }*/
         return reinterpret_cast< PyObject* >( obj );
     }
+    /// Register new types by passing the type of QArgConstructor and PyArgConstructor;
+    /// this way of registering does not allow to pass actual instances, and does require
+    /// support for operator new and delete.
+    template < typename QArgConstructorT, typename PyArgConstructorT > 
+    bool RegisterType( const QString& typeName, bool overwrite ) {
+        return RegisterType( typeName, new QArgConstructorT, new PyArgConstructorT, overwrite );
+    }
 private:
+    class ArgFactoryEntry {
+    public:
+        ArgFactoryEntry() : qac_( 0 ), pac_( 0 ) {}
+        ArgFactoryEntry( const ArgFactoryEntry& fe ) 
+            : typeName_( fe.typeName_ ), qac_( fe.qac_->Clone() ), pac_( fe.pac_->Clone() ) {}
+        ArgFactoryEntry( const QString& tn, QArgConstructor* qac, PyArgConstructor* pac )
+            : typeName_( tn ), qac_( qac ), pac_( pac ) {}
+        ~ArgFactoryEntry() {
+            delete qac_;
+            delete pac_;
+        }
+        QArgConstructor* BuildQArgConstructor() const { return qac_->Clone(); }
+        PyArgConstructor* BuildPyArgConstructor() const { return pac_->Clone(); }
+        const QString& TypeName() const { return typeName_; }
+    private:
+        QString typeName_;
+        QArgConstructor* qac_;
+        PyArgConstructor* pac_;
+    };
+    typedef QMap< QString, ArgFactoryEntry > ArgFactory;
+    bool RegisterType( const QString& typeName, QArgConstructor* qac, PyArgConstructor* pac, bool overwrite ) {
+        const bool typeExist = argFactory_.contains( typeName );
+        if( typeExist && !overwrite ) return false;
+        argFactory_[ typeName ] = ArgFactoryEntry( typeName, qac, pac );
+        return true; 
+    }
     Type* ExistingType( const QMetaObject* mo, PyObject* module ) {
         for( Types::iterator i = types_.begin(); i != types_.end(); ++i ) {
             if( i->metaObject->className() == mo->className() && 
@@ -521,6 +551,7 @@ private:
     /// of associated method signatures
     Types types_;
     PyCallbackDispatcher dispatcher_;
+    ArgFactory argFactory_;
     static PyQObject* getterObject_; //thread_local if needed
     static int getterMethodId_;      //thread_local if needed
 };
