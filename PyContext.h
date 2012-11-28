@@ -304,8 +304,9 @@ private:
         QArgWrappers aw;
         ///@warning moc *always* adds a QObject* to any constructor!!!
         for( ArgumentTypes::const_iterator i = at.begin(); i != at.end(); ++i ) {
-            if( !argFactory_.contains( *i )
-                || dynamic_cast< const NoQArgConstructor* >( argFactory_[ *i ].QArgCtor() ) ) {
+            if( !argFactory_.contains( *i ) ) {
+               qDebug() << ">>> " << *i; 
+               //|| dynamic_cast< const NoQArgConstructor* >( argFactory_[ *i ].QArgCtor() ) ) {
                 throw std::logic_error( ( "Type " + QString( *i ) + " unknown" ).toStdString() );
             } else {
                 aw.push_back( QArgWrapper( argFactory_[ *i ].MakeQArgConstructor() ) );
@@ -314,9 +315,11 @@ private:
         return aw;
     }   
     /// @brief Create PyArgWrapper instance from type name.
-    PyArgWrapper GeneratePyArgWrapper( const QString& typeName ) {
-        if( !argFactory_.contains( typeName ) 
-            || dynamic_cast< const NoPyArgConstructor* >( argFactory_[ typeName ].PyArgCtor() ) ) {
+    PyArgWrapper GeneratePyArgWrapper( QString typeName ) {
+        typeName = "" ? QMetaType::typeName( QMetaType::Void ) : typeName;
+        if( !argFactory_.contains( typeName ) ) {
+
+            //|| dynamic_cast< const NoPyArgConstructor* >( argFactory_[ typeName ].PyArgCtor() ) ) {
                 throw std::logic_error( ( "Type " + typeName + " unknown" ).toStdString() );
             return PyArgWrapper();
         } else {
