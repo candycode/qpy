@@ -142,7 +142,7 @@ public:
     ///         to a private data member of this class' instance
     QGenericArgument Create( PyObject* pyobj ) const {
         f_ = float( PyFloat_AsDouble( pyobj ) );
-        return Q_ARG( double, f_ );
+        return Q_ARG( float, f_ );
     }
     /// Make copy through copy constructor.
     FloatQArgConstructor* Clone() const {
