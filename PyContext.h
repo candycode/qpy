@@ -212,7 +212,9 @@ public:
                                             { "connect", reinterpret_cast< PyCFunction >( PyQObjectConnect ), METH_VARARGS,
                                               "Connect Qt signal to Python function or method" },
                                             { "disconnect", reinterpret_cast< PyCFunction >( PyQObjectDisconnect ), METH_VARARGS,
-                                              "Disconnect Qt signal from Python function or method" },        
+                                              "Disconnect Qt signal from Python function or method" },
+                                            { "qobject_ptr", reinterpret_cast< PyCFunction >( PyQObjectPtr ), METH_VARARGS,
+                                              "Return pointer to embedded QObject" },           
                                             {0}
                                         };
         return functions;
@@ -296,6 +298,9 @@ private:
         RegisterType< VoidStarQArgConstructor, NoPyArgConstructor >( QMetaType::VoidStar );
         RegisterType< ObjectStarQArgConstructor, ObjectStarPyArgConstructor >( QMetaType::QObjectStar );
         RegisterType< NoQArgConstructor, VoidPyArgConstructor >( QMetaType::Void );
+        RegisterType< StringQArgConstructor, StringPyArgConstructor >( QMetaType::QString );
+        RegisterType< FloatQArgConstructor, FloatPyArgConstructor >( QMetaType::Float );
+        RegisterType< DoubleQArgConstructor, DoublePyArgConstructor >( QMetaType::Double );
     };
     /// @brief Generate QArgWrapper list from parameter type names as
     /// returned by @c QMetaMethod::parameterTypes().
@@ -475,6 +480,17 @@ private:
            return 0;
         }         
     }
+    static PyObject* PyQObjectPtr( PyObject* self, PyObject* args, PyObject* kwargs ) {
+        PyObject* obj = 0;
+        PyArg_ParseTuple( args, "O", &obj );
+        if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+            PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
+            return PyLong_FromVoidPtr( pyqobj->obj );
+        } else {
+           RaisePyError( "Not a PyQObject", PyExc_TypeError );
+           return 0;
+        }         
+    }
     static PyObject* PyQObjectGetter( PyQObject* qobj, void* closure /*method id*/ ) {
         int mid = int( reinterpret_cast< size_t >( closure ) );
         getterObject_ = qobj;
@@ -506,7 +522,7 @@ private:
             ga[ i ] = m.argumentWrappers_[ i ].Arg( obj );
         }
         try {     
-            if( m.returnWrapper_.Type().isEmpty() ) {
+            if( m.returnWrapper_.MetaType() == QMetaType::Void ) {
                 m.metaMethod_.invoke( self->obj, Qt::DirectConnection, ga[ 0 ], ga[ 1 ], ga[ 2 ], ga[ 3 ],
                           ga[ 4 ], ga[ 5 ], ga[ 6 ], ga[ 7 ], ga[ 8 ], ga[ 9 ] );
                 Py_INCREF(Py_None);

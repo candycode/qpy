@@ -14,6 +14,8 @@ to2.Print()
 to2.SetValue(5)
 to2.Print()
 
+print( to2.copyString("a string" ))
+
 myqobj.Print()
 
 print(qpy.is_qobject(myqobj))

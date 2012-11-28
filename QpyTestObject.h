@@ -31,6 +31,7 @@ public:
     Q_INVOKABLE QpyTestObject() : QObject( 0 ) {}
     Q_INVOKABLE QpyTestObject( int value ) : QObject( 0 ), value_( value ) {}
 public slots:
+    QString copyString( const QString& s ) { return s; }
     int GetValue() const { return value_; }
     void SetValue( int v ) { value_ = v; }
     void SetDefaultValue() { value_ = 0; }

@@ -92,6 +92,66 @@ private:
     /// Storage for value read from Python.
     mutable int i_;
 };
+/// QArgConstructor implementation for @c QString type.
+class StringQArgConstructor : public QArgConstructor {
+public:
+    /// @brief create a @c QString value from a PyObject then create 
+    /// QGenericArgument referencing the data member.
+    /// @param pyobj pointer to PyObject
+    /// @return QGenericArgument instance whose @c data field points
+    ///         to a private data member of this class' instance
+    QGenericArgument Create( PyObject* pyobj ) const {
+        s_ = PyString_AsString( pyobj );
+        return Q_ARG( QString, s_ );
+    }
+    /// Make copy through copy constructor.
+    StringQArgConstructor* Clone() const {
+        return new StringQArgConstructor( *this );
+    }
+private:
+    /// Storage for value read from Python.
+    mutable QString s_;
+};
+/// QArgConstructor implementation for @c QString type.
+class DoubleQArgConstructor : public QArgConstructor {
+public:
+    /// @brief create a @c double value from a PyObject then create 
+    /// QGenericArgument referencing the data member.
+    /// @param pyobj pointer to PyObject
+    /// @return QGenericArgument instance whose @c data field points
+    ///         to a private data member of this class' instance
+    QGenericArgument Create( PyObject* pyobj ) const {
+        d_ = PyFloat_AsDouble( pyobj );
+        return Q_ARG( double, d_ );
+    }
+    /// Make copy through copy constructor.
+    DoubleQArgConstructor* Clone() const {
+        return new DoubleQArgConstructor( *this );
+    }
+private:
+    /// Storage for value read from Python.
+    mutable double d_;
+};
+/// QArgConstructor implementation for @c QString type.
+class FloatQArgConstructor : public QArgConstructor {
+public:
+    /// @brief create a @c float value from a PyObject then create 
+    /// QGenericArgument referencing the data member.
+    /// @param pyobj pointer to PyObject
+    /// @return QGenericArgument instance whose @c data field points
+    ///         to a private data member of this class' instance
+    QGenericArgument Create( PyObject* pyobj ) const {
+        f_ = float( PyFloat_AsDouble( pyobj ) );
+        return Q_ARG( double, f_ );
+    }
+    /// Make copy through copy constructor.
+    FloatQArgConstructor* Clone() const {
+        return new FloatQArgConstructor( *this );
+    }
+private:
+    /// Storage for value read from Python.
+    mutable float f_;
+};
 /// QArgConstructor implementation for @c integer type.
 class VoidStarQArgConstructor : public QArgConstructor {
 public:
@@ -205,7 +265,75 @@ public:
 private:
     int i_; 
 };
-
+/// PyArgConstructor implementation for @c QString type
+class StringPyArgConstructor : public PyArgConstructor {
+public:
+    StringPyArgConstructor() {
+        SetArg( s_ );
+    }
+    StringPyArgConstructor( const StringPyArgConstructor& other ) : s_( other.s_ ) {
+        SetArg( s_ );
+    }
+    PyObject* Create( void* p ) const {
+        QString s = *reinterpret_cast< QString* >( p );
+        return PyString_FromString( s.toAscii().constData() );
+    }
+    PyObject* Create() const {
+        return PyString_FromString( s_.toAscii().constData() );
+    }
+    StringPyArgConstructor* Clone() const {
+        return new StringPyArgConstructor( *this );
+    }
+    QMetaType::Type Type() const { return QMetaType::QString; }
+private:
+    QString s_; 
+};
+/// PyArgConstructor implementation for @c double type
+class DoublePyArgConstructor : public PyArgConstructor {
+public:
+    DoublePyArgConstructor() {
+        SetArg( d_ );
+    }
+    DoublePyArgConstructor( const DoublePyArgConstructor& other ) : d_( other.d_ ) {
+        SetArg( d_ );
+    }
+    PyObject* Create( void* p ) const {
+        double d = *reinterpret_cast< double* >( p );
+        return PyFloat_FromDouble( d );
+    }
+    PyObject* Create() const {
+        return PyFloat_FromDouble( d_ );
+    }
+    DoublePyArgConstructor* Clone() const {
+        return new DoublePyArgConstructor( *this );
+    }
+    QMetaType::Type Type() const { return QMetaType::Double; }
+private:
+    double d_; 
+};
+/// PyArgConstructor implementation for @c float type
+class FloatPyArgConstructor : public PyArgConstructor {
+public:
+    FloatPyArgConstructor() {
+        SetArg( f_ );
+    }
+    FloatPyArgConstructor( const FloatPyArgConstructor& other ) : f_( other.f_ ) {
+        SetArg( f_ );
+    }
+    PyObject* Create( void* p ) const {
+        float f = *reinterpret_cast< float* >( p );
+        return PyFloat_FromDouble( f );
+    }
+    PyObject* Create() const {
+        return PyFloat_FromDouble( f_ );
+    }
+    FloatPyArgConstructor* Clone() const {
+        return new FloatPyArgConstructor( *this );
+    }
+    QMetaType::Type Type() const { return QMetaType::Float; }
+private:
+    float f_; 
+};
 
 /// PyArgConstructor implementation for @c void type
 class VoidPyArgConstructor : public PyArgConstructor {
@@ -293,13 +421,9 @@ private:
 class PyArgWrapper {
 public:
     ///@brief Default constructor.
-    PyArgWrapper( PyArgConstructor* pac = 0 ) : ac_( pac ) {
-        if( ac_ != 0 ) {
-            type_ = QMetaType::typeName( ac_->Type() );
-        }
-    }
+    PyArgWrapper( PyArgConstructor* pac = 0 ) : ac_( pac ) {}
     ///@brief Copy constructor: Clones the internal Return constructor instance.
-    PyArgWrapper( const PyArgWrapper& other ) : ac_( 0 ), type_( other.type_ ) {
+    PyArgWrapper( const PyArgWrapper& other ) : ac_( 0 ) {
         if( other.ac_ ) ac_ = other.ac_->Clone();
     }
     /// @brief return values stored in the inner PyArgConstructor.
@@ -318,8 +442,9 @@ public:
     /// @brief retunr placeholder for storing Qt return argument
     QGenericReturnArgument Arg() const { return ac_->Argument(); }
     /// Type name.
-    const QString& Type() const { 
-        return type_;
+    QString Type() const { 
+        if( ac_ != 0 ) return QMetaType::typeName( ac_->Type() );
+        else return QString();
     }
     /// Meta type.
     QMetaType::Type MetaType() const { return ac_->Type(); }
@@ -328,10 +453,8 @@ public:
     /// Delete LArgConstructor instance.
     ~PyArgWrapper() { delete ac_; }
 private:
-    /// LArgConstructor instance created at construction time.
+    /// PyArgConstructor instance created at construction time.
     PyArgConstructor* ac_;
-    /// Qt type name of data stored in ac_.
-    QString type_;
 };
 
 }
