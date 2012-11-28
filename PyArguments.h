@@ -59,6 +59,19 @@ struct QArgConstructor {
     virtual QArgConstructor* Clone() const = 0;
 
 };
+/// Useful to specify that Python -> Qt constructor not available
+/// when registering new types through PyContext
+struct NoQArgConstructor : QArgConstructor {
+    /// Create a QGenericArgument from Python values.
+    virtual QGenericArgument Create( PyObject* ) const {
+        throw std::logic_error( "QArgConstructor not available" );
+        return QGenericArgument();
+    }
+    /// Create a new instance of the current class.
+    virtual QArgConstructor* Clone() const { return new NoQArgConstructor( *this ); }
+
+};
+typedef NoQArgConstructor NO_QT_ARG;
 /// QArgConstructor implementation for @c integer type.
 class IntQArgConstructor : public QArgConstructor {
 public:
@@ -153,7 +166,22 @@ private:
     /// Placeholder for returned data. 
     QGenericReturnArgument ga_; // not private, breaks encapsulation
 };
-
+/// Use this type to specify that no Qt -> Python conversion exist for
+/// a type when registering types through PyContext
+class NoPyArgConstructor : public PyArgConstructor {
+public:
+    PyObject* Create( void*  ) const {
+        Py_RETURN_NONE;
+    }
+    PyObject* Create() const {
+        Py_RETURN_NONE;
+    }
+    NoPyArgConstructor* Clone() const {
+        return new NoPyArgConstructor( *this );
+    }
+    QMetaType::Type Type() const { return QMetaType::Void; }
+};
+typedef NoPyArgConstructor NO_PY_ARG;
 /// PyArgConstructor implementation for @c integer type
 class IntPyArgConstructor : public PyArgConstructor {
 public:
