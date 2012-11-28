@@ -14,46 +14,46 @@ to2.Print()
 to2.SetValue(5)
 to2.Print()
 
-# myqobj.Print()
+myqobj.Print()
 
-# print(qpy.is_qobject(myqobj))
+print(qpy.is_qobject(myqobj))
 
-# print(qpy.is_foreign_owned(myqobj))
+print(qpy.is_foreign_owned(myqobj))
 
-# print(qpy.is_foreign_owned(to))
+print(qpy.is_foreign_owned(to))
 
-# def cback(v):
-# 	print("Got {0}".format(v))
+def cback(v):
+	print("Got {0}".format(v))
 
-# print("CONNECT")
+print("CONNECT")
 
-# qpy.connect(to, 'aSignal(int)', cback)
+qpy.connect(to, 'aSignal(int)', cback)
 
-# to.aSignal(131)
+to.aSignal(131)
 
-# class AClass(object):
-#  	def cback(self, v):
-#  		print("AClass.cback: Got {0}".format(v))
+class AClass(object):
+ 	def cback(self, v):
+ 		print("AClass.cback: Got {0}".format(v))
 
-# aclass = AClass()
-# aclass2 = AClass()
+aclass = AClass()
+aclass2 = AClass()
 
-# assert aclass
+assert aclass
 
 
-# qpy.connect(to.aSignal, aclass2.cback)
-# qpy.connect(to, 'aSignal(int)', aclass.cback)
+qpy.connect(to.aSignal, aclass2.cback)
+qpy.connect(to, 'aSignal(int)', aclass.cback)
 
-# to.aSignal(321)
+to.aSignal(321)
 
-# print("DISCONNECT")
+print("DISCONNECT")
 
-# qpy.disconnect(to, 'aSignal(int)', aclass.cback)
-# qpy.disconnect(to, 'aSignal(int)', cback)
+qpy.disconnect(to, 'aSignal(int)', aclass.cback)
+qpy.disconnect(to, 'aSignal(int)', cback)
 
-# to.aSignal(123)
+to.aSignal(123)
 
-# print('done!')
+print('done!')
 
 
 

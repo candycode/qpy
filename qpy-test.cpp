@@ -20,8 +20,8 @@ int main( int argc, char** argv ) {
     PyModule_AddObject( mainModule, "qpy", m ); 
     py.Add< QpyTestObject >( m );
 
-    // QpyTestObject* to = new QpyTestObject( 71 );
-    // py.AddObject( to, mainModule, m, "myqobj" );
+    QpyTestObject* to = new QpyTestObject( 71 );
+    py.AddObject( to, mainModule, m, "myqobj" );
 
     PyRun_SimpleFile( fopen( argv[ 1 ], "r" ), argv[ 1 ] );
     Py_Finalize();   

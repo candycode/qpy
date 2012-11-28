@@ -297,16 +297,14 @@ private:
         RegisterType< ObjectStarQArgConstructor, ObjectStarPyArgConstructor >( QMetaType::QObjectStar );
         RegisterType< NoQArgConstructor, VoidPyArgConstructor >( QMetaType::Void );
     };
-
     /// @brief Generate QArgWrapper list from parameter type names as
     /// returned by @c QMetaMethod::parameterTypes().
     QArgWrappers GenerateQArgWrappers( const ArgumentTypes& at ) {
         QArgWrappers aw;
         ///@warning moc *always* adds a QObject* to any constructor!!!
         for( ArgumentTypes::const_iterator i = at.begin(); i != at.end(); ++i ) {
-            if( !argFactory_.contains( *i ) ) {
-               qDebug() << ">>> " << *i; 
-               //|| dynamic_cast< const NoQArgConstructor* >( argFactory_[ *i ].QArgCtor() ) ) {
+            if( !argFactory_.contains( *i ) 
+                || dynamic_cast< const NoQArgConstructor* >( argFactory_[ *i ].QArgCtor() ) ) {
                 throw std::logic_error( ( "Type " + QString( *i ) + " unknown" ).toStdString() );
             } else {
                 aw.push_back( QArgWrapper( argFactory_[ *i ].MakeQArgConstructor() ) );
@@ -316,10 +314,9 @@ private:
     }   
     /// @brief Create PyArgWrapper instance from type name.
     PyArgWrapper GeneratePyArgWrapper( QString typeName ) {
-        typeName = "" ? QMetaType::typeName( QMetaType::Void ) : typeName;
-        if( !argFactory_.contains( typeName ) ) {
-
-            //|| dynamic_cast< const NoPyArgConstructor* >( argFactory_[ typeName ].PyArgCtor() ) ) {
+        typeName = typeName.isEmpty() ? QMetaType::typeName( QMetaType::Void ) : typeName;
+        if( !argFactory_.contains( typeName )  
+            || dynamic_cast< const NoPyArgConstructor* >( argFactory_[ typeName ].PyArgCtor() ) ) {
                 throw std::logic_error( ( "Type " + typeName + " unknown" ).toStdString() );
             return PyArgWrapper();
         } else {
@@ -522,10 +519,8 @@ private:
                           ga[ 4 ], ga[ 5 ], ga[ 6 ], ga[ 7 ], ga[ 8 ], ga[ 9 ] );
                     PyQObject* obj = reinterpret_cast< PyQObject* > (
                                          PyObject_CallObject( reinterpret_cast< PyObject* >( &(self->type->pyType) ), 0 ) );
-                   // PyModule_AddObject( self->type->pyModule, 0, reinterpret_cast< PyObject* >( obj ) );
                     obj->foreignOwned = false;
                     obj->obj = ptr;
-                    //PyQObjectInit( obj, 0, 0 );
                     return reinterpret_cast< PyObject* >( obj );
                 } else {
                      m.metaMethod_.invoke( self->obj, Qt::DirectConnection, m.returnWrapper_.Arg(),

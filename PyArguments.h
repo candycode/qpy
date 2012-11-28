@@ -293,7 +293,11 @@ private:
 class PyArgWrapper {
 public:
     ///@brief Default constructor.
-    PyArgWrapper( PyArgConstructor* pac = 0 ) : ac_( pac ) {}
+    PyArgWrapper( PyArgConstructor* pac = 0 ) : ac_( pac ) {
+        if( ac_ != 0 ) {
+            type_ = QMetaType::typeName( ac_->Type() );
+        }
+    }
     ///@brief Copy constructor: Clones the internal Return constructor instance.
     PyArgWrapper( const PyArgWrapper& other ) : ac_( 0 ), type_( other.type_ ) {
         if( other.ac_ ) ac_ = other.ac_->Clone();
