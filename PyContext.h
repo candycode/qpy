@@ -39,6 +39,7 @@
 #include <QString>
 #include <string>
 #include <vector>
+#include <QDebug>
 #include "PyArguments.h"
 #include "PyCallbackDispatcher.h"
 
@@ -126,7 +127,9 @@ public:  //must be public because type access might be needed
     };
 public:
     /// Constructor: Create @c qpy module with QPy interface.
-    //PyContext() {}
+    PyContext() {
+        InitArgFactory();
+    }
     PyTypeObject* AddType( const QMetaObject* mo, 
                            PyObject* module,
                            bool checkConstructor = true,
@@ -244,10 +247,56 @@ public:
     /// this way of registering does not allow to pass actual instances, and does require
     /// support for operator new and delete.
     template < typename QArgConstructorT, typename PyArgConstructorT > 
-    bool RegisterType( const QString& typeName, bool overwrite ) {
+    bool RegisterType( const QString& typeName, bool overwrite = false ) {
         return RegisterType( typeName, new QArgConstructorT, new PyArgConstructorT, overwrite );
     }
+    template < typename QArgConstructorT, typename PyArgConstructorT > 
+    bool RegisterType( QMetaType::Type t, bool overwrite = false ) {
+        return RegisterType( QMetaType::typeName( t ), 
+                             new QArgConstructorT, new PyArgConstructorT, overwrite );
+    }
+    /// Register new types by passing the type of QArgConstructor and PyArgConstructor;
+    /// this way of registering does not allow to pass actual instances, and does require
+    /// support for operator new and delete. Also register the 
+    template < typename T, typename QArgConstructorT, typename PyArgConstructorT > 
+    bool RegisterType( const QString& typeName, bool overwrite = false ) {
+        return RegisterType( qRegisterMetaType< T >( typeName.toAscii().constData() ),
+                             new QArgConstructorT, new PyArgConstructorT, overwrite );
+    }
+    void UnRegisterType( const QString& typeName ) {
+        if( !argFactory_.contains( typeName ) ) return;    
+        argFactory_.erase( argFactory_.find( typeName ) );
+    }
+    struct TypeConstruction {
+        bool qtToPy;
+        bool pyToQt;
+        QString typeName;
+        operator bool() const { return qtToPy || pyToQt; }
+        TypeConstruction() : qtToPy( false ), pyToQt( false ) {}
+    };
+    TypeConstruction RegTypeInfo( const QString& t ) const {
+        TypeConstruction tc;
+        if( !argFactory_.contains( t ) ) return tc;
+        tc.pyToQt = dynamic_cast< const NoQArgConstructor* >( argFactory_[ t ].QArgCtor() ) == 0;
+        tc.qtToPy = dynamic_cast< const NoPyArgConstructor* >( argFactory_[ t ].PyArgCtor() )  == 0;    
+        tc.typeName = t;
+        return tc;
+    }
+    QList< TypeConstruction > RegisteredTypes() const {
+        QList< TypeConstruction > tc;
+        for( ArgFactory::const_iterator i = argFactory_.begin(); i != argFactory_.end(); ++i ) {
+            tc.push_back( RegTypeInfo( i.key() ) );
+        }
+        return tc;
+    }
 private:
+
+    void InitArgFactory() {
+        RegisterType< IntQArgConstructor, IntPyArgConstructor >( QMetaType::Int );
+        RegisterType< VoidStarQArgConstructor, NoPyArgConstructor >( QMetaType::VoidStar );
+        RegisterType< ObjectStarQArgConstructor, ObjectStarPyArgConstructor >( QMetaType::QObjectStar );
+        RegisterType< NoQArgConstructor, VoidPyArgConstructor >( QMetaType::Void );
+    };
 
     /// @brief Generate QArgWrapper list from parameter type names as
     /// returned by @c QMetaMethod::parameterTypes().
@@ -255,7 +304,7 @@ private:
         QArgWrappers aw;
         ///@warning moc *always* adds a QObject* to any constructor!!!
         for( ArgumentTypes::const_iterator i = at.begin(); i != at.end(); ++i ) {
-            if( !argFactory_.contains( *i ) 
+            if( !argFactory_.contains( *i )
                 || dynamic_cast< const NoQArgConstructor* >( argFactory_[ *i ].QArgCtor() ) ) {
                 throw std::logic_error( ( "Type " + QString( *i ) + " unknown" ).toStdString() );
             } else {
@@ -279,9 +328,18 @@ private:
     public:
         ArgFactoryEntry() : qac_( 0 ), pac_( 0 ) {}
         ArgFactoryEntry( const ArgFactoryEntry& fe ) 
-            : typeName_( fe.typeName_ ), qac_( fe.qac_->Clone() ), pac_( fe.pac_->Clone() ) {}
+            : typeName_( fe.typeName_ ), qac_( 0 ), pac_( 0 ) {
+                if( fe.qac_ ) qac_ = fe.qac_->Clone();
+                if( fe.pac_ ) pac_ = fe.pac_->Clone();
+        }
         ArgFactoryEntry( const QString& tn, QArgConstructor* qac, PyArgConstructor* pac )
             : typeName_( tn ), qac_( qac ), pac_( pac ) {}
+        const ArgFactoryEntry& operator=( const ArgFactoryEntry& fe ) {
+            typeName_ = fe.typeName_;
+            qac_ = fe.qac_ ? fe.qac_->Clone() : 0;
+            pac_ = fe.pac_ ? fe.pac_->Clone() : 0;
+            return *this;
+        }    
         ~ArgFactoryEntry() {
             delete qac_;
             delete pac_;
