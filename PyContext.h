@@ -70,6 +70,8 @@ inline void RaisePyError( const char* errMsg = 0,
 /// PyContext is also used internally by other classes to add QObjects returned
 /// by methods or received from signals to the Python context.
 class PyContext {
+    typedef QList< QArgWrapper > QArgWrappers;
+    typedef QList< QByteArray > ArgumentTypes;
     /// @brief Stores information used at method invocation time.
     /// 
     /// When a new QObject is added to the Python context a new Method is created
@@ -246,6 +248,33 @@ public:
         return RegisterType( typeName, new QArgConstructorT, new PyArgConstructorT, overwrite );
     }
 private:
+
+    /// @brief Generate QArgWrapper list from parameter type names as
+    /// returned by @c QMetaMethod::parameterTypes().
+    QArgWrappers GenerateQArgWrappers( const ArgumentTypes& at ) {
+        QArgWrappers aw;
+        ///@warning moc *always* adds a QObject* to any constructor!!!
+        for( ArgumentTypes::const_iterator i = at.begin(); i != at.end(); ++i ) {
+            if( !argFactory_.contains( *i ) 
+                || dynamic_cast< const NoQArgConstructor* >( argFactory_[ *i ].QArgCtor() ) ) {
+                throw std::logic_error( ( "Type " + QString( *i ) + " unknown" ).toStdString() );
+            } else {
+                aw.push_back( QArgWrapper( argFactory_[ *i ].MakeQArgConstructor() ) );
+            }
+        }
+        return aw;
+    }   
+    /// @brief Create PyArgWrapper instance from type name.
+    PyArgWrapper GeneratePyArgWrapper( const QString& typeName ) {
+        if( !argFactory_.contains( typeName ) 
+            || dynamic_cast< const NoPyArgConstructor* >( argFactory_[ typeName ].PyArgCtor() ) ) {
+                throw std::logic_error( ( "Type " + typeName + " unknown" ).toStdString() );
+            return PyArgWrapper();
+        } else {
+            return PyArgWrapper( argFactory_[ typeName ].MakePyArgConstructor() );
+        }
+    }    
+private:
     class ArgFactoryEntry {
     public:
         ArgFactoryEntry() : qac_( 0 ), pac_( 0 ) {}
@@ -257,8 +286,10 @@ private:
             delete qac_;
             delete pac_;
         }
-        QArgConstructor* BuildQArgConstructor() const { return qac_->Clone(); }
-        PyArgConstructor* BuildPyArgConstructor() const { return pac_->Clone(); }
+        const QArgConstructor* QArgCtor() const { return qac_; }
+        const PyArgConstructor* PyArgCtor() const { return pac_; }
+        QArgConstructor* MakeQArgConstructor() const { return qac_->Clone(); }
+        PyArgConstructor* MakePyArgConstructor() const { return pac_->Clone(); }
         const QString& TypeName() const { return typeName_; }
     private:
         QString typeName_;
@@ -314,7 +345,7 @@ private:
         QList< PyArgWrapper > types;
         for( QList< QByteArray >::const_iterator i = params.begin();
              i != params.end(); ++i ) {
-            types.push_back( PyArgWrapper( i->constData() ) );
+            types.push_back( pyqobj->type->pyContext->GeneratePyArgWrapper( i->constData() ) ); 
         
             pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
                                                           pyqobj->type->pyModule );

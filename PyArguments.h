@@ -260,21 +260,12 @@ private:
 class QArgWrapper {
 public:
     /// @brief Default constructor.
-    QArgWrapper() : ac_( 0 ) {}
+    QArgWrapper( QArgConstructor* ac = 0 ) : ac_( ac ) {
+
+    }
     /// Copy constructor: Clone QArgConstructor instance.
     QArgWrapper( const QArgWrapper& other ) : ac_( 0 ) {
         if( other.ac_ ) ac_ = other.ac_->Clone();
-    }
-    /// @brief Construct instance from type name. Creates proper instance of
-    /// inner QArgConstructor from type info.
-    QArgWrapper( const QString& type ) : ac_( 0 ) {
-        if( type == QMetaType::typeName( QMetaType::Int ) ) {
-            ac_ = new IntQArgConstructor;
-        } else if( type == QMetaType::typeName( QMetaType::QObjectStar ) ) {
-            ac_ = new ObjectStarQArgConstructor; 
-        } else if( type == QMetaType::typeName( QMetaType::VoidStar ) ) {
-            ac_ = new VoidStarQArgConstructor;
-        } else throw std::logic_error( ( "Type " + type + " unknown" ).toStdString() );
     }
     /// @brief Return QGenericArgument instance created from PyObjects
     ///
@@ -302,22 +293,10 @@ private:
 class PyArgWrapper {
 public:
     ///@brief Default constructor.
-    PyArgWrapper() : ac_( 0 ) {}
+    PyArgWrapper( PyArgConstructor* pac = 0 ) : ac_( pac ) {}
     ///@brief Copy constructor: Clones the internal Return constructor instance.
     PyArgWrapper( const PyArgWrapper& other ) : ac_( 0 ), type_( other.type_ ) {
         if( other.ac_ ) ac_ = other.ac_->Clone();
-    }
-    ///@brief Create instance from type name.
-    ///
-    ///An instance of PyArgConstructor is created from the passed type name.
-    PyArgWrapper( const QString& type ) : ac_( 0 ), type_( type ) {
-        if( type_ == QMetaType::typeName( QMetaType::Int ) ) {
-            ac_ = new IntPyArgConstructor;
-        } else if( type_ == QMetaType::typeName( QMetaType::QObjectStar ) ) {
-            ac_ = new ObjectStarPyArgConstructor; 
-        } else if( type_.isEmpty() ) {
-            ac_ = new VoidPyArgConstructor;
-        } else throw std::logic_error( ( "Type " + type + " unknown" ).toStdString() );
     }
     /// @brief return values stored in the inner PyArgConstructor.
     ///
@@ -350,23 +329,5 @@ private:
     /// Qt type name of data stored in ac_.
     QString type_;
 };
-
-typedef QList< QArgWrapper > QArgWrappers;
-typedef QList< QByteArray > ArgumentTypes;
-
-/// @brief Generate QArgWrapper list from parameter type names as
-/// returned by @c QMetaMethod::parameterTypes().
-inline QArgWrappers GenerateQArgWrappers( const ArgumentTypes& at ) {
-    QArgWrappers aw;
-    ///@warning moc *always* adds a QObject* to any constructor!!!
-    for( ArgumentTypes::const_iterator i = at.begin(); i != at.end(); ++i ) {
-        aw.push_back( QArgWrapper( *i ) );
-    }
-    return aw;
-}
-/// @brief Create QArgWrapper instance from type name.
-inline PyArgWrapper GeneratePyArgWrapper( const QString& typeName ) {
-    return PyArgWrapper( typeName );
-}
 
 }
