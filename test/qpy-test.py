@@ -57,6 +57,10 @@ qpy.disconnect(to, 'aSignal(int)', cback)
 
 to.aSignal(123)
 
+qpy.connect(to.anotherSignal, to2.catchSignal)
+
+to.anotherSignal('Emitted')
+
 print('done!')
 
 

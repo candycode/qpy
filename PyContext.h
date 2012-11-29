@@ -260,14 +260,21 @@ private:
     static void PyQObjectDealloc( PyQObject* self );
 private:
     PyTypeObject CreatePyType( const Type& type );
+    struct ConnectEntry {
+        PyQObject* pyqobj;
+        int methodId;
+        ConnectEntry() : pyqobj( 0 ), methodId( -1 ) {}
+        ConnectEntry( PyQObject* p, int m ) : pyqobj( p ), methodId( m ) {}
+    };
+    typedef QList< ConnectEntry > ConnectList;
 private:
     /// @brief QObject-Method database: Each QObject is stored together with the list
     /// of associated method signatures
     Types types_;
     PyCallbackDispatcher dispatcher_;
     ArgFactory argFactory_;
-    static PyQObject* getterObject_; //thread_local if needed
-    static int getterMethodId_;      //thread_local if needed
+    static ConnectList endpoints_; //thread_local if needed
+    static int getterMethodId_;
 };
 
 }

@@ -3,15 +3,16 @@
 
 
 namespace qpy {
-    PyContext::PyQObject* PyContext::getterObject_ = 0;
-    int PyContext::getterMethodId_ = -1;
+
+PyContext::ConnectList PyContext::endpoints_;
+int PyContext::getterMethodId_ = -1;
 
 //----------------------------------------------------------------------------
 PyTypeObject* PyContext::AddType( const QMetaObject* mo, 
                            		  PyObject* module,
                                   bool checkConstructor,
                                   const char* className,
-                                  const char* doc) {
+                                  const char* doc ) {
     Type* pet = ExistingType( mo, module );
     if( pet ) return &pet->pyType;
   
@@ -174,6 +175,9 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
     PyQObject* srcQObject = 0;
     PyQObject* pyqobj = 0;
     int mi = -1;
+    struct Clear{
+        ~Clear() { endpoints_.clear(); }
+    } CLEAR_ENDPOINTS;
     if( PyTuple_Size( args ) == 3 ) {
         PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
         if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
@@ -184,9 +188,10 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
             return 0;
         }       
     } else if( PyTuple_Size( args ) == 2 ) {
-        PyArg_ParseTuple( args, "OO", &sourceMethod, &targetFunction );
-        pyqobj = getterObject_;
-        mi = getterMethodId_;
+        PyObject* sourceMethodFunction = 0;
+        PyArg_ParseTuple( args, "OO", &sourceMethodFunction, &targetFunction );
+        pyqobj = endpoints_.back().pyqobj;
+        mi = endpoints_.back().methodId;
     } else {
         RaisePyError( "3 or 4 arguments required" );
         return 0;
@@ -194,17 +199,18 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
     if( mi < 0 ) {
         RaisePyError( ( std::string( "Cannot find method" ) 
                       + std::string( sourceMethod ) ).c_str() );
+        return 0;
     }
+   
     QMetaMethod mm = pyqobj->type->metaObject->method( mi );
     QList< QByteArray > params = mm.parameterTypes();
     QList< PyArgWrapper > types;
     for( QList< QByteArray >::const_iterator i = params.begin();
          i != params.end(); ++i ) {
         types.push_back( pyqobj->type->pyContext->GeneratePyArgWrapper( i->constData() ) ); 
-    
-        pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
-                                                      pyqobj->type->pyModule );
     }
+    pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
+                                                  pyqobj->type->pyModule );     
        
     Py_RETURN_NONE;
 }
@@ -299,7 +305,7 @@ PyObject* PyContext::PyQObjectPtr( PyObject* self, PyObject* args, PyObject* kwa
 //----------------------------------------------------------------------------
 PyObject* PyContext::PyQObjectGetter( PyQObject* qobj, void* closure /*method id*/ ) {
     int mid = int( reinterpret_cast< size_t >( closure ) );
-    getterObject_ = qobj;
+    endpoints_.push_back( ConnectEntry( qobj, mid ) );
     getterMethodId_ = mid;
     //should indeed have one function per type (var args, no args...) and return the proper one
     Py_INCREF( qobj->invoke );

@@ -38,12 +38,13 @@ public slots:
     void SetValue( int v ) { value_ = v; }
     void SetDefaultValue() { value_ = 0; }
     void Print() const { std::cout << "Value = " << value_ << std::endl; } 
-    void EmitSignal() { 
-        emit aSignal( value_ );
+    void catchSignal( QString msg ) {
+        std::cout << "Caught signal " << msg.toStdString() << std::endl;
     }
     QObject* Self() { return this; }
 signals:
     void aSignal( int );
+    void anotherSignal( QString );
 private:
     int value_;
 };
