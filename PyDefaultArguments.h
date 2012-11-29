@@ -39,39 +39,13 @@
 #include <QGenericReturnArgument>
 #include <QVector>
 
+#include "PyQArgConstructor.h"
+#include "PyArgConstructor.h"
+
 /// QPy namespace
 namespace qpy {
 
-//------------------------------------------------------------------------------
-/// @brief Interface for constructor objects which generate C++ values from
-/// PyObjects. 
-///
-/// There shall be exactly one and only one constructor per C++ type.
-/// The QPy run-time (indirectly) invokes the QArgConstructor::Create() 
-/// method whenever the invocation of a method of a QObject derived 
-/// class instance is requested from Python code. 
-struct QArgConstructor {
-    /// Create a QGenericArgument from Python values.
-    virtual QGenericArgument Create( PyObject* ) const = 0;
-    /// Virtual destructor.
-    virtual ~QArgConstructor() {}
-    /// Create a new instance of the current class.
-    virtual QArgConstructor* Clone() const = 0;
 
-};
-/// Useful to specify that Python -> Qt constructor not available
-/// when registering new types through PyContext
-struct NoQArgConstructor : QArgConstructor {
-    /// Create a QGenericArgument from Python values.
-    virtual QGenericArgument Create( PyObject* ) const {
-        throw std::logic_error( "QArgConstructor not available" );
-        return QGenericArgument();
-    }
-    /// Create a new instance of the current class.
-    virtual QArgConstructor* Clone() const { return new NoQArgConstructor( *this ); }
-
-};
-typedef NoQArgConstructor NO_QT_ARG;
 /// QArgConstructor implementation for @c integer type.
 class IntQArgConstructor : public QArgConstructor {
 public:
@@ -191,57 +165,6 @@ private:
     mutable QObject* obj_;
 };
 
-//------------------------------------------------------------------------------
-/// @brief Abstract base class for return constructors which create PyObjects
-/// from C++ values. 
-class PyArgConstructor {
-public:
-    /// @brief Create PyObject from value returned from QObject method.
-    virtual PyObject* Create() const = 0;
-    /// @brief Create PyObject from parameter passed to Python callback
-    /// when signal triggered
-    virtual PyObject* Create( void* ) const = 0;
-    /// Virtual destructor.
-    virtual ~PyArgConstructor() {}
-    /// Return copy of object.
-    virtual PyArgConstructor* Clone() const = 0;
-    /// Return type of constructed data.
-    virtual QMetaType::Type Type() const = 0;
-    /// @brief Return QGenericReturnArguments holding a reference to the
-    /// memory location where the returned value is stored.
-    QGenericReturnArgument Argument() const { return ga_; }
-    /// @brief Return @c true if type is a pointer to a QObject-derived object.
-    ///
-    /// This is required to have the QPy run-time add the passed QObject into
-    /// the Python context. The other option is to have PyArgConstructors::Create
-    /// receive a reference to a PyContext which introduces a two-way
-    /// dependency between PyArgConstructor and PyContext.
-    virtual bool IsQObjectPtr() const { return false; }
-protected:
-    /// Creates return argument of the proper type.
-    template < typename T > void SetArg( T& arg ) {
-        ga_ = QReturnArgument< T >( QMetaType::typeName( Type() ), arg );
-    }
-private:    
-    /// Placeholder for returned data. 
-    QGenericReturnArgument ga_; // not private, breaks encapsulation
-};
-/// Use this type to specify that no Qt -> Python conversion exist for
-/// a type when registering types through PyContext
-class NoPyArgConstructor : public PyArgConstructor {
-public:
-    PyObject* Create( void*  ) const {
-        Py_RETURN_NONE;
-    }
-    PyObject* Create() const {
-        Py_RETURN_NONE;
-    }
-    NoPyArgConstructor* Clone() const {
-        return new NoPyArgConstructor( *this );
-    }
-    QMetaType::Type Type() const { return QMetaType::Void; }
-};
-typedef NoPyArgConstructor NO_PY_ARG;
 /// PyArgConstructor implementation for @c integer type
 class IntPyArgConstructor : public PyArgConstructor {
 public:
@@ -374,87 +297,6 @@ private:
 
 
 
-//------------------------------------------------------------------------------
-/// @brief Wrapper for parameters in a QObject method invocation.
-///
-/// Whenever a new QObject is added to the Python context, the signature of each
-/// method is translated to an index and a list of QArgWrapper objects 
-/// stored inside a PyContext instance.
-/// At invocation time the proper method is invoked through a call to
-/// @c QMetaMethod::invoke passing the arguments returned by the QArgWrapper::Arg
-/// method invoked on each parameter in the argument list.
-/// QArgWrapper stores an instance of QArgConstructor used to create a
-/// QGenericArgument from PyObjects.
-class QArgWrapper {
-public:
-    /// @brief Default constructor.
-    QArgWrapper( QArgConstructor* ac = 0 ) : ac_( ac ) {
 
-    }
-    /// Copy constructor: Clone QArgConstructor instance.
-    QArgWrapper( const QArgWrapper& other ) : ac_( 0 ) {
-        if( other.ac_ ) ac_ = other.ac_->Clone();
-    }
-    /// @brief Return QGenericArgument instance created from PyObjects
-    ///
-    /// Internally it calls QArgConstructor::Create to generate QGenericArguments from
-    /// a PyObject pointer.
-    QGenericArgument Arg( PyObject* pobj ) const {
-        return ac_ ? ac_->Create( pobj ) : QGenericArgument();
-    }
-    /// @brief Destructor; delete QArgConstructor instance.
-    ~QArgWrapper() { delete ac_; }
-private:
-    /// Instance of QArgConstructor created from type information at construction
-    /// time.
-    QArgConstructor* ac_;    
-};
-
-
-/// @brief Wrapper for objects returned from QObject method invocations or passed
-/// to Python callbacks in response to emitted signals.
-///
-/// This class translates C++ values to PyObjects and is used to both return
-/// values from method invocations and translate the parameters received from
-/// a signal to PyObject values whenever a Python callback invocation is triggered by
-/// an emitted signal.
-class PyArgWrapper {
-public:
-    ///@brief Default constructor.
-    PyArgWrapper( PyArgConstructor* pac = 0 ) : ac_( pac ) {}
-    ///@brief Copy constructor: Clones the internal Return constructor instance.
-    PyArgWrapper( const PyArgWrapper& other ) : ac_( 0 ) {
-        if( other.ac_ ) ac_ = other.ac_->Clone();
-    }
-    /// @brief return values stored in the inner PyArgConstructor.
-    ///
-    /// This is the method invoked to return values from a QObject method invocation.
-    PyObject* Create() const {
-        return ac_->Create();
-    }
-    /// @brief return value converted from void* .
-    ///
-    /// This is the method invoked when a Python function is called as the result
-    /// of a triggered signal.
-    PyObject* Create( void* p ) const {
-        return ac_->Create( p );
-    }
-    /// @brief retunr placeholder for storing Qt return argument
-    QGenericReturnArgument Arg() const { return ac_->Argument(); }
-    /// Type name.
-    QString Type() const { 
-        if( ac_ != 0 ) return QMetaType::typeName( ac_->Type() );
-        else return QString();
-    }
-    /// Meta type.
-    QMetaType::Type MetaType() const { return ac_->Type(); }
-    /// Return true if wrapped type is QObject pointer.
-    bool IsQObjectPtr() const { return ac_->IsQObjectPtr(); }
-    /// Delete LArgConstructor instance.
-    ~PyArgWrapper() { delete ac_; }
-private:
-    /// PyArgConstructor instance created at construction time.
-    PyArgConstructor* ac_;
-};
 
 }

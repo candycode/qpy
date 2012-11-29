@@ -40,7 +40,8 @@
 #include <string>
 #include <vector>
 #include <QDebug>
-#include "PyArguments.h"
+#include "PyDefaultArguments.h"
+#include "PyArgWrappers.h"
 #include "PyCallbackDispatcher.h"
 
 
