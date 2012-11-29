@@ -231,16 +231,16 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
              i != params.end(); ++i ) {
             types.push_back( pyqobj->type->pyContext->GeneratePyArgWrapper( i->constData() ) ); 
         }
-        if( endpoints_.size() < 2 ) {
+        //if( endpoints_.size() < 2 ) {
             pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
                                                           pyqobj->type->pyModule );     
-        } else {
-            qDebug() << endpoints_.size();
-            endpoints_.pop_back();
-            QObject* src = pyqobj->obj;
-            QObject* target = endpoints_.back().pyqobj->obj;
-            QMetaObject::connect( src, mi , target, target->metaObject()->methodCount() + endpoints_.back().methodId );
-        }
+        // } else {
+        //     qDebug() << endpoints_.size();
+        //     endpoints_.pop_back();
+        //     QObject* src = pyqobj->obj;
+        //     QObject* target = endpoints_.back().pyqobj->obj;
+        //     QMetaObject::connect( src, mi , target, target->metaObject()->methodCount() + endpoints_.back().methodId );
+        // }
     }
        
     Py_RETURN_NONE;
