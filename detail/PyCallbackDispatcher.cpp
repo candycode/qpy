@@ -25,7 +25,7 @@
 
 #include <Python.h>
 
-#include "PyContext.h"
+#include "../PyContext.h"
 #include "PyCallbackDispatcher.h"
 
 namespace qpy {

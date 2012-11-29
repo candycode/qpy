@@ -39,8 +39,8 @@
 #include <QGenericReturnArgument>
 #include <QVector>
 
-#include "PyQArgConstructor.h"
-#include "PyArgConstructor.h"
+#include "../PyQArgConstructor.h"
+#include "../PyArgConstructor.h"
 
 /// QPy namespace
 namespace qpy {

@@ -32,8 +32,8 @@
 /// Each wrapper instance wraps a constructor of a specific type matching
 /// the argument in a function/method signature.
 #include <Python.h>
-#include "PyQArgConstructor.h"
-#include "PyArgConstructor.h"
+#include "../PyQArgConstructor.h"
+#include "../PyArgConstructor.h"
 
 namespace qpy {
 /// @brief Wrapper for parameters in a QObject method invocation.

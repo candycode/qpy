@@ -27,12 +27,9 @@
 ///@file
 ///@brief Qt signals to Python callback functions.  
 #include <Python.h>
+#include <QObject>
 #include <QMap>
 #include <QList>
-
-#include "PyArguments.h"
-
-
 
 namespace qpy {
 

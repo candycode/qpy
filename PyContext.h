@@ -40,9 +40,9 @@
 #include <string>
 #include <vector>
 #include <QDebug>
-#include "PyDefaultArguments.h"
-#include "PyArgWrappers.h"
-#include "PyCallbackDispatcher.h"
+#include "detail/PyDefaultArguments.h"
+#include "detail/PyArgWrappers.h"
+#include "detail/PyCallbackDispatcher.h"
 
 
 #define PY_CHECK( f ) {if( f != 0 ) throw std::runtime_error( "Python error" );}

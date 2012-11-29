@@ -32,15 +32,19 @@ include(${QT_USE_FILE})
 #Python
 find_package(PythonLibs)
 
-include_directories( ${PYTHON_INCLUDE_DIRS} ${QT_INCLUDES} )
+include_directories( ${PYTHON_INCLUDE_DIRS} ${QT_INCLUDES} ./ )
 
-set( HEADERS PyArgConstructor.h detail/PyArgWrappers.h detail/PyDefaultArguments.h
-	 PyQArgConstructor.h PyContexts.h detail/PyCallbackDispatcher.h )
+set( HEADERS PyContext.h )
+
+set( DETAIL_HEADERS PyArgConstructor.h detail/PyArgWrappers.h detail/PyDefaultArguments.h
+	 PyQArgConstructor.h  detail/PyCallbackDispatcher.h )
 
 set( SRC detail/PyDefaultArguments.cpp detail/PyCallbackDispatcher.cpp PyContext.cpp )
 
+set( TEST_SRC test/qpy-test.cpp )
+
 #test app
-set( MOC_HEADERS TestObject.h QpyTestObject.h )
+set( MOC_HEADERS test/TestObject.h test/QpyTestObject.h )
 QT4_WRAP_CPP( MOC_SRCS ${MOC_HEADERS} )
-add_executable( qpy-test qpy-test.cpp ${HEADERS} ${SRC} ${MOC_SRCS} ${MOC_HEADERS} )
+add_executable( qpy-test ${TEST_SRC} ${HEADERS} ${DETAIL_HEADERS} ${SRC} ${MOC_SRCS} ${MOC_HEADERS} )
 target_link_libraries( qpy-test ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ) 
