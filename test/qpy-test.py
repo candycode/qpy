@@ -42,10 +42,7 @@ class AClass(object):
 aclass = AClass()
 aclass2 = AClass()
 
-assert aclass
-
-
-qpy.connect(to.aSignal, aclass2.cback)
+#qpy.connect(to.aSignal, aclass2.cback)
 qpy.connect(to, 'aSignal(int)', aclass.cback)
 
 to.aSignal(321)
@@ -57,7 +54,7 @@ qpy.disconnect(to, 'aSignal(int)', cback)
 
 to.aSignal(123)
 
-qpy.connect(to.anotherSignal, to2.catchSignal)
+qpy.connect(to, "anotherSignal(QString)", to2, "catchSignal(QString)")
 
 to.anotherSignal('Emitted')
 

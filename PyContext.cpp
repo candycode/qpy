@@ -170,10 +170,14 @@ PyArgWrapper PyContext::GeneratePyArgWrapper( QString typeName ) {
 PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
     PyObject* sourceObject = 0;
     const char* sourceMethod = 0;
+    const char* targetMethod = 0;
     PyObject* sourceMethodObj = 0;
     PyObject* targetFunction = 0;
     PyQObject* srcQObject = 0;
     PyQObject* pyqobj = 0;
+    PyObject* targetObject = 0;
+    PyQObject* pyqobjTarget = 0;
+    int miTarget = -1;
     int mi = -1;
     struct Clear{
         ~Clear() { endpoints_.clear(); }
@@ -192,6 +196,22 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
         PyArg_ParseTuple( args, "OO", &sourceMethodFunction, &targetFunction );
         pyqobj = endpoints_.back().pyqobj;
         mi = endpoints_.back().methodId;
+    } else if( PyTuple_Size( args ) == 4 ) {
+        PyArg_ParseTuple( args, "OsOs", &sourceObject, &sourceMethod, &targetObject, &targetMethod );
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+            pyqobj = reinterpret_cast< PyQObject* >( sourceObject );       
+            mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
+        } else {
+            RaisePyError( "Not a PyQObject" );
+            return 0;
+        }
+        if( PyObject_HasAttrString( targetObject, "__qpy_qobject_tag" ) ) {
+            pyqobjTarget = reinterpret_cast< PyQObject* >( targetObject );       
+            miTarget = pyqobj->type->metaObject->indexOfMethod( targetMethod ); 
+        } else {
+            RaisePyError( "Not a PyQObject" );
+            return 0;
+        }             
     } else {
         RaisePyError( "3 or 4 arguments required" );
         return 0;
@@ -201,16 +221,27 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
                       + std::string( sourceMethod ) ).c_str() );
         return 0;
     }
-   
-    QMetaMethod mm = pyqobj->type->metaObject->method( mi );
-    QList< QByteArray > params = mm.parameterTypes();
-    QList< PyArgWrapper > types;
-    for( QList< QByteArray >::const_iterator i = params.begin();
-         i != params.end(); ++i ) {
-        types.push_back( pyqobj->type->pyContext->GeneratePyArgWrapper( i->constData() ) ); 
+    if( targetObject ) {
+        QMetaObject::connect( pyqobj->obj, mi , pyqobjTarget->obj, miTarget );
+    } else {
+        QMetaMethod mm = pyqobj->type->metaObject->method( mi );
+        QList< QByteArray > params = mm.parameterTypes();
+        QList< PyArgWrapper > types;
+        for( QList< QByteArray >::const_iterator i = params.begin();
+             i != params.end(); ++i ) {
+            types.push_back( pyqobj->type->pyContext->GeneratePyArgWrapper( i->constData() ) ); 
+        }
+        if( endpoints_.size() < 2 ) {
+            pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
+                                                          pyqobj->type->pyModule );     
+        } else {
+            qDebug() << endpoints_.size();
+            endpoints_.pop_back();
+            QObject* src = pyqobj->obj;
+            QObject* target = endpoints_.back().pyqobj->obj;
+            QMetaObject::connect( src, mi , target, target->metaObject()->methodCount() + endpoints_.back().methodId );
+        }
     }
-    pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
-                                                  pyqobj->type->pyModule );     
        
     Py_RETURN_NONE;
 }
