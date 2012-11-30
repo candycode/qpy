@@ -47,6 +47,8 @@ qpy.connect(to, 'aSignal(int)', aclass.cback)
 
 to.aSignal(321)
 
+qpy.connect(to.anotherSignal, to2.catchSignal)
+
 print("DISCONNECT")
 
 qpy.disconnect(to, 'aSignal(int)', aclass.cback)
@@ -54,7 +56,6 @@ qpy.disconnect(to, 'aSignal(int)', cback)
 
 to.aSignal(123)
 
-qpy.connect(to, "anotherSignal(QString)", to2, "catchSignal(QString)")
 
 to.anotherSignal('Emitted')
 

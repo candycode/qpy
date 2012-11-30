@@ -275,6 +275,7 @@ private:
     ArgFactory argFactory_;
     static ConnectList endpoints_; //thread_local if needed
     static int getterMethodId_;
+    static bool signal_;
 };
 
 }
