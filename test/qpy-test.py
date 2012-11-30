@@ -42,7 +42,7 @@ class AClass(object):
 aclass = AClass()
 aclass2 = AClass()
 
-#qpy.connect(to.aSignal, aclass2.cback)
+qpy.connect(to.aSignal, aclass2.cback)
 qpy.connect(to, 'aSignal(int)', aclass.cback)
 
 to.aSignal(321)

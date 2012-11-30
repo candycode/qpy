@@ -19,4 +19,5 @@ AClass.cback: Got 321
 AClass.cback: Got 321
 DISCONNECT
 AClass.cback: Got 123
+Caught signal Emitted
 done!

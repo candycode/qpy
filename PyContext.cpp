@@ -195,7 +195,6 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
     } else if( PyTuple_Size( args ) == 2 ) {
         PyObject* sourceMethodFunction = 0;
         PyArg_ParseTuple( args, "OO", &sourceMethodFunction, &targetFunction );
-        qDebug() << endpoints_.size();
         if( endpoints_.size() > 1 ) {
             pyqobjTarget = endpoints_.back().pyqobj;
             miTarget = endpoints_.back().methodId;
@@ -427,6 +426,8 @@ PyObject* PyContext::PyQObjectNew( PyTypeObject* type, PyObject*, PyObject* ) {
 //----------------------------------------------------------------------------
 PyObject* PyContext::PyQObjectInvokeMethod( PyQObject* self, PyObject* args ) {
     signal_ = false;
+    endpoints_.clear(); // cheap, usually emtpy or with a single element, in case
+                        // a signal is invoke explicitly
     std::vector< QGenericArgument > ga( MAX_GENERIC_ARGS );
     const int sz = int( PyTuple_Size( args ) );
     const Method& m = self->type->methods[ getterMethodId_ ];
