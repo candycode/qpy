@@ -61,7 +61,10 @@ bool PyCallbackDispatcher::Disconnect( QObject *obj,
     for( QList< PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
           i != pyCBackMethods_.end(); ++i, ++m ) {
         bool found = false;
-        if( PyMethod_Check( pyCBack ) ) {
+        // since we are not actually removing elements from the list but simoly calling
+        // PyCBackMethod::DeleteCBack which deletes cback bethod data and sets the cback to null
+        // we need to explicitly check if a callback is null
+        if( PyMethod_Check( pyCBack ) && ( *i )->CBack() ) {
             found = PyMethod_Function( ( *i )->CBack() ) == PyMethod_Function( pyCBack );
         } else {
             found = pyCBack == ( *i )->CBack();

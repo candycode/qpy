@@ -239,7 +239,6 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
              i != params.end(); ++i ) {
             types.push_back( pyqobj->type->pyContext->GeneratePyArgWrapper( i->constData() ) ); 
         }
-        
         pyqobj->type->pyContext->dispatcher_.Connect( pyqobj->obj, mi, types, targetFunction,
                                                       pyqobj->type->pyModule );  
     }
