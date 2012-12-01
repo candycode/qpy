@@ -65,6 +65,7 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
 
     PY_CHECK( PyDict_SetItemString( pt->pyType.tp_dict, "__qpy_type_info", pyPtr ) );
 
+    Py_INCREF( reinterpret_cast< PyObject* >( &pt->pyType ) );
     if( PyModule_AddObject( module, pt->className.c_str(),
                             reinterpret_cast< PyObject* >( &pt->pyType ) ) != 0 ) {
         types_.pop_back();
