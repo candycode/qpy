@@ -1,5 +1,6 @@
 import qpy
-to = qpy.QpyTestObject(3)
+import qpy_test
+to = qpy_test.QpyTestObject(3)
 to.Print()
 print( to.GetValue() )
 
