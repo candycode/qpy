@@ -45,6 +45,7 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                                        GeneratePyArgWrapper( mm.typeName() ) ) );
         QString sig = mm.signature();
         sig.truncate( sig.indexOf( "(" ) );
+        //qDebug() << sig.toStdString().c_str();    
         pt->pyMethodNames.push_back( sig.toStdString() );
        
         PyGetSetDef gs = { const_cast< char* >( pt->pyMethodNames.back().c_str() ),

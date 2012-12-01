@@ -42,6 +42,7 @@ public slots:
         std::cout << "Caught signal " << msg.toStdString() << std::endl;
     }
     QObject* Self() { return this; }
+    void catchAnotherSignal( QString msg ) { std::cout << "Caught another signal " << msg.toStdString() << std::endl; }
 signals:
     void aSignal( int );
     void anotherSignal( QString );

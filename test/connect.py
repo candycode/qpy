@@ -11,14 +11,14 @@ aclass = AClass()
 
 qpy.connect(obj.aSignal, cback)
 qpy.connect(obj.aSignal, aclass.cback)
-qpy.connect(obj.anotherSignal, obj2.catchSignal)
+qpy.connect(obj.anotherSignal, obj2.catchAnotherSignal)
 
 obj.aSignal(123)
 obj.anotherSignal('123')
 
 qpy.disconnect(obj.aSignal, cback)
 qpy.disconnect(obj.aSignal, aclass.cback)
-qpy.disconnect(obj.anotherSignal, obj2.catchSignal)
+qpy.disconnect(obj.anotherSignal, obj2.catchAnotherSignal)
 
 obj.aSignal(123)
 obj.anotherSignal("123")
