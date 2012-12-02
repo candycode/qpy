@@ -134,19 +134,27 @@ public:
     void SetPyContext( PyContext* pc ) { pc_ = pc; };
     /// Destructor: Clear method database
     virtual ~PyCallbackDispatcher() {
-        for( QList< PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
+        for( QMap< int, PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
              i != pyCBackMethods_.end(); ++i ) {
-            Py_XDECREF( ( *i )->CBack() );
+            Py_XDECREF( i.value()->CBack() );
             delete *i;
         }
     }
 private:
+    int GetMethodIndex() const {
+        return methodIdx_++;
+        //return int( pyCBackMethods_.size() );
+    }    
+private:
     /// Python context
     PyContext* pc_;
     /// Methods
-    QList< PyCBackMethod* > pyCBackMethods_;
+    //QList< PyCBackMethod* > pyCBackMethods_;
+    QMap< int, PyCBackMethod* > pyCBackMethods_;
     /// Map Lua reference to method index in luaCBackMethods_ list
     QMap< PyCBack, MethodId > cbackToMethodIndex_;
+
+    static int methodIdx_; //thread_local
    
 };
 }

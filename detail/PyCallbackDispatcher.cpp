@@ -30,6 +30,8 @@
 
 namespace qpy {
 
+int PyCallbackDispatcher::methodIdx_ = 0;
+
 //------------------------------------------------------------------------------
 bool PyCallbackDispatcher::Connect( QObject *obj, 
                                     int signalIdx,
@@ -42,11 +44,11 @@ bool PyCallbackDispatcher::Connect( QObject *obj,
     // the index of a new method is the metod array size
     int methodIdx = cbackToMethodIndex_.value( pyCBack, -1 );
     if( methodIdx < 0 ) {
-        methodIdx = pyCBackMethods_.size();
+        methodIdx = GetMethodIndex();
         cbackToMethodIndex_[ pyCBack ] = methodIdx;
         Py_INCREF( pyCBack );
-        pyCBackMethods_.push_back(
-            new PyCBackMethod( pc_, module, paramTypes, pyCBack ) );
+        pyCBackMethods_[ methodIdx ] = 
+            new PyCBackMethod( pc_, module, paramTypes, pyCBack );
 }
     // connect signal to method in method array
     return QMetaObject::connect( obj, signalIdx, this, methodIdx + metaObject()->methodCount() );
@@ -58,20 +60,22 @@ bool PyCallbackDispatcher::Disconnect( QObject *obj,
     // iterate over callback methods, each method is associated with
     // one and only one Python function
     int m = 0;
-    for( QList< PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
+    for( QMap< int, PyCBackMethod* >::iterator i = pyCBackMethods_.begin();
           i != pyCBackMethods_.end(); ++i, ++m ) {
         bool found = false;
         // since we are not actually removing elements from the list but simoly calling
         // PyCBackMethod::DeleteCBack which deletes cback bethod data and sets the cback to null
         // we need to explicitly check if a callback is null
-        if( PyMethod_Check( pyCBack ) && ( *i )->CBack() ) {
-            found = PyMethod_Function( ( *i )->CBack() ) == PyMethod_Function( pyCBack );
+        if( PyMethod_Check( pyCBack ) && i.value()->CBack() ) {
+            found = PyMethod_Function( i.value()->CBack() ) == PyMethod_Function( pyCBack );
         } else {
-            found = pyCBack == ( *i )->CBack();
+            found = pyCBack == i.value()->CBack();
         } 
         if( found ) {
-            ( *i )->DeleteCBack();
-            return QMetaObject::disconnect( obj, signalIdx, this, m + metaObject()->methodCount() );
+            Py_XDECREF( i.value()->CBack() );
+            i.value()->DeleteCBack();
+            pyCBackMethods_.erase( i );
+            return QMetaObject::disconnect( obj, signalIdx, this, m + metaObject()->methodCount() ); 
          }
     }   
     return false;
@@ -79,6 +83,7 @@ bool PyCallbackDispatcher::Disconnect( QObject *obj,
 //------------------------------------------------------------------------------
 int PyCallbackDispatcher::qt_metacall( QMetaObject::Call invoke, MethodId methodIndex, void **arguments ) {
     methodIndex = QObject::qt_metacall( invoke, methodIndex, arguments );
+    if( !pyCBackMethods_.contains( methodIndex ) ) return -1;
     if( methodIndex < 0 || invoke != QMetaObject::InvokeMetaMethod ) return methodIndex;
     pyCBackMethods_[ methodIndex ]->Invoke( arguments );
     return -1;
