@@ -40,8 +40,7 @@ bool PyCallbackDispatcher::Connect( QObject *obj,
                                     PyObject* module ) {
     // check if Python function reference already stored in database;
     // if not create a new 'dynamic method' and map function reference
-    // to the newly created method;
-    // the index of a new method is the metod array size
+    // to the newly created method
     int methodIdx = cbackToMethodIndex_.value( pyCBack, -1 );
     if( methodIdx < 0 ) {
         methodIdx = GetMethodIndex();
@@ -66,7 +65,8 @@ bool PyCallbackDispatcher::Disconnect( QObject *obj,
         // since we are not actually removing elements from the list but simoly calling
         // PyCBackMethod::DeleteCBack which deletes cback bethod data and sets the cback to null
         // we need to explicitly check if a callback is null
-        if( PyMethod_Check( pyCBack ) && i.value()->CBack() ) {
+        // NOT REQUIRED ANYMORE SINCE FIXING #24
+        if( PyMethod_Check( pyCBack ) ) {
             found = PyMethod_Function( i.value()->CBack() ) == PyMethod_Function( pyCBack );
         } else {
             found = pyCBack == i.value()->CBack();

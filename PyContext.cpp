@@ -28,7 +28,7 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
     if( doc) pt->doc = doc;
     pt->pyModule = module;
     // do we need this ? objects might be wrapping a pre-existing QObject
-    // not required construction; should be run-time configurable
+    // not requiring construction; should be run-time configurable
     if( checkConstructor && mo->constructorCount() < 1 ) {
         throw std::logic_error( "No constructor available" );
         return 0; // in case exceptions not enabled
@@ -45,7 +45,6 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                                        GeneratePyArgWrapper( mm.typeName() ) ) );
         QString sig = mm.signature();
         sig.truncate( sig.indexOf( "(" ) );
-        //qDebug() << sig.toStdString().c_str();    
         pt->pyMethodNames.push_back( sig.toStdString() );
        
         PyGetSetDef gs = { const_cast< char* >( pt->pyMethodNames.back().c_str() ),
@@ -120,10 +119,6 @@ PyMethodDef* PyContext::ModuleFunctions() {
         PyModule_AddObject( targetModule, instanceName, reinterpret_cast< PyObject* >( obj ) );
     }
     
-    /*if( !pythonOwned ) { //use an object manager class to avoid deriving PyContext from QObject
-        foreignObjDB_[ qobj ] = reinterpret_cast< PyObject* >( obj );
-        QObject::connect( qobj, SIGNAL( destroyed( QObject* ) ), this, SLOT( ObjectDestroyedSlot( QObject* ) ) );
-    }*/
     return reinterpret_cast< PyObject* >( obj );
 }
 
