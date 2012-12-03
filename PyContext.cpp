@@ -55,6 +55,9 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
         pt->pyMethods.push_back( gs );                                                        
 
     }
+    //add sentinel!
+    PyGetSetDef gsd = { 0, 0, 0, 0, 0};
+    pt->pyMethods.push_back( gsd );
 
     pt->pyType = CreatePyType( *pt );
     PyType_Ready( &pt->pyType );
@@ -517,7 +520,7 @@ void PyContext::PyQObjectDealloc( PyQObject* self ) {
 PyTypeObject PyContext::CreatePyType( const Type& type ) {
     static PyMemberDef members[] = { { const_cast< char* >( "__qpy_qobject_tag" ), T_BOOL, 
                            offsetof( PyQObject, qobjectTag ), 0, const_cast< char* >( "Identifies object as QPy QObject wrapper" ) },
-                           { 0 } };
+                           { 0, 0, 0, 0, 0 } };                
     PyTypeObject t = {
         PyObject_HEAD_INIT(NULL)
         0,                         /*ob_size*/
