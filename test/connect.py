@@ -11,6 +11,7 @@ aclass = AClass()
 
 qpy.connect(obj.aSignal, cback)
 qpy.connect(obj.aSignal, aclass.cback)
+qpy.connect(obj, 'aSignal(int)', obj2, 'catchSignal(int)')
 qpy.connect(obj.anotherSignal, obj2.catchAnotherSignal)
 
 obj.aSignal(123)
@@ -18,6 +19,7 @@ obj.anotherSignal('123')
 
 qpy.disconnect(obj.aSignal, cback)
 qpy.disconnect(obj.aSignal, aclass.cback)
+qpy.disconnect(obj, 'aSignal(int)', obj2, 'catchSignal(int)')
 qpy.disconnect(obj.anotherSignal, obj2.catchAnotherSignal)
 
 obj.aSignal(123)

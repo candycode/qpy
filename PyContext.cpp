@@ -108,8 +108,8 @@ PyMethodDef* PyContext::ModuleFunctions() {
                                  PyObject* typeModule, // where type is defined
                                  const char* instanceName,
                                  bool pythonOwned ) {
-    static const bool DO_NOT_CHECK_CONSTRUCTOR = false;
-    PyTypeObject* pt = AddType( qobj->metaObject(), typeModule, DO_NOT_CHECK_CONSTRUCTOR );
+    static const bool CHECK_CONSTRUCTOR_OPTION = false;
+    PyTypeObject* pt = AddType( qobj->metaObject(), typeModule, CHECK_CONSTRUCTOR_OPTION );
     assert( pt );
     PyQObject* obj = reinterpret_cast< PyQObject* >( 
                             PyObject_CallObject( reinterpret_cast< PyObject* >( pt ), 0  ) );
@@ -219,7 +219,8 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
         } else {
             RaisePyError( "Not a PyQObject" );
             return 0;
-        }             
+        }
+        qtobjects = true;             
     } else {
         RaisePyError( "3 or 4 arguments required" );
         return 0;

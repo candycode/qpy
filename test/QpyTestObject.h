@@ -38,8 +38,8 @@ public slots:
     void SetValue( int v ) { value_ = v; }
     void SetDefaultValue() { value_ = 0; }
     void Print() const { std::cout << "Value = " << value_ << std::endl; } 
-    void catchSignal( QString msg ) {
-        std::cout << "Caught signal " << msg.toStdString() << std::endl;
+    void catchSignal( int s ) {
+        std::cout << "Caught signal " << s << std::endl;
     }
     QObject* Self() { return this; }
     void catchAnotherSignal( QString msg ) { 
