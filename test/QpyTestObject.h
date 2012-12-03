@@ -34,6 +34,7 @@ public slots:
     QString copyString( const QString& s ) { return s; }
     float copyFloat( float f ) { return f; }
     double copyDouble( double d ) { return d; }
+    int copyInt( int i ) { return i; }
     int GetValue() const { return value_; }
     void SetValue( int v ) { value_ = v; }
     void SetDefaultValue() { value_ = 0; }
