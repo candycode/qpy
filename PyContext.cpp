@@ -446,14 +446,14 @@ PyObject* PyContext::PyQObjectInvokeMethod( PyQObject* self, PyObject* args ) {
     }
     try {     
         if( m.returnWrapper_.MetaType() == QMetaType::Void ) {
-            m.metaMethod_.invoke( self->obj, Qt::DirectConnection, ga[ 0 ], ga[ 1 ], ga[ 2 ], ga[ 3 ],
+            m.metaMethod_.invoke( self->obj, Qt::AutoConnection, ga[ 0 ], ga[ 1 ], ga[ 2 ], ga[ 3 ],
                       ga[ 4 ], ga[ 5 ], ga[ 6 ], ga[ 7 ], ga[ 8 ], ga[ 9 ] );
             Py_INCREF(Py_None);
             return Py_None;
         } else {  
             if( m.returnWrapper_.IsQObjectPtr() ) {
                 QObject* ptr = 0;
-                m.metaMethod_.invoke( self->obj, Qt::DirectConnection, Q_RETURN_ARG( QObject*, ptr ),
+                m.metaMethod_.invoke( self->obj, Qt::AutoConnection, Q_RETURN_ARG( QObject*, ptr ),
                       ga[ 0 ], ga[ 1 ], ga[ 2 ], ga[ 3 ],
                       ga[ 4 ], ga[ 5 ], ga[ 6 ], ga[ 7 ], ga[ 8 ], ga[ 9 ] );
                 PyQObject* obj = reinterpret_cast< PyQObject* > (
@@ -462,7 +462,7 @@ PyObject* PyContext::PyQObjectInvokeMethod( PyQObject* self, PyObject* args ) {
                 obj->obj = ptr;
                 return reinterpret_cast< PyObject* >( obj );
             } else {
-                 m.metaMethod_.invoke( self->obj, Qt::DirectConnection, m.returnWrapper_.Arg(),
+                 m.metaMethod_.invoke( self->obj, Qt::AutoConnection, m.returnWrapper_.Arg(),
                       ga[ 0 ], ga[ 1 ], ga[ 2 ], ga[ 3 ],
                       ga[ 4 ], ga[ 5 ], ga[ 6 ], ga[ 7 ], ga[ 8 ], ga[ 9 ] );
                 return m.returnWrapper_.Create();                     
