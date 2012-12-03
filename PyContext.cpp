@@ -56,8 +56,17 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
         pt->pyMethods.push_back( gs );                                                        
 
     }
+    for( int i = 0; i != mo->propertyCount(); ++i ) {
+        QMetaProperty mp = mo->property( i );
+        PyGetSetDef gs = { const_cast< char* >( mp.name() ),
+                           reinterpret_cast< getter >( PyQObjectGetter ),
+                           reinterpret_cast< setter >( PyQObjectSetter ),
+                           const_cast< char* >( mp.name() ),
+                           reinterpret_cast< void* >( i + pt->methods.size() ) };
+        pt->pyMethods.push_back( gs );                                                        
+    }
     //add sentinel!
-    PyGetSetDef gsd = { 0, 0, 0, 0, 0};
+    const PyGetSetDef gsd = { 0, 0, 0, 0, 0};
     pt->pyMethods.push_back( gsd );
 
     pt->pyType = CreatePyType( *pt );
@@ -72,6 +81,7 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
     Py_INCREF( reinterpret_cast< PyObject* >( &pt->pyType ) );
     if( PyModule_AddObject( module, pt->className.c_str(),
                             reinterpret_cast< PyObject* >( &pt->pyType ) ) != 0 ) {
+        Py_DECREF( reinterpret_cast< PyObject* >( &pt->pyType ) );
         types_.pop_back();
         throw std::runtime_error( "Cannot add object to module" );
         return 0;
@@ -136,6 +146,15 @@ void PyContext::InitArgFactory() {
     RegisterType< FloatQArgConstructor, FloatPyArgConstructor >( QMetaType::Float );
     RegisterType< DoubleQArgConstructor, DoublePyArgConstructor >( QMetaType::Double );
 };
+
+//----------------------------------------------------------------------------
+void PyContext::InitQVariantPyObjectMaps() {
+    const bool FOREIGN_OWNED_OPTION = true;
+    qvariantToPyObject_[ QVariant::Int ] = new IntQVariantToPyObject( FOREIGN_OWNED_OPTION );
+    qvariantToPyObject_[ QVariant::Double ] = new DoubleQVariantToPyObject( FOREIGN_OWNED_OPTION );
+    qvariantToPyObject_[ QVariant::String ] = new StringQVariantToPyObject( FOREIGN_OWNED_OPTION );
+};
+
 
 //----------------------------------------------------------------------------   
 PyContext::QArgWrappers PyContext::GenerateQArgWrappers( const ArgumentTypes& at ) {
@@ -395,15 +414,23 @@ PyObject* PyContext::PyQObjectPtr( PyObject* self, PyObject* args, PyObject* kwa
 
 //----------------------------------------------------------------------------
 PyObject* PyContext::PyQObjectGetter( PyQObject* qobj, void* closure /*method id*/ ) {
-    int mid = int( reinterpret_cast< size_t >( closure ) );
-    if( qobj->obj->metaObject()->method( mid ).methodType() == QMetaMethod::Signal ) {
-        signal_ = true;
+    const int id = int( reinterpret_cast< size_t >( closure ) );
+    if( id < qobj->type->methods.size() ) {
+        if( qobj->obj->metaObject()->method( id ).methodType() == QMetaMethod::Signal ) {
+            signal_ = true;
+        }
+        if( signal_ ) endpoints_.push_back( ConnectEntry( qobj, id ) );
+        getterMethodId_ = id;
+        Py_INCREF( qobj->invoke );
+        return qobj->invoke;
+    } else {
+        QMetaProperty p = qobj->obj->metaObject()->property( id - qobj->type->methods.size()  );
+        if( !qobj->type->pyContext->qvariantToPyObject_.contains( p.type() ) ) {
+            RaisePyError( qPrintable( "Type " + QString( p.typeName() ) + " not supported" ) );
+            return 0;
+        }
+        return qobj->type->pyContext->qvariantToPyObject_[ p.type() ]->Create( p.read( qobj->obj ) );
     }
-    if( signal_ ) endpoints_.push_back( ConnectEntry( qobj, mid ) );
-    getterMethodId_ = mid;
-    //should indeed have one function per type (var args, no args...) and return the proper one
-    Py_INCREF( qobj->invoke );
-    return qobj->invoke;
 }
 
 //----------------------------------------------------------------------------

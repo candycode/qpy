@@ -135,6 +135,17 @@ public:
     /// Constructor: Create @c qpy module with QPy interface.
     PyContext() {
         InitArgFactory();
+        InitQVariantPyObjectMaps();
+    }
+    ~PyContext() {
+        for( QVariantToPyObjectMap::iterator i = qvariantToPyObject_.begin();
+             i != qvariantToPyObject_.end(); ++i ) {
+            if( !i.value()->ForeignOwned() ) delete i.value();
+        }
+        for( PyObjectToQVariantMap::iterator i = pyObjectToQVariant_.begin();
+             i != pyObjectToQVariant_.end(); ++i ) {
+            if( !i.value()->ForeignOwned() ) delete i.value();
+        }      
     }
     PyTypeObject* AddType( const QMetaObject* mo, 
                            PyObject* module,
@@ -199,6 +210,8 @@ public:
 private:
     /// @brief Add default types to context
     void InitArgFactory();
+    /// @brief Add QVariant <--> Python converters for default types
+    void InitQVariantPyObjectMaps();
     /// @brief Generate QArgWrapper list from parameter type names as
     /// returned by @c QMetaMethod::parameterTypes().
     QArgWrappers GenerateQArgWrappers( const ArgumentTypes& at );
@@ -248,7 +261,9 @@ private:
                 i->pyModule == module ) return &( *i );
         }
         return 0;    
-    }    
+    }
+    typedef QMap< QVariant::Type, QVariantToPyObject* > QVariantToPyObjectMap;
+    typedef QMap< QVariant::Type, PyObjectToQVariant* > PyObjectToQVariantMap;    
 private:
     static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs );
     static PyObject* PyQObjectDisconnect( PyObject* self, PyObject* args, PyObject* kwargs );
@@ -278,6 +293,8 @@ private:
     Types types_;
     PyCallbackDispatcher dispatcher_;
     ArgFactory argFactory_;
+    QVariantToPyObjectMap qvariantToPyObject_;
+    PyObjectToQVariantMap pyObjectToQVariant_;
     static ConnectList endpoints_; //thread_local if needed
     static int getterMethodId_;
     static bool signal_;
