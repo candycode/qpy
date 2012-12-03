@@ -6,7 +6,7 @@ Value = 0
 Value = 0
 Value = 5
 a string
-1.20000004768
+1.2
 1.3
 Value = 71
 True
@@ -19,5 +19,5 @@ AClass.cback: Got 321
 AClass.cback: Got 321
 DISCONNECT
 AClass.cback: Got 123
-Caught signal Emitted
+Caught signal 28243696
 done!

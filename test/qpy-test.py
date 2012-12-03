@@ -16,8 +16,8 @@ to2.SetValue(5)
 to2.Print()
 
 print(to2.copyString("a string"))
-print(to2.copyFloat(1.2))
-print(to2.copyDouble(1.3))
+print(round(to2.copyFloat(1.2),2))
+print(round(to2.copyDouble(1.3),2))
 
 myqobj.Print()
 
