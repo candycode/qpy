@@ -87,8 +87,13 @@ class PyContext {
         QMetaMethod metaMethod_;
         QArgWrappers argumentWrappers_;
         PyArgWrapper returnWrapper_;
-        Method( const QMetaMethod& mm, const QArgWrappers& pw, const PyArgWrapper& rw ) :
-            metaMethod_( mm ), argumentWrappers_( pw ), returnWrapper_( rw ) {}
+        const QMetaObject* metaObject_;
+        Method( const QMetaMethod& mm,
+                const QArgWrappers& pw,
+                const PyArgWrapper& rw,
+                const QMetaObject* mo ) :
+            metaMethod_( mm ), argumentWrappers_( pw ),
+            returnWrapper_( rw ), metaObject_( mo ) {}
     };
     static const int MAX_GENERIC_ARGS = 10;
 public:

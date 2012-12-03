@@ -42,7 +42,8 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
         QMetaMethod mm = mo->method( i );
         pt->methods.push_back( Method( mm,
                                        GenerateQArgWrappers( mm.parameterTypes() ),
-                                       GeneratePyArgWrapper( mm.typeName() ) ) );
+                                       GeneratePyArgWrapper( mm.typeName() ),
+                                       mo ) );
         QString sig = mm.signature();
         sig.truncate( sig.indexOf( "(" ) );
         pt->pyMethodNames.push_back( sig.toStdString() );
@@ -431,6 +432,14 @@ PyObject* PyContext::PyQObjectInvokeMethod( PyQObject* self, PyObject* args ) {
     std::vector< QGenericArgument > ga( MAX_GENERIC_ARGS );
     const int sz = int( PyTuple_Size( args ) );
     const Method& m = self->type->methods[ getterMethodId_ ];
+    if( sz > m.argumentWrappers_.size() ) {
+        RaisePyError( qPrintable(QString( "Method %1::%2 requires %3 arguments, %4 provided" )
+                      .arg( m.metaObject_->className() )
+                      .arg( m.metaMethod_.signature() )
+                      .arg( m.argumentWrappers_.size() )
+                      .arg( sz ) ) );
+        return 0;
+    }
     for( int i = 0; i != sz; ++i ) {
         PyObject* obj = PyTuple_GetItem( args, i );
         ga[ i ] = m.argumentWrappers_[ i ].Arg( obj );
