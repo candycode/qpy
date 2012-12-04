@@ -26,5 +26,20 @@ cmake_minimum_required(VERSION 2.8)
 
 project(qpy)
 
-add_subdirectory( libqpy )
-add_subdirectory( test )
+#Qt
+find_package(Qt4 REQUIRED QtCore)
+include(${QT_USE_FILE})
+#Python
+find_package(PythonLibs)
+
+include_directories( ${PYTHON_INCLUDE_DIRS} ${QT_INCLUDES} )
+
+set( HEADERS include/PyContext.h include/PyArgConstructor.h include/PyQArgConstructor.h
+     include/PyObjectToQVariant.h include/PyQVariantToPyObject.h )
+
+set( DETAIL_HEADERS include/detail/PyArgWrappers.h include/detail/PyDefaultArguments.h
+	 include/detail/PyCallbackDispatcher.h include/detail/PyQVariantDefault.h )
+
+set( SRC src/PyDefaultArguments.cpp src/PyCallbackDispatcher.cpp src/PyContext.cpp )
+add_library( qpy ${HEADERS} ${DETAIL_HEADERS} ${SRC} )
+target_link_libraries( qpy ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ) 

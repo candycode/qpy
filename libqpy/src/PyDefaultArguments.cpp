@@ -1,5 +1,5 @@
-#include "PyDefaultArguments.h"
-#include "../PyContext.h"
+#include "../include/detail/PyDefaultArguments.h"
+#include "../include/PyContext.h"
 
 namespace qpy {
 

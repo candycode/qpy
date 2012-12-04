@@ -1,5 +1,5 @@
 #include <Python.h>
-#include "PyContext.h"
+#include <PyContext.h>
 #include "QpyTestObject.h"
 
 static PyMethodDef empty_module_methods[] = {
