@@ -27,6 +27,7 @@ int main( int argc, char** argv ) {
     py.AddObject( to, mainModule, userModule, "myqobj" );
 
     PyRun_SimpleFile( fopen( argv[ 1 ], "r" ), argv[ 1 ] );
-    Py_Finalize();   
+    Py_Finalize();
+    delete to;
     return 0;
 }
