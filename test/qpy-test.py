@@ -20,6 +20,9 @@ print(round(to2.copyFloat(1.2),2))
 print(round(to2.copyDouble(1.3),2))
 
 print("PROPERTY: {0}".format(to2.value))
+to2.value = 234
+print("PROPERTY: {0}".format(to2.value))
+
 
 myqobj.Print()
 

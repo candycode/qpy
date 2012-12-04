@@ -42,8 +42,6 @@
 
 #include "../PyQArgConstructor.h"
 #include "../PyArgConstructor.h"
-#include "../PyQVariantToPyObject.h"
-#include "../PyObjectToQVariant.h"
 
 /// QPy namespace
 namespace qpy {
@@ -297,25 +295,5 @@ public:
 private:
     QObject* obj_;
 };
-
-struct IntQVariantToPyObject : QVariantToPyObject {
-    IntQVariantToPyObject( bool f ) : QVariantToPyObject( f ) {}
-    PyObject* Create( const QVariant& v ) const {
-        return PyInt_FromLong( v.toInt() );
-    }
-};
-struct DoubleQVariantToPyObject : QVariantToPyObject {
-    DoubleQVariantToPyObject( bool f ) : QVariantToPyObject( f ) {}
-    PyObject* Create( const QVariant& v ) const {
-        return PyFloat_FromDouble( v.toDouble() );
-    }
-};
-struct StringQVariantToPyObject : QVariantToPyObject {
-    StringQVariantToPyObject( bool f ) : QVariantToPyObject( f ) {}
-    PyObject* Create( const QVariant& v ) const {
-        return PyString_FromString( qPrintable( v.toString() ) );
-    }
-};
-
 
 }

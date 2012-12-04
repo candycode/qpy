@@ -153,6 +153,10 @@ void PyContext::InitQVariantPyObjectMaps() {
     qvariantToPyObject_[ QVariant::Int ] = new IntQVariantToPyObject( FOREIGN_OWNED_OPTION );
     qvariantToPyObject_[ QVariant::Double ] = new DoubleQVariantToPyObject( FOREIGN_OWNED_OPTION );
     qvariantToPyObject_[ QVariant::String ] = new StringQVariantToPyObject( FOREIGN_OWNED_OPTION );
+
+    pyObjectToQVariant_[ QVariant::Int ] = new IntPyObjectToQVariant( FOREIGN_OWNED_OPTION );
+    pyObjectToQVariant_[ QVariant::Double ] = new DoublePyObjectToQVariant( FOREIGN_OWNED_OPTION );
+    pyObjectToQVariant_[ QVariant::String ] = new StringPyObjectToQVariant( FOREIGN_OWNED_OPTION );
 };
 
 
@@ -424,7 +428,11 @@ PyObject* PyContext::PyQObjectGetter( PyQObject* qobj, void* closure /*method id
         Py_INCREF( qobj->invoke );
         return qobj->invoke;
     } else {
-        QMetaProperty p = qobj->obj->metaObject()->property( id - qobj->type->methods.size()  );
+        QMetaProperty p = qobj->obj->metaObject()->property( id - qobj->type->methods.size() );
+        if( !p.isReadable() ) {
+            RaisePyError( qPrintable( "Cannot read property '" + QString( p.name() ) + "'" ) );
+            return 0;
+        }
         if( !qobj->type->pyContext->qvariantToPyObject_.contains( p.type() ) ) {
             RaisePyError( qPrintable( "Type " + QString( p.typeName() ) + " not supported" ) );
             return 0;
@@ -434,9 +442,25 @@ PyObject* PyContext::PyQObjectGetter( PyQObject* qobj, void* closure /*method id
 }
 
 //----------------------------------------------------------------------------
-int PyContext::PyQObjectSetter( PyQObject*, PyObject*, void* closure ) {
-    PyErr_SetString( PyExc_TypeError, "QPy methods are readonly!" );
-    return -1;
+int PyContext::PyQObjectSetter( PyQObject* qobj, PyObject* pv, void* closure ) {
+    const int id = int( reinterpret_cast< size_t >( closure ) );
+    if( id < qobj->type->methods.size() ) {
+        PyErr_SetString( PyExc_TypeError, "QPy methods are readonly!" );
+        return -1;
+    } else {
+        QMetaProperty p = qobj->obj->metaObject()->property( id - qobj->type->methods.size() );
+        if( !p.isWritable() ) {
+            RaisePyError( qPrintable( "Cannot write property '" + QString( p.name() ) + "'" ) );
+            return -1;
+        }
+        if( !qobj->type->pyContext->pyObjectToQVariant_.contains( p.type() ) ) {
+            RaisePyError( qPrintable( "Type " + QString( p.typeName() ) + " not supported" ) );
+            return -1;
+        }
+        const QVariant v = qobj->type->pyContext->pyObjectToQVariant_[ p.type() ]->Create( pv );
+        p.write( qobj->obj, v );
+        return 0;
+    }
 }
 
 //----------------------------------------------------------------------------

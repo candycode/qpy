@@ -43,6 +43,7 @@
 #include "detail/PyDefaultArguments.h"
 #include "detail/PyArgWrappers.h"
 #include "detail/PyCallbackDispatcher.h"
+#include "detail/PyQVariantDefault.h"
 
 
 #define PY_CHECK( f ) {if( f != 0 ) throw std::runtime_error( "Python error" );}
@@ -180,6 +181,30 @@ public:
     bool RegisterType( const QString& typeName, bool overwrite = false ) {
         return RegisterType( qRegisterMetaType< T >( typeName.toAscii().constData() ),
                              new QArgConstructorT, new PyArgConstructorT, overwrite );
+    }
+    void RegisterQVariantToPyObject( QVariant::Type t,  QVariantToPyObject* qp ) {
+        if( qvariantToPyObject_.contains( t ) ) {
+            if( !qvariantToPyObject_[ t ]->ForeignOwned() ) delete qvariantToPyObject_[ t ];
+        }
+        qvariantToPyObject_[ t ] = qp;
+    }
+    template < typename T >
+    void RegisterQVariantToPyObject( QVariantToPyObject* qp ) {
+        const int id = qRegisterMetaType< T >();
+        RegisterQVariantToPyObject( id, qp );
+        return id;
+    }
+    void RegisterPyObjectToQVariant( QVariant::Type t,  PyObjectToQVariant* qp ) {
+        if( pyObjectToQVariant_.contains( t ) ) {
+            if( !pyObjectToQVariant_[ t ]->ForeignOwned() ) delete pyObjectToQVariant_[ t ];
+        }
+        pyObjectToQVariant_[ t ] = qp;
+    }
+    template < typename T >
+    int RegisterPyObjectToQVariant( PyObjectToQVariant* qp ) {
+        const int id = qRegisterMetaType< T >();
+        RegisterPyObjectToQVariant( qMetaTypeId< T >, qp );
+        return id;
     }
     void UnRegisterType( const QString& typeName ) {
         if( !argFactory_.contains( typeName ) ) return;    

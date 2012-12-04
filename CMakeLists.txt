@@ -37,7 +37,7 @@ include_directories( ${PYTHON_INCLUDE_DIRS} ${QT_INCLUDES} ./ )
 set( HEADERS PyContext.h )
 
 set( DETAIL_HEADERS PyArgConstructor.h detail/PyArgWrappers.h detail/PyDefaultArguments.h
-	 PyQArgConstructor.h  detail/PyCallbackDispatcher.h )
+	 PyQArgConstructor.h  detail/PyCallbackDispatcher.h detail/PyQVariantDefault.h )
 
 set( SRC detail/PyDefaultArguments.cpp detail/PyCallbackDispatcher.cpp PyContext.cpp )
 

@@ -27,7 +27,7 @@
 #include <QObject>
 class QpyTestObject : public QObject {
     Q_OBJECT
-    Q_PROPERTY( int value READ GetValue )
+    Q_PROPERTY( int value READ GetValue WRITE SetValue )
 public:
     Q_INVOKABLE QpyTestObject() : QObject( 0 ) {}
     Q_INVOKABLE QpyTestObject( int value ) : QObject( 0 ), value_( value ) {}
