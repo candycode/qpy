@@ -114,7 +114,7 @@ public:  //must be public because type access might be needed
         PyTypeObject pyType;
         //required to keep char* to be passed around
         std::vector< std::string > pyMethodNames;
-        std::vector< PyGetSetDef > pyMethods;
+        std::vector< PyGetSetDef > pyMembers;
         // need string to pass references to
         // contained c_str
         std::string fullClassName;

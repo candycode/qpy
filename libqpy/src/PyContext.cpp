@@ -56,7 +56,7 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                            reinterpret_cast< setter >( PyQObjectSetter ),
                            const_cast< char* >( "QPy method invocation function" ),
                            reinterpret_cast< void* >( memberPos++ ) };
-        pt->pyMethods.push_back( gs );                                                        
+        pt->pyMembers.push_back( gs );                                                        
 
     }
     memberPos = 0;
@@ -68,11 +68,11 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                            reinterpret_cast< setter >( PyQObjectSetter ),
                            const_cast< char* >( mp.name() ),
                            reinterpret_cast< void* >( memberPos++ + pt->methods.size() ) };
-        pt->pyMethods.push_back( gs );                                                        
+        pt->pyMembers.push_back( gs );                                                        
     }
     //add sentinel!
     const PyGetSetDef gsd = { 0, 0, 0, 0, 0};
-    pt->pyMethods.push_back( gsd );
+    pt->pyMembers.push_back( gsd );
 
     pt->pyType = CreatePyType( *pt );
     PyType_Ready( &pt->pyType );
@@ -620,7 +620,7 @@ PyTypeObject PyContext::CreatePyType( const Type& type ) {
         0,                     /* tp_iternext */
         0,             /* tp_methods */
         members,             /* tp_members */
-        const_cast< PyGetSetDef* >( &type.pyMethods[ 0 ] ),                         /* tp_getset */
+        const_cast< PyGetSetDef* >( &type.pyMembers[ 0 ] ),                         /* tp_getset */
         0,                         /* tp_base */
         0,                         /* tp_dict */
         0,                         /* tp_descr_get */
