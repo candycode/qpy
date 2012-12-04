@@ -140,11 +140,11 @@ public:
         InitQVariantPyObjectMaps();
     }
     ~PyContext() {
-        for( QVariantToPyObjectMap::iterator i = qvariantToPyObject_.begin();
+        for( QVariantToPyObjectMapType::iterator i = qvariantToPyObject_.begin();
              i != qvariantToPyObject_.end(); ++i ) {
             if( !i.value()->ForeignOwned() ) delete i.value();
         }
-        for( PyObjectToQVariantMap::iterator i = pyObjectToQVariant_.begin();
+        for( PyObjectToQVariantMapType::iterator i = pyObjectToQVariant_.begin();
              i != pyObjectToQVariant_.end(); ++i ) {
             if( !i.value()->ForeignOwned() ) delete i.value();
         }      
@@ -290,8 +290,8 @@ private:
         }
         return 0;    
     }
-    typedef QMap< QVariant::Type, QVariantToPyObject* > QVariantToPyObjectMap;
-    typedef QMap< QVariant::Type, PyObjectToQVariant* > PyObjectToQVariantMap;    
+    typedef QMap< QVariant::Type, QVariantToPyObject* > QVariantToPyObjectMapType;
+    typedef QMap< QVariant::Type, PyObjectToQVariant* > PyObjectToQVariantMapType;    
 private:
     static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs );
     static PyObject* PyQObjectDisconnect( PyObject* self, PyObject* args, PyObject* kwargs );
@@ -321,8 +321,8 @@ private:
     Types types_;
     PyCallbackDispatcher dispatcher_;
     ArgFactory argFactory_;
-    QVariantToPyObjectMap qvariantToPyObject_;
-    PyObjectToQVariantMap pyObjectToQVariant_;
+    QVariantToPyObjectMapType qvariantToPyObject_;
+    PyObjectToQVariantMapType pyObjectToQVariant_;
     static ConnectList endpoints_; //thread_local if needed
     static int getterMethodId_;
     static bool signal_;
