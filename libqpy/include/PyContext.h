@@ -37,6 +37,7 @@
 #include <QMetaMethod>
 #include <QList>
 #include <QString>
+#include <QSet>
 #include <string>
 #include <vector>
 #include <QDebug>
@@ -151,6 +152,7 @@ public:
     PyTypeObject* AddType( const QMetaObject* mo, 
                            PyObject* module,
                            bool checkConstructor = true,
+                           const QSet< QString >& selectedMembers = QSet< QString >(),
                            const char* className = 0,
                            const char* doc = 0 );
     template < typename T > void Add( PyObject* module ) {
@@ -161,7 +163,8 @@ public:
                          PyObject* targetModule, // where instance is added 
                          PyObject* typeModule, // where type is defined
                          const char* instanceName,
-                         bool pythonOwned = false );
+                         bool pythonOwned = false,
+                         const QSet< QString >& selectedMembers = QSet< QString >() );
     /// Register new types by passing the type of QArgConstructor and PyArgConstructor;
     /// this way of registering does not allow to pass actual instances, and does require
     /// support for operator new and delete.

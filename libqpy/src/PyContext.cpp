@@ -12,6 +12,7 @@ bool PyContext::signal_ = false;
 PyTypeObject* PyContext::AddType( const QMetaObject* mo, 
                            		  PyObject* module,
                                   bool checkConstructor,
+                                  const QSet< QString >& selectedMembers,
                                   const char* className,
                                   const char* doc ) {
     Type* pet = ExistingType( mo, module );
@@ -38,13 +39,15 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
         pt->ctorParams.push_back( GenerateQArgWrappers( mm.parameterTypes() ) );
                                  
     }
+    int memberPos = 0;
     for( int i = 0; i != mo->methodCount(); ++i ) {
         QMetaMethod mm = mo->method( i );
+        QString sig = mm.signature();
+        if( !selectedMembers.isEmpty() && !selectedMembers.contains( sig ) ) continue;
         pt->methods.push_back( Method( mm,
                                        GenerateQArgWrappers( mm.parameterTypes() ),
                                        GeneratePyArgWrapper( mm.typeName() ),
                                        mo ) );
-        QString sig = mm.signature();
         sig.truncate( sig.indexOf( "(" ) );
         pt->pyMethodNames.push_back( sig.toStdString() );
        
@@ -52,17 +55,19 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                            reinterpret_cast< getter >( PyQObjectGetter ),
                            reinterpret_cast< setter >( PyQObjectSetter ),
                            const_cast< char* >( "QPy method invocation function" ),
-                           reinterpret_cast< void* >( i ) };
+                           reinterpret_cast< void* >( memberPos++ ) };
         pt->pyMethods.push_back( gs );                                                        
 
     }
+    memberPos = 0;
     for( int i = 0; i != mo->propertyCount(); ++i ) {
         QMetaProperty mp = mo->property( i );
+        if( !selectedMembers.isEmpty() && !selectedMembers.contains( mp.name() ) ) continue;
         PyGetSetDef gs = { const_cast< char* >( mp.name() ),
                            reinterpret_cast< getter >( PyQObjectGetter ),
                            reinterpret_cast< setter >( PyQObjectSetter ),
                            const_cast< char* >( mp.name() ),
-                           reinterpret_cast< void* >( i + pt->methods.size() ) };
+                           reinterpret_cast< void* >( memberPos++ + pt->methods.size() ) };
         pt->pyMethods.push_back( gs );                                                        
     }
     //add sentinel!
@@ -118,9 +123,11 @@ PyMethodDef* PyContext::ModuleFunctions() {
                                  PyObject* targetModule, // where instance is added 
                                  PyObject* typeModule, // where type is defined
                                  const char* instanceName,
-                                 bool pythonOwned ) {
+                                 bool pythonOwned,
+                                 const QSet< QString >& selectedMembers ) {
     static const bool CHECK_CONSTRUCTOR_OPTION = false;
-    PyTypeObject* pt = AddType( qobj->metaObject(), typeModule, CHECK_CONSTRUCTOR_OPTION );
+    PyTypeObject* pt = AddType( qobj->metaObject(), typeModule,
+                                CHECK_CONSTRUCTOR_OPTION, selectedMembers );
     assert( pt );
     PyQObject* obj = reinterpret_cast< PyQObject* >( 
                             PyObject_CallObject( reinterpret_cast< PyObject* >( pt ), 0  ) );
