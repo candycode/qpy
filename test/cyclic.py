@@ -9,6 +9,10 @@ obj1 = D()
 qobjects = [obj1]
 obj1.container = qobjects
 
+del qobjects
+obj1.SetValue(1)
+obj1.Print()
+
 del obj1
 
 print('OK')

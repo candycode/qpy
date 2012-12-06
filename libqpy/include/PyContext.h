@@ -196,9 +196,9 @@ public:
         qvariantToPyObject_[ t ] = qp;
     }
     template < typename T >
-    void RegisterQVariantToPyObject( QVariantToPyObject* qp ) {
+    int RegisterQVariantToPyObject( QVariantToPyObject* qp ) {
         const int id = qRegisterMetaType< T >();
-        RegisterQVariantToPyObject( id, qp );
+        RegisterQVariantToPyObject( QVariant::Type( id ), qp );
         return id;
     }
     void RegisterPyObjectToQVariant( QVariant::Type t,  PyObjectToQVariant* qp ) {
