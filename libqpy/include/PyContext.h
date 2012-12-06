@@ -149,6 +149,10 @@ public:
             if( !i.value()->ForeignOwned() ) delete i.value();
         }      
     }
+    static const char* Version();
+    void AddGlobals( PyObject* module ) {
+        PyModule_AddStringConstant( module, "__version__", Version() );
+    }    
     PyTypeObject* AddType( const QMetaObject* mo, 
                            PyObject* module,
                            bool checkConstructor = true,

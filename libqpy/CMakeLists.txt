@@ -32,6 +32,25 @@ include(${QT_USE_FILE})
 #Python
 find_package(PythonLibs)
 
+#look for a tag...
+exec_program(
+  "git"
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ARGS "describe"
+  OUTPUT_VARIABLE GIT_TAG )
+
+#...if not found get the SHA1 hash instead
+if( ${GIT_TAG} MATCHES "fatal:.*" )
+exec_program(
+  "git"
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ARGS "rev-parse HEAD"
+  OUTPUT_VARIABLE GIT_VERSION )
+else()
+  set( GIT_VERSION ${GIT_TAG} )
+endif()
+add_definitions( -DQPY_GIT_VERSION="${GIT_VERSION}")
+
 include_directories( ${PYTHON_INCLUDE_DIRS} ${QT_INCLUDES} )
 
 set( HEADERS include/PyContext.h include/PyArgConstructor.h include/PyQArgConstructor.h

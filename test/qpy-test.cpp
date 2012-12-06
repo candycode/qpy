@@ -11,10 +11,10 @@ int main( int argc, char** argv ) {
         std::cout << "Usage: " << argv[ 0 ] << " <python file>" << std::endl;
         exit( 1 );
     }
-    
     Py_Initialize();
     qpy::PyContext py;
     PyObject* qpyModule = Py_InitModule3( "qpy", py.ModuleFunctions(), "QPy module - where qpy functions reside" );
+    py.AddGlobals( qpyModule );
     Py_INCREF( qpyModule );
     PyObject* userModule = Py_InitModule3( "qpy_test", py.ModuleFunctions(), "User module - client code" );
     Py_INCREF( userModule );

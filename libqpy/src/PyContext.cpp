@@ -1,12 +1,12 @@
 #include "../include/PyContext.h"
 
-
-
 namespace qpy {
 
 PyContext::ConnectList PyContext::endpoints_;
 int PyContext::getterMethodId_ = -1;
 bool PyContext::signal_ = false;
+
+const char* PyContext::Version() { return QPY_GIT_VERSION; }
 
 //----------------------------------------------------------------------------
 PyTypeObject* PyContext::AddType( const QMetaObject* mo, 
