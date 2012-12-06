@@ -585,9 +585,12 @@ int PyContext::PyQObjectInit( PyQObject* self, PyObject* args, PyObject* kwds ) 
 
 //----------------------------------------------------------------------------
 void PyContext::PyQObjectDealloc( PyQObject* self ) {
-    if( !self->foreignOwned ) self->obj->deleteLater();
+    if( !self->foreignOwned && self->obj ) {
+        self->obj->deleteLater();
+        self->obj = 0;
+    }
     Py_XDECREF( self->invoke );
-    self->ob_type->tp_free( ( PyObject*) self );
+    self->ob_type->tp_free( reinterpret_cast< PyObject* >( self ) );
 }
 
 //----------------------------------------------------------------------------
