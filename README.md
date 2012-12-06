@@ -46,6 +46,12 @@ Usage
 
 1 - Create and instance of `qpy::PyContext`.
 
+```c++
+#include <PyContext.h>
+...
+qpy::PyContext py;
+```
+
 2 - Create a Python module to access the QPy functions and add the QPy functions to it:
 
 ```c++
@@ -79,12 +85,13 @@ py.Add< QpyTestObject >( userModule );
 ###Python
 
 * Access the functions in the `qpy` module.
-* Directly access object instances and use
-* QObject constructors to create new instances of QObject-derived types.
+* Directly access object instances passed from C++
+* Use QObject constructors to create new instances of QObject-derived types.
 
 ```python
 import qpy
 import qpy_user
+
 qobj = qpy_user.QpyTestObject(3)
 qobj.Print()
 print( qobj.GetValue() )
@@ -103,6 +110,11 @@ aclass = AClass()
 
 qpy.connect(qobj.aSignal, aclass.cback)
 
+qobj2 = qpy_user.QpyTestObject()
+
+qpy.connect(qobj.aSignal, qobj2.catchSignal)
+qpy.connect(qobj, "anotherSignal(QString)", qobj2, "catchSignal(QString)")
+
 ```
 
 Build
@@ -114,7 +126,7 @@ easily copy and paste the source code directly into any project.
 
 Being a binding between Qt and Python the only dependencies are Python and a Qt 
 distribution.
-You should be able to build QPython on any platform that works with Qt >= 4.7 
+You should be able to build QPy on any platform that works with Qt >= 4.7 
 and Python >= 2.6.
 I am personally using QPy on the following platforms (64bit versions only):
 
@@ -128,7 +140,7 @@ with Qt 4.8 and Python 2.7.
 Supported types
 ---------------
 
-Currently only a small set of types is supported:
+The supported pre-registered types are:
 
 - QObject pointer
 - double
@@ -137,7 +149,7 @@ Currently only a small set of types is supported:
 - QString
 
 New types will be added. Since however type registration is dynamic
-it is very easy to add new types without rebuilding the library
+it is very easy to add new types in user code without rebuilding the library
 through the `qpy::PyContext::Register*` methods.
 
 
