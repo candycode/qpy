@@ -81,7 +81,7 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
     assert( pyPtr && "NULL pyPtr" );
     assert( pt->pyType.tp_dict && "NULL dict" );
 
-    PY_CHECK( PyDict_SetItemString( pt->pyType.tp_dict, "__qpy_type_info", pyPtr ) );
+    PY_CHECK( PyDict_SetItemString( pt->pyType.tp_dict, "__qpy_type_info__", pyPtr ) );
 
     Py_INCREF( reinterpret_cast< PyObject* >( &pt->pyType ) );
     if( PyModule_AddObject( module, pt->className.c_str(),
@@ -216,7 +216,7 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
     } CLEAR_ENDPOINTS;
     if( PyTuple_Size( args ) == 3 ) {
         PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
-        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag__" ) ) {
             pyqobj = reinterpret_cast< PyQObject* >( sourceObject );       
             mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
         } else {
@@ -237,14 +237,14 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
         endpoints_.pop_back();
     } else if( PyTuple_Size( args ) == 4 ) {
         PyArg_ParseTuple( args, "OsOs", &sourceObject, &sourceMethod, &targetObject, &targetMethod );
-        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag__" ) ) {
             pyqobj = reinterpret_cast< PyQObject* >( sourceObject );       
             mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
         } else {
             RaisePyError( "Not a PyQObject" );
             return 0;
         }
-        if( PyObject_HasAttrString( targetObject, "__qpy_qobject_tag" ) ) {
+        if( PyObject_HasAttrString( targetObject, "__qpy_qobject_tag__" ) ) {
             pyqobjTarget = reinterpret_cast< PyQObject* >( targetObject );       
             miTarget = pyqobj->type->metaObject->indexOfMethod( targetMethod ); 
         } else {
@@ -290,7 +290,7 @@ PyObject* PyContext::PyQObjectDisconnect( PyObject* self, PyObject* args, PyObje
     } CLEAR_ENDPOINTS;
     if( PyTuple_Size( args ) == 3 ) {
         PyArg_ParseTuple( args, "OsO", &sourceObject, &sourceMethod, &targetFunction );
-        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag__" ) ) {
             PyQObject* pyqobj = reinterpret_cast< PyQObject* >( sourceObject );
             const int mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod );
             if( mi < 0 ) {
@@ -336,14 +336,14 @@ PyObject* PyContext::PyQObjectDisconnect( PyObject* self, PyObject* args, PyObje
         int mi = -1;
         int miTarget = -1;
         PyArg_ParseTuple( args, "OsOs", &sourceObject, &sourceMethod, &targetObject, &targetMethod );
-        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag" ) ) {
+        if( PyObject_HasAttrString( sourceObject, "__qpy_qobject_tag__" ) ) {
             pyqobj = reinterpret_cast< PyQObject* >( sourceObject );       
             mi = pyqobj->type->metaObject->indexOfMethod( sourceMethod ); 
         } else {
             RaisePyError( "Not a PyQObject" );
             return 0;
         }
-        if( PyObject_HasAttrString( targetObject, "__qpy_qobject_tag" ) ) {
+        if( PyObject_HasAttrString( targetObject, "__qpy_qobject_tag__" ) ) {
             pyqobjTarget = reinterpret_cast< PyQObject* >( targetObject );       
             miTarget = pyqobj->type->metaObject->indexOfMethod( targetMethod ); 
         } else {
@@ -362,7 +362,7 @@ PyObject* PyContext::PyQObjectDisconnect( PyObject* self, PyObject* args, PyObje
 PyObject* PyContext::PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
-    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
         PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
         return PyBool_FromLong( int( pyqobj->foreignOwned ) );
     } else {
@@ -375,7 +375,7 @@ PyObject* PyContext::PyQObjectIsForeignOwned( PyObject* self, PyObject* args, Py
 PyObject* PyContext::PyQObjectIsQObject( PyObject* self, PyObject* args, PyObject* kwargs ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
-    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
         return PyBool_FromLong( 1 ); 
     } else {
         return PyBool_FromLong( 0 );
@@ -386,7 +386,7 @@ PyObject* PyContext::PyQObjectIsQObject( PyObject* self, PyObject* args, PyObjec
 PyObject* PyContext::PyQObjectAcquire( PyObject* self, PyObject* args, PyObject* kwargs ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
-    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
         PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
         pyqobj->foreignOwned = false;
         Py_RETURN_NONE;
@@ -400,7 +400,7 @@ PyObject* PyContext::PyQObjectAcquire( PyObject* self, PyObject* args, PyObject*
 PyObject* PyContext::PyQObjectRelease( PyObject* self, PyObject* args, PyObject* kwargs ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
-    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
         PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
         pyqobj->foreignOwned = true;
         Py_RETURN_NONE;
@@ -414,7 +414,7 @@ PyObject* PyContext::PyQObjectRelease( PyObject* self, PyObject* args, PyObject*
 PyObject* PyContext::PyQObjectPtr( PyObject* self, PyObject* args, PyObject* kwargs ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
-    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag" ) ) {
+    if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
         PyQObject* pyqobj = reinterpret_cast< PyQObject* >( obj );
         return PyLong_FromVoidPtr( pyqobj->obj );
     } else {
@@ -477,8 +477,14 @@ PyObject* PyContext::PyQObjectNew( PyTypeObject* type, PyObject*, PyObject* ) {
     self->obj = 0;
     self->foreignOwned = false;
     self->pyModule = 0;
+    //find base type: for object derived from PyQObjects we need to find the
+    //base PyQObject base to initialize the type pointer; the base class is the
+    //first child of the base Python 'object' class, which in turn has a NULL parent
+    PyTypeObject* p = type;
+    while( p->tp_base && p->tp_base->tp_base ) p = p->tp_base;
     self->type = reinterpret_cast< Type* >(
-        PyCapsule_GetPointer( PyDict_GetItemString( type->tp_dict, "__qpy_type_info" ), "qpy type info" ) );
+        PyCapsule_GetPointer( PyDict_GetItemString( p->tp_dict, "__qpy_type_info__" ),
+                                  "qpy type info" ) );
     return reinterpret_cast< PyObject* >( self );
 }
 
@@ -586,7 +592,7 @@ void PyContext::PyQObjectDealloc( PyQObject* self ) {
 
 //----------------------------------------------------------------------------
 PyTypeObject PyContext::CreatePyType( const Type& type ) {
-    static PyMemberDef members[] = { { const_cast< char* >( "__qpy_qobject_tag" ), T_BOOL, 
+    static PyMemberDef members[] = { { const_cast< char* >( "__qpy_qobject_tag__" ), T_BOOL, 
                            offsetof( PyQObject, qobjectTag ), 0, const_cast< char* >( "Identifies object as QPy QObject wrapper" ) },
                            { 0, 0, 0, 0, 0 } };                
     PyTypeObject t = {
@@ -610,7 +616,7 @@ PyTypeObject PyContext::CreatePyType( const Type& type ) {
         0,                         /*tp_getattro*/
         0,                         /*tp_setattro*/
         0,                         /*tp_as_buffer*/
-        Py_TPFLAGS_DEFAULT, /*tp_flags*/
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /*tp_flags*/
         type.doc.c_str(),           /* tp_doc */
         0,                     /* tp_traverse */
         0,                     /* tp_clear */
