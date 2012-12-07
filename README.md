@@ -57,6 +57,7 @@ qpy::PyContext py;
 ```c++
 PyObject* qpyModule = Py_InitModule3( "qpy", py.ModuleFunctions(),;
                                       "QPy module - where qpy functions reside" );
+py.AddGlobals( qpyModule ); //optional; adds __version__ info
 
 ```
 
@@ -73,13 +74,13 @@ py.Add< QpyTestObject >( userModule );
 
 ```
 
-4.2 Add QObjects into a Python module through the `qpy::PyContext::AddObject` method.
+4.2 - Add QObjects into a Python module through the `qpy::PyContext::AddObject` method.
 ```c++
  QpyTestObject* to = new QpyTestObject( 71 );
     py.AddObject( to, mainModule, userModule, "myqobj" );
 ```
 
-5 Execute Python code.
+5 - Execute Python code.
 
 
 ###Python
