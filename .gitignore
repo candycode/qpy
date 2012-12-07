@@ -11,3 +11,4 @@ a.out
 *.a
 *.dylib
 build
+gh-pages
