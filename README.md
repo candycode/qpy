@@ -35,7 +35,9 @@ Features
 - connect QObject signals to Python methods
 - optionally have Python destroy the added QObjects when instances are garbage
   collected;
-- register user-defined types at run-time  
+- register user-defined types at run-time
+- implement a custom member name mapper to e.g. address overloading issues or
+  change names to match PEP-8  
 
 
 Usage
@@ -169,7 +171,7 @@ it is not possible to automatically resolve the parameter types.
 Some of this will be, to some extent, fixed in the future since it is possible
 to check types from the Python C api.
 
-One option is to use a Qt->Python signature mapper to decide how to translate
+One option is to use a custom Qt->Python member mapper to decide how to translate
 overloaded methods to Python functions(as done in QLua).
 
 Signal to slot binding does work without any type resolution issue if and only
