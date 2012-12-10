@@ -38,10 +38,13 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                            		  PyObject* module,
                                   bool checkConstructor,
                                   const QSet< QString >& selectedMembers,
+                                  const PyMemberNameMapper& nameMapper,
                                   const char* className,
                                   const char* doc ) {
     Type* pet = ExistingType( mo, module );
     if( pet ) return &pet->pyType;
+
+    nameMapper.Init( *mo );
   
     Type t;
     t.metaObject = mo;
@@ -73,13 +76,12 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
                                        GenerateQArgWrappers( mm.parameterTypes() ),
                                        GeneratePyArgWrapper( mm.typeName() ),
                                        mo ) );
-        sig.truncate( sig.indexOf( "(" ) );
-        pt->pyMethodNames.push_back( sig.toStdString() );
+        pt->pyMethodNames.push_back( nameMapper.signature( sig ).toStdString() );
        
         PyGetSetDef gs = { const_cast< char* >( pt->pyMethodNames.back().c_str() ),
                            reinterpret_cast< getter >( PyQObjectGetter ),
                            reinterpret_cast< setter >( PyQObjectSetter ),
-                           const_cast< char* >( "QPy method invocation function" ),
+                           const_cast< char* >( nameMapper.methodDoc( sig ) ),
                            reinterpret_cast< void* >( memberPos++ ) };
         pt->pyMembers.push_back( gs );                                                        
 
@@ -88,10 +90,10 @@ PyTypeObject* PyContext::AddType( const QMetaObject* mo,
     for( int i = 0; i != mo->propertyCount(); ++i ) {
         QMetaProperty mp = mo->property( i );
         if( !selectedMembers.isEmpty() && !selectedMembers.contains( mp.name() ) ) continue;
-        PyGetSetDef gs = { const_cast< char* >( mp.name() ),
+        PyGetSetDef gs = { const_cast< char* >( qPrintable( nameMapper.property( mp.name() ) ) ),
                            reinterpret_cast< getter >( PyQObjectGetter ),
                            reinterpret_cast< setter >( PyQObjectSetter ),
-                           const_cast< char* >( mp.name() ),
+                           const_cast< char* >( nameMapper.propertyDoc( mp.name() ) ),
                            reinterpret_cast< void* >( memberPos++ + pt->methods.size() ) };
         pt->pyMembers.push_back( gs );                                                        
     }
@@ -149,10 +151,11 @@ PyMethodDef* PyContext::ModuleFunctions() {
                                  PyObject* typeModule, // where type is defined
                                  const char* instanceName,
                                  bool pythonOwned,
-                                 const QSet< QString >& selectedMembers ) {
+                                 const QSet< QString >& selectedMembers,
+                                 const PyMemberNameMapper& nameMapper ) {
     static const bool CHECK_CONSTRUCTOR_OPTION = false;
     PyTypeObject* pt = AddType( qobj->metaObject(), typeModule,
-                                CHECK_CONSTRUCTOR_OPTION, selectedMembers );
+                                CHECK_CONSTRUCTOR_OPTION, selectedMembers, nameMapper );
     assert( pt );
     PyQObject* obj = reinterpret_cast< PyQObject* >( 
                             PyObject_CallObject( reinterpret_cast< PyObject* >( pt ), 0  ) );

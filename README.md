@@ -157,8 +157,7 @@ through the `qpy::PyContext::Register*` methods.
 Limitations
 -----------
 
-The main limitation is that currently the resolution of overloaded methods is based
-only on the number of parameters. 
+The main limitation is that currently overloaded methods are not supported,
 i.e. QPy is not able to resolve a call to two methods like:
 
 - MyObject::method( int );
@@ -168,10 +167,13 @@ This is due to the fact that when invoking a C++ method from a dynamic language
 it is not possible to automatically resolve the parameter types.
 
 Some of this will be, to some extent, fixed in the future since it is possible
-to check types from the Python C api. 
+to check types from the Python C api.
 
-Signal to slot binding does work without any type resolution issue iff method
-signatures are specified as strings.
+One option is to use a Qt->Python signature mapper to decide how to translate
+overloaded methods to Python functions(as done in QLua).
+
+Signal to slot binding does work without any type resolution issue if and only
+if method signatures are specified as strings.
 
 Todo
 ----

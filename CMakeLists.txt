@@ -28,3 +28,8 @@ project(qpy)
 
 add_subdirectory( libqpy )
 add_subdirectory( test )
+add_custom_target( runtest COMMAND 
+                   ${CMAKE_SOURCE_DIR}/test/run-tests.sh
+                   ${CMAKE_BINARY_DIR}/test/qpy-test
+                   ${CMAKE_SOURCE_DIR}/test
+                   DEPENDS test )

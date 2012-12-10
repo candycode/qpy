@@ -54,7 +54,7 @@ add_definitions( -DQPY_GIT_VERSION="${GIT_VERSION}")
 include_directories( ${PYTHON_INCLUDE_DIRS} ${QT_INCLUDES} )
 
 set( HEADERS include/PyContext.h include/PyArgConstructor.h include/PyQArgConstructor.h
-     include/PyObjectToQVariant.h include/PyQVariantToPyObject.h )
+     include/PyObjectToQVariant.h include/PyQVariantToPyObject.h include/PyMemberNameMapper.h )
 
 set( DETAIL_HEADERS include/detail/PyArgWrappers.h include/detail/PyDefaultArguments.h
 	 include/detail/PyCallbackDispatcher.h include/detail/PyQVariantDefault.h )

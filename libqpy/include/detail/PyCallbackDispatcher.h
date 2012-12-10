@@ -90,7 +90,7 @@ typedef int MethodId;
 /// @brief Manages Python function invocation through Qt signals. And connection
 /// of Qt signals to Python functions or QObject methods.
 ///
-/// Offers methods to connect Qt signals emitted from QObjects to Python functions
+/// Exposes methods to connect Qt signals emitted from QObjects to Python functions
 /// or other QObject methods.
 /// Whenever a new signal -> Python connection is requested a new proxy method is
 /// generated and the signal is routed to the new method which in turn takes
@@ -143,7 +143,6 @@ public:
 private:
     int GetMethodIndex() const {
         return methodIdx_++;
-        //return int( pyCBackMethods_.size() );
     }    
 private:
     /// Python context

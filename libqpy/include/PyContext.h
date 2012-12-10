@@ -45,6 +45,7 @@
 #include "detail/PyArgWrappers.h"
 #include "detail/PyCallbackDispatcher.h"
 #include "detail/PyQVariantDefault.h"
+#include "PyMemberNameMapper.h"
 
 
 #define PY_CHECK( f ) {if( f != 0 ) throw std::runtime_error( "Python error" );}
@@ -59,10 +60,6 @@ inline void RaisePyError( const char* errMsg = 0,
 ///@todo 
 /// - search for Q_PROPERTY doc, if available use that for __doc__ attr
 /// - add Q_PROPERTY support
-/// - add QObject instance addition through PyObject_CallObject, passing
-///   the pointer to the pre-existing QObject as a "__QObjectPtr" parameter;
-///   setting the __QObjectPtr param will be disabled by default through the
-///   default PyQObjectSetter function.
 /// - if a toString (case insensitive) method is available, use it for __str__
 
 //------------------------------------------------------------------------------
@@ -157,6 +154,7 @@ public:
                            PyObject* module,
                            bool checkConstructor = true,
                            const QSet< QString >& selectedMembers = QSet< QString >(),
+                           const PyMemberNameMapper& mm = DefaultMemberNameMapper(),
                            const char* className = 0,
                            const char* doc = 0 );
     template < typename T > void Add( PyObject* module ) {
@@ -168,7 +166,8 @@ public:
                          PyObject* typeModule, // where type is defined
                          const char* instanceName,
                          bool pythonOwned = false,
-                         const QSet< QString >& selectedMembers = QSet< QString >() );
+                         const QSet< QString >& selectedMembers = QSet< QString >(),
+                         const PyMemberNameMapper& mm = DefaultMemberNameMapper() );
     /// Register new types by passing the type of QArgConstructor and PyArgConstructor;
     /// this way of registering does not allow to pass actual instances, and does require
     /// support for operator new and delete.

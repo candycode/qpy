@@ -75,7 +75,7 @@ private:
 /// to Python callbacks in response to emitted signals.
 ///
 /// This class translates C++ values to PyObjects and is used to both return
-/// values from method invocations and translate the parameters received from
+/// values from method invocations as well as translate the parameters received from
 /// a signal to PyObject values whenever a Python callback invocation is triggered by
 /// an emitted signal.
 class PyArgWrapper {
