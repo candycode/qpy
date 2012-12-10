@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$PyArgWrappers_8h.html" title="Declarations and definitions of argumant wrappers for conversion bewtween C++/Qt and Python..." alt="" coords="5,83,131,112"/>
-<area shape="rect" id="node7" href="$PyDefaultArguments_8h.html" title="Declarations and definitions of constructors for creating C++ values from PyObjects." alt="" coords="155,83,309,112"/>
-<area shape="rect" id="node5" href="$PyContext_8h.html" title="Python context manager to add QObject derived types and instancess." alt="" coords="103,160,196,189"/>
-</map>

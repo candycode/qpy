@@ -132,23 +132,21 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return value converted from void* .  <a href="#ae6b9548dfb81fa1af2bb12f2502b72ab"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e8f7c9fa00b465e3df0122dcc6b2084"></a><!-- doxytag: member="qpy::PyArgWrapper::Arg" ref="a2e8f7c9fa00b465e3df0122dcc6b2084" args="() const " -->
 QGenericReturnArgument&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyArgWrapper.html#a2e8f7c9fa00b465e3df0122dcc6b2084">Arg</a> () const </td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">retunr placeholder for storing Qt return argument <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">return placeholder for storing Qt return argument <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad99e3d52e30f5ce6fbdd2fd59cd8743f"></a><!-- doxytag: member="qpy::PyArgWrapper::Type" ref="ad99e3d52e30f5ce6fbdd2fd59cd8743f" args="() const " -->
 QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyArgWrapper.html#ad99e3d52e30f5ce6fbdd2fd59cd8743f">Type</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Type name. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7232681c1763a5c70fdb6f41bb3da687"></a><!-- doxytag: member="qpy::PyArgWrapper::MetaType" ref="a7232681c1763a5c70fdb6f41bb3da687" args="() const " -->
 QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyArgWrapper.html#a7232681c1763a5c70fdb6f41bb3da687">MetaType</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Meta type. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1b68baa9cce93c49cc8a505a64137d7"></a><!-- doxytag: member="qpy::PyArgWrapper::IsQObjectPtr" ref="af1b68baa9cce93c49cc8a505a64137d7" args="() const " -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7">IsQObjectPtr</a> () const </td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if wrapped type is QObject pointer. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7">IsQObjectPtr</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d5b3fcb7ee1360f9cd86be97cc3e776"></a><!-- doxytag: member="qpy::PyArgWrapper::~PyArgWrapper" ref="a2d5b3fcb7ee1360f9cd86be97cc3e776" args="()" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyArgWrapper.html#a2d5b3fcb7ee1360f9cd86be97cc3e776">~PyArgWrapper</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete LArgConstructor instance. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> instance. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Wrapper for objects returned from QObject method invocations or passed to Python callbacks in response to emitted signals. </p>
-<p>This class translates C++ values to PyObjects and is used to both return values from method invocations and translate the parameters received from a signal to PyObject values whenever a Python callback invocation is triggered by an emitted signal. </p>
+<p>This class translates C++ values to PyObjects and is used to both return values from method invocations as well as translate the parameters received from a signal to PyObject values whenever a Python callback invocation is triggered by an emitted signal. </p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a057fae08365694f1346c0accb29af1bb"></a><!-- doxytag: member="qpy::PyArgWrapper::Create" ref="a057fae08365694f1346c0accb29af1bb" args="() const " -->
 <div class="memitem">
@@ -189,6 +187,23 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="af1b68baa9cce93c49cc8a505a64137d7"></a><!-- doxytag: member="qpy::PyArgWrapper::IsQObjectPtr" ref="af1b68baa9cce93c49cc8a505a64137d7" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7">qpy::PyArgWrapper::IsQObjectPtr</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Return true if wrapped type is QObject pointer. Required to have <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> add QObject wrappers to the Python interpreter. Note that it is not enough to check the value returned by <a class="el" href="classqpy_1_1PyArgWrapper.html#a7232681c1763a5c70fdb6f41bb3da687" title="Meta type.">MetaType()</a> because custom registered objects derived from QObject do not have a QMetaType::QObjectStar type. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="PyArgWrappers_8h_source.html">PyArgWrappers.h</a></li>
 </ul>
@@ -210,7 +225,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

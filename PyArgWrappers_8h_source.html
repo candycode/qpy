@@ -145,18 +145,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00099"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#ae6b9548dfb81fa1af2bb12f2502b72ab">00099</a>     PyObject* <a class="code" href="classqpy_1_1PyArgWrapper.html#ae6b9548dfb81fa1af2bb12f2502b72ab" title="return value converted from void* .">Create</a>( <span class="keywordtype">void</span>* p )<span class="keyword"> const </span>{
 <a name="l00100"></a>00100         <span class="keywordflow">return</span> ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#ad6d6fcbe051bdbfca2fd3924fc74a53b" title="Create PyObject from value returned from QObject method.">Create</a>( p );
 <a name="l00101"></a>00101     }
-<a name="l00103"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#a2e8f7c9fa00b465e3df0122dcc6b2084">00103</a>     QGenericReturnArgument <a class="code" href="classqpy_1_1PyArgWrapper.html#a2e8f7c9fa00b465e3df0122dcc6b2084" title="retunr placeholder for storing Qt return argument">Arg</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#a43ada27eb93c1c98958d3e9c306be167" title="Return QGenericReturnArguments holding a reference to the memory location where the returned value is...">Argument</a>(); }
+<a name="l00103"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#a2e8f7c9fa00b465e3df0122dcc6b2084">00103</a>     QGenericReturnArgument <a class="code" href="classqpy_1_1PyArgWrapper.html#a2e8f7c9fa00b465e3df0122dcc6b2084" title="return placeholder for storing Qt return argument">Arg</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#a43ada27eb93c1c98958d3e9c306be167" title="Return QGenericReturnArguments holding a reference to the memory location where the returned value is...">Argument</a>(); }
 <a name="l00105"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#ad99e3d52e30f5ce6fbdd2fd59cd8743f">00105</a>     QString <a class="code" href="classqpy_1_1PyArgWrapper.html#ad99e3d52e30f5ce6fbdd2fd59cd8743f" title="Type name.">Type</a>()<span class="keyword"> const </span>{ 
 <a name="l00106"></a>00106         <span class="keywordflow">if</span>( ac_ != 0 ) <span class="keywordflow">return</span> QMetaType::typeName( ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#ad5aaa1b9aa62663351f7de2d68e43b0d" title="Return type of constructed data.">Type</a>() );
 <a name="l00107"></a>00107         <span class="keywordflow">else</span> <span class="keywordflow">return</span> QString();
 <a name="l00108"></a>00108     }
 <a name="l00110"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#a7232681c1763a5c70fdb6f41bb3da687">00110</a>     QMetaType::Type <a class="code" href="classqpy_1_1PyArgWrapper.html#a7232681c1763a5c70fdb6f41bb3da687" title="Meta type.">MetaType</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#ad5aaa1b9aa62663351f7de2d68e43b0d" title="Return type of constructed data.">Type</a>(); }
-<a name="l00112"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7">00112</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7" title="Return true if wrapped type is QObject pointer.">IsQObjectPtr</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#a7b226c60e8bbb4279afd2428bea4fe54" title="Return true if type is a pointer to a QObject-derived object.">IsQObjectPtr</a>(); }
-<a name="l00114"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#a2d5b3fcb7ee1360f9cd86be97cc3e776">00114</a>     <a class="code" href="classqpy_1_1PyArgWrapper.html#a2d5b3fcb7ee1360f9cd86be97cc3e776" title="Delete LArgConstructor instance.">~PyArgWrapper</a>() { <span class="keyword">delete</span> ac_; }
-<a name="l00115"></a>00115 <span class="keyword">private</span>:
-<a name="l00117"></a>00117     <a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a>* ac_;
-<a name="l00118"></a>00118 };
-<a name="l00119"></a>00119 }
+<a name="l00116"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7">00116</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyArgWrapper.html#af1b68baa9cce93c49cc8a505a64137d7">IsQObjectPtr</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ac_-&gt;<a class="code" href="classqpy_1_1PyArgConstructor.html#ae81d844bbc4b1ad7f7f2b9d6672361e1" title="Return true if type is a pointer to a QObject-derived object.">IsQObjectPtr</a>(); }
+<a name="l00118"></a><a class="code" href="classqpy_1_1PyArgWrapper.html#a2d5b3fcb7ee1360f9cd86be97cc3e776">00118</a>     <a class="code" href="classqpy_1_1PyArgWrapper.html#a2d5b3fcb7ee1360f9cd86be97cc3e776" title="Delete PyArgConstructor instance.">~PyArgWrapper</a>() { <span class="keyword">delete</span> ac_; }
+<a name="l00119"></a>00119 <span class="keyword">private</span>:
+<a name="l00121"></a>00121     <a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a>* ac_;
+<a name="l00122"></a>00122 };
+<a name="l00123"></a>00123 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -175,7 +175,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

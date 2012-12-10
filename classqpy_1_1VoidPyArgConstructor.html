@@ -139,17 +139,41 @@ PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from value returned from QObject method. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb1edbed1f5c65d97f631c0894e39b10"></a><!-- doxytag: member="qpy::VoidPyArgConstructor::Create" ref="aeb1edbed1f5c65d97f631c0894e39b10" args="(void *) const " -->
 PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1VoidPyArgConstructor.html#aeb1edbed1f5c65d97f631c0894e39b10">Create</a> (void *) const </td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from parameter passed to Python callback when signal triggered. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from parameter passed to Python callback from Qt when signal triggered. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb5945eff2913836457c98903a2fac18"></a><!-- doxytag: member="qpy::VoidPyArgConstructor::Clone" ref="acb5945eff2913836457c98903a2fac18" args="() const " -->
 <a class="el" href="classqpy_1_1VoidPyArgConstructor.html">VoidPyArgConstructor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1VoidPyArgConstructor.html#acb5945eff2913836457c98903a2fac18">Clone</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return copy of object. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1VoidPyArgConstructor.html#a20b68582090c198a1860f91e658eff23">IsQObjectPtr</a> () const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return <code>true</code> if type is a pointer to a QObject-derived object.  <a href="#a20b68582090c198a1860f91e658eff23"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62cdc55e560baaa121f16d213deb7516"></a><!-- doxytag: member="qpy::VoidPyArgConstructor::Type" ref="a62cdc55e560baaa121f16d213deb7516" args="() const " -->
 QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1VoidPyArgConstructor.html#a62cdc55e560baaa121f16d213deb7516">Type</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return type of constructed data. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> implementation for <code>void</code> type. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a20b68582090c198a1860f91e658eff23"></a><!-- doxytag: member="qpy::VoidPyArgConstructor::IsQObjectPtr" ref="a20b68582090c198a1860f91e658eff23" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classqpy_1_1VoidPyArgConstructor.html#a20b68582090c198a1860f91e658eff23">qpy::VoidPyArgConstructor::IsQObjectPtr</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Return <code>true</code> if type is a pointer to a QObject-derived object. </p>
+<p>This is required to have the QPy run-time add the passed QObject into the Python context. The other option is to have PyArgConstructors::Create receive a reference to a <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> which introduces a two-way dependency between <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> and <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>; this would also augment PyQArgConstructor requirements with the added responsibility of having to add instances to Python. Note that it is not enough to simply check the <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> returned <a class="el" href="classqpy_1_1VoidPyArgConstructor.html#a62cdc55e560baaa121f16d213deb7516" title="Return type of constructed data.">Type()</a>, because in the case of custom registered types derived from QObject the returned type is not QObjectStar. </p>
+
+<p>Implements <a class="el" href="classqpy_1_1PyArgConstructor.html#ae81d844bbc4b1ad7f7f2b9d6672361e1">qpy::PyArgConstructor</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="PyDefaultArguments_8h_source.html">PyDefaultArguments.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -170,7 +194,7 @@ QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

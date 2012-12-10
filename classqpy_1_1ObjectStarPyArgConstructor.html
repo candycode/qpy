@@ -139,7 +139,7 @@ PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from value returned from QObject method. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0fdb95fff751584506ea2a47a172475"></a><!-- doxytag: member="qpy::ObjectStarPyArgConstructor::Create" ref="ae0fdb95fff751584506ea2a47a172475" args="(void *) const " -->
 PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1ObjectStarPyArgConstructor.html#ae0fdb95fff751584506ea2a47a172475">Create</a> (void *) const </td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from parameter passed to Python callback when signal triggered. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from parameter passed to Python callback from Qt when signal triggered. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07648949b7a7dfd9cd516ad271756a4c"></a><!-- doxytag: member="qpy::ObjectStarPyArgConstructor::Clone" ref="a07648949b7a7dfd9cd516ad271756a4c" args="() const " -->
 <a class="el" href="classqpy_1_1ObjectStarPyArgConstructor.html">ObjectStarPyArgConstructor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1ObjectStarPyArgConstructor.html#a07648949b7a7dfd9cd516ad271756a4c">Clone</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return copy of object. <br/></td></tr>
@@ -167,9 +167,9 @@ QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <div class="memdoc">
 
 <p>Return <code>true</code> if type is a pointer to a QObject-derived object. </p>
-<p>This is required to have the QPy run-time add the passed QObject into the Python context. The other option is to have PyArgConstructors::Create receive a reference to a <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> which introduces a two-way dependency between <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> and <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>. </p>
+<p>This is required to have the QPy run-time add the passed QObject into the Python context. The other option is to have PyArgConstructors::Create receive a reference to a <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> which introduces a two-way dependency between <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> and <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>; this would also augment PyQArgConstructor requirements with the added responsibility of having to add instances to Python. Note that it is not enough to simply check the <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> returned <a class="el" href="classqpy_1_1ObjectStarPyArgConstructor.html#a1024e60a0df1ae4ff4259c34a0cd3028" title="Return type of constructed data.">Type()</a>, because in the case of custom registered types derived from QObject the returned type is not QObjectStar. </p>
 
-<p>Reimplemented from <a class="el" href="classqpy_1_1PyArgConstructor.html#a7b226c60e8bbb4279afd2428bea4fe54">qpy::PyArgConstructor</a>.</p>
+<p>Implements <a class="el" href="classqpy_1_1PyArgConstructor.html#ae81d844bbc4b1ad7f7f2b9d6672361e1">qpy::PyArgConstructor</a>.</p>
 
 </div>
 </div>
@@ -194,7 +194,7 @@ QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

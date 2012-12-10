@@ -1,9 +1,9 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$classqpy_1_1DoublePyArgConstructor.html" title="PyArgConstructor implementation for double type." alt="" coords="5,270,200,442"/>
-<area shape="rect" id="node5" href="$classqpy_1_1FloatPyArgConstructor.html" title="PyArgConstructor implementation for float type." alt="" coords="224,270,408,442"/>
-<area shape="rect" id="node7" href="$classqpy_1_1IntPyArgConstructor.html" title="PyArgConstructor implementation for integer type." alt="" coords="432,270,603,442"/>
-<area shape="rect" id="node9" href="$classqpy_1_1NoPyArgConstructor.html" title="{qpy::NoPyArgConstructor\n||+ Create()\l+ Create()\l+ Clone()\l+ Type()\l}" alt="" coords="627,287,797,425"/>
+<area shape="rect" id="node3" href="$classqpy_1_1DoublePyArgConstructor.html" title="PyArgConstructor implementation for double type." alt="" coords="5,261,200,451"/>
+<area shape="rect" id="node5" href="$classqpy_1_1FloatPyArgConstructor.html" title="PyArgConstructor implementation for float type." alt="" coords="224,261,408,451"/>
+<area shape="rect" id="node7" href="$classqpy_1_1IntPyArgConstructor.html" title="PyArgConstructor implementation for integer type." alt="" coords="432,261,603,451"/>
+<area shape="rect" id="node9" href="$classqpy_1_1NoPyArgConstructor.html" title="{qpy::NoPyArgConstructor\n||+ Create()\l+ Create()\l+ Clone()\l+ Type()\l+ IsQObjectPtr()\l}" alt="" coords="627,279,797,433"/>
 <area shape="rect" id="node11" href="$classqpy_1_1ObjectStarPyArgConstructor.html" title="PyArgConstructor implementation for QObject* type." alt="" coords="821,261,1037,451"/>
-<area shape="rect" id="node13" href="$classqpy_1_1StringPyArgConstructor.html" title="PyArgConstructor implementation for QString type." alt="" coords="1061,270,1251,442"/>
-<area shape="rect" id="node15" href="$classqpy_1_1VoidPyArgConstructor.html" title="PyArgConstructor implementation for void type." alt="" coords="1275,287,1456,425"/>
+<area shape="rect" id="node13" href="$classqpy_1_1StringPyArgConstructor.html" title="PyArgConstructor implementation for QString type." alt="" coords="1061,261,1251,451"/>
+<area shape="rect" id="node15" href="$classqpy_1_1VoidPyArgConstructor.html" title="PyArgConstructor implementation for void type." alt="" coords="1275,279,1456,433"/>
 </map>

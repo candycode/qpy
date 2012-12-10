@@ -118,37 +118,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a>00033 <span class="preprocessor">#include &lt;QMetaType&gt;</span>
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035 <span class="keyword">namespace </span>qpy {
-<a name="l00038"></a><a class="code" href="classqpy_1_1PyArgConstructor.html">00038</a> <span class="keyword">class </span><a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> {
-<a name="l00039"></a>00039 <span class="keyword">public</span>:
-<a name="l00041"></a>00041     <span class="keyword">virtual</span> PyObject* <a class="code" href="classqpy_1_1PyArgConstructor.html#ad6d6fcbe051bdbfca2fd3924fc74a53b" title="Create PyObject from value returned from QObject method.">Create</a>() <span class="keyword">const</span> = 0;
-<a name="l00044"></a>00044     <span class="keyword">virtual</span> PyObject* <a class="code" href="classqpy_1_1PyArgConstructor.html#ad6d6fcbe051bdbfca2fd3924fc74a53b" title="Create PyObject from value returned from QObject method.">Create</a>( <span class="keywordtype">void</span>* ) <span class="keyword">const</span> = 0;
-<a name="l00046"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a80bcc184d87dfa417bc2ed0b50201712">00046</a>     <span class="keyword">virtual</span> <a class="code" href="classqpy_1_1PyArgConstructor.html#a80bcc184d87dfa417bc2ed0b50201712" title="Virtual destructor.">~PyArgConstructor</a>() {}
-<a name="l00048"></a>00048     <span class="keyword">virtual</span> <a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a>* <a class="code" href="classqpy_1_1PyArgConstructor.html#a63d897ef3b5d7b4db78285d740f7f21c" title="Return copy of object.">Clone</a>() <span class="keyword">const</span> = 0;
-<a name="l00050"></a>00050     <span class="keyword">virtual</span> QMetaType::Type <a class="code" href="classqpy_1_1PyArgConstructor.html#ad5aaa1b9aa62663351f7de2d68e43b0d" title="Return type of constructed data.">Type</a>() <span class="keyword">const</span> = 0;
-<a name="l00053"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a43ada27eb93c1c98958d3e9c306be167">00053</a>     QGenericReturnArgument <a class="code" href="classqpy_1_1PyArgConstructor.html#a43ada27eb93c1c98958d3e9c306be167" title="Return QGenericReturnArguments holding a reference to the memory location where the returned value is...">Argument</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ga_; }
-<a name="l00060"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a7b226c60e8bbb4279afd2428bea4fe54">00060</a>     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyArgConstructor.html#a7b226c60e8bbb4279afd2428bea4fe54" title="Return true if type is a pointer to a QObject-derived object.">IsQObjectPtr</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }
-<a name="l00061"></a>00061 <span class="keyword">protected</span>:
-<a name="l00063"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a6cc49825399f6906089b948b606dc496">00063</a>     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt; <span class="keywordtype">void</span> <a class="code" href="classqpy_1_1PyArgConstructor.html#a6cc49825399f6906089b948b606dc496" title="Creates return argument of the proper type.">SetArg</a>( T&amp; arg ) {
-<a name="l00064"></a>00064         ga_ = QReturnArgument&lt; T &gt;( QMetaType::typeName( <a class="code" href="classqpy_1_1PyArgConstructor.html#ad5aaa1b9aa62663351f7de2d68e43b0d" title="Return type of constructed data.">Type</a>() ), arg );
-<a name="l00065"></a>00065     }
-<a name="l00066"></a>00066 <span class="keyword">private</span>:    
-<a name="l00068"></a>00068     QGenericReturnArgument ga_; <span class="comment">// not private, breaks encapsulation</span>
-<a name="l00069"></a>00069 };
-<a name="l00072"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html">00072</a> <span class="keyword">class </span><a class="code" href="classqpy_1_1NoPyArgConstructor.html">NoPyArgConstructor</a> : <span class="keyword">public</span> <a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> {
-<a name="l00073"></a>00073 <span class="keyword">public</span>:
-<a name="l00074"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#ae4e148ea68a19fd4dae1062f32a7a7a3">00074</a>     PyObject* <a class="code" href="classqpy_1_1NoPyArgConstructor.html#ae4e148ea68a19fd4dae1062f32a7a7a3" title="Create PyObject from parameter passed to Python callback when signal triggered.">Create</a>( <span class="keywordtype">void</span>*  )<span class="keyword"> const </span>{
-<a name="l00075"></a>00075         Py_RETURN_NONE;
-<a name="l00076"></a>00076     }
-<a name="l00077"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#ab347cee3ecedf116252b227aa70671f5">00077</a>     PyObject* <a class="code" href="classqpy_1_1NoPyArgConstructor.html#ab347cee3ecedf116252b227aa70671f5" title="Create PyObject from value returned from QObject method.">Create</a>()<span class="keyword"> const </span>{
-<a name="l00078"></a>00078         Py_RETURN_NONE;
+<a name="l00047"></a><a class="code" href="classqpy_1_1PyArgConstructor.html">00047</a> <span class="keyword">class </span><a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> {
+<a name="l00048"></a>00048 <span class="keyword">public</span>:
+<a name="l00050"></a>00050     <span class="keyword">virtual</span> PyObject* <a class="code" href="classqpy_1_1PyArgConstructor.html#ad6d6fcbe051bdbfca2fd3924fc74a53b" title="Create PyObject from value returned from QObject method.">Create</a>() <span class="keyword">const</span> = 0;
+<a name="l00053"></a>00053     <span class="keyword">virtual</span> PyObject* <a class="code" href="classqpy_1_1PyArgConstructor.html#ad6d6fcbe051bdbfca2fd3924fc74a53b" title="Create PyObject from value returned from QObject method.">Create</a>( <span class="keywordtype">void</span>* ) <span class="keyword">const</span> = 0;
+<a name="l00055"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a80bcc184d87dfa417bc2ed0b50201712">00055</a>     <span class="keyword">virtual</span> <a class="code" href="classqpy_1_1PyArgConstructor.html#a80bcc184d87dfa417bc2ed0b50201712" title="Virtual destructor.">~PyArgConstructor</a>() {}
+<a name="l00057"></a>00057     <span class="keyword">virtual</span> <a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a>* <a class="code" href="classqpy_1_1PyArgConstructor.html#a63d897ef3b5d7b4db78285d740f7f21c" title="Return copy of object.">Clone</a>() <span class="keyword">const</span> = 0;
+<a name="l00059"></a>00059     <span class="keyword">virtual</span> QMetaType::Type <a class="code" href="classqpy_1_1PyArgConstructor.html#ad5aaa1b9aa62663351f7de2d68e43b0d" title="Return type of constructed data.">Type</a>() <span class="keyword">const</span> = 0;
+<a name="l00062"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a43ada27eb93c1c98958d3e9c306be167">00062</a>     QGenericReturnArgument <a class="code" href="classqpy_1_1PyArgConstructor.html#a43ada27eb93c1c98958d3e9c306be167" title="Return QGenericReturnArguments holding a reference to the memory location where the returned value is...">Argument</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ga_; }
+<a name="l00074"></a>00074     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyArgConstructor.html#ae81d844bbc4b1ad7f7f2b9d6672361e1" title="Return true if type is a pointer to a QObject-derived object.">IsQObjectPtr</a>() <span class="keyword">const</span> = 0;
+<a name="l00075"></a>00075 <span class="keyword">protected</span>:
+<a name="l00077"></a><a class="code" href="classqpy_1_1PyArgConstructor.html#a6cc49825399f6906089b948b606dc496">00077</a>     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt; <span class="keywordtype">void</span> <a class="code" href="classqpy_1_1PyArgConstructor.html#a6cc49825399f6906089b948b606dc496" title="Creates return argument of the proper type.">SetArg</a>( T&amp; arg ) {
+<a name="l00078"></a>00078         ga_ = QReturnArgument&lt; T &gt;( QMetaType::typeName( <a class="code" href="classqpy_1_1PyArgConstructor.html#ad5aaa1b9aa62663351f7de2d68e43b0d" title="Return type of constructed data.">Type</a>() ), arg );
 <a name="l00079"></a>00079     }
-<a name="l00080"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#aab84f793f0c5d76789b071a852615c04">00080</a>     <a class="code" href="classqpy_1_1NoPyArgConstructor.html">NoPyArgConstructor</a>* <a class="code" href="classqpy_1_1NoPyArgConstructor.html#aab84f793f0c5d76789b071a852615c04" title="Return copy of object.">Clone</a>()<span class="keyword"> const </span>{
-<a name="l00081"></a>00081         <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classqpy_1_1NoPyArgConstructor.html">NoPyArgConstructor</a>( *<span class="keyword">this</span> );
-<a name="l00082"></a>00082     }
-<a name="l00083"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#a4b0bb535e9e8814220a9f79de857e638">00083</a>     QMetaType::Type <a class="code" href="classqpy_1_1NoPyArgConstructor.html#a4b0bb535e9e8814220a9f79de857e638" title="Return type of constructed data.">Type</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> QMetaType::Void; }
-<a name="l00084"></a>00084 };
-<a name="l00085"></a>00085 <span class="keyword">typedef</span> NoPyArgConstructor NO_PY_ARG;
-<a name="l00086"></a>00086 }
+<a name="l00080"></a>00080 <span class="keyword">private</span>:    
+<a name="l00082"></a>00082     QGenericReturnArgument ga_; <span class="comment">// not private, breaks encapsulation</span>
+<a name="l00083"></a>00083 };
+<a name="l00086"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html">00086</a> <span class="keyword">class </span><a class="code" href="classqpy_1_1NoPyArgConstructor.html">NoPyArgConstructor</a> : <span class="keyword">public</span> <a class="code" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> {
+<a name="l00087"></a>00087 <span class="keyword">public</span>:
+<a name="l00088"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#ae4e148ea68a19fd4dae1062f32a7a7a3">00088</a>     PyObject* <a class="code" href="classqpy_1_1NoPyArgConstructor.html#ae4e148ea68a19fd4dae1062f32a7a7a3" title="Create PyObject from parameter passed to Python callback from Qt when signal triggered.">Create</a>( <span class="keywordtype">void</span>*  )<span class="keyword"> const </span>{
+<a name="l00089"></a>00089         Py_RETURN_NONE;
+<a name="l00090"></a>00090     }
+<a name="l00091"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#ab347cee3ecedf116252b227aa70671f5">00091</a>     PyObject* <a class="code" href="classqpy_1_1NoPyArgConstructor.html#ab347cee3ecedf116252b227aa70671f5" title="Create PyObject from value returned from QObject method.">Create</a>()<span class="keyword"> const </span>{
+<a name="l00092"></a>00092         Py_RETURN_NONE;
+<a name="l00093"></a>00093     }
+<a name="l00094"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#aab84f793f0c5d76789b071a852615c04">00094</a>     <a class="code" href="classqpy_1_1NoPyArgConstructor.html">NoPyArgConstructor</a>* <a class="code" href="classqpy_1_1NoPyArgConstructor.html#aab84f793f0c5d76789b071a852615c04" title="Return copy of object.">Clone</a>()<span class="keyword"> const </span>{
+<a name="l00095"></a>00095         <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classqpy_1_1NoPyArgConstructor.html">NoPyArgConstructor</a>( *<span class="keyword">this</span> );
+<a name="l00096"></a>00096     }
+<a name="l00097"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#a4b0bb535e9e8814220a9f79de857e638">00097</a>     QMetaType::Type <a class="code" href="classqpy_1_1NoPyArgConstructor.html#a4b0bb535e9e8814220a9f79de857e638" title="Return type of constructed data.">Type</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> QMetaType::Void; }
+<a name="l00098"></a><a class="code" href="classqpy_1_1NoPyArgConstructor.html#a3f222da333f0a2b1f76a03dfccac8e50">00098</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1NoPyArgConstructor.html#a3f222da333f0a2b1f76a03dfccac8e50" title="Return true if type is a pointer to a QObject-derived object.">IsQObjectPtr</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }
+<a name="l00099"></a>00099 };
+<a name="l00100"></a>00100 <span class="keyword">typedef</span> NoPyArgConstructor NO_PY_ARG;
+<a name="l00101"></a>00101 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -167,7 +168,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

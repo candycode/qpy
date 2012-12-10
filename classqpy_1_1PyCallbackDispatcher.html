@@ -138,7 +138,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Manages Python function invocation through Qt signals. And connection of Qt signals to Python functions or QObject methods. </p>
-<p>Offers methods to connect Qt signals emitted from QObjects to Python functions or other QObject methods. Whenever a new signal -&gt; Python connection is requested a new proxy method is generated and the signal is routed to the new method which in turn takes care of invoking the Python function. Note that when disconnecting a signal the associated method is not currently removed from the method array because signals are connected to methods through the method's position in the method array, thus removing a method from the array invalidates all the signal to method connections for which the method index is greater than the one of the removed method. </p>
+<p>Exposes methods to connect Qt signals emitted from QObjects to Python functions or other QObject methods. Whenever a new signal -&gt; Python connection is requested a new proxy method is generated and the signal is routed to the new method which in turn takes care of invoking the Python function. Note that when disconnecting a signal the associated method is not currently removed from the method array because signals are connected to methods through the method's position in the method array, thus removing a method from the array invalidates all the signal to method connections for which the method index is greater than the one of the removed method. </p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a9f4ae5c847e0788cce0028294a83b561"></a><!-- doxytag: member="qpy::PyCallbackDispatcher::Connect" ref="a9f4ae5c847e0788cce0028294a83b561" args="(QObject *obj, int signalIdx, const CBackParameterTypes &amp;paramTypes, PyCBack pyCBack, PyObject *module)" -->
 <div class="memitem">
@@ -294,7 +294,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

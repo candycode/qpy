@@ -136,20 +136,44 @@ Collaboration diagram for qpy::FloatPyArgConstructor:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaddbd1ef78432ec61a62b6ae3fc2443b"></a><!-- doxytag: member="qpy::FloatPyArgConstructor::Create" ref="aaddbd1ef78432ec61a62b6ae3fc2443b" args="(void *p) const " -->
 PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1FloatPyArgConstructor.html#aaddbd1ef78432ec61a62b6ae3fc2443b">Create</a> (void *p) const </td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from parameter passed to Python callback when signal triggered. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from parameter passed to Python callback from Qt when signal triggered. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e7b9282166fc58c6061aeadf81cc872"></a><!-- doxytag: member="qpy::FloatPyArgConstructor::Create" ref="a3e7b9282166fc58c6061aeadf81cc872" args="() const " -->
 PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1FloatPyArgConstructor.html#a3e7b9282166fc58c6061aeadf81cc872">Create</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create PyObject from value returned from QObject method. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acfee68fd353df4596e1639cbb2babb4e"></a><!-- doxytag: member="qpy::FloatPyArgConstructor::Clone" ref="acfee68fd353df4596e1639cbb2babb4e" args="() const " -->
 <a class="el" href="classqpy_1_1FloatPyArgConstructor.html">FloatPyArgConstructor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1FloatPyArgConstructor.html#acfee68fd353df4596e1639cbb2babb4e">Clone</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return copy of object. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1FloatPyArgConstructor.html#ac1cfe96e2ff9adf4d858cf4b57bc2de1">IsQObjectPtr</a> () const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return <code>true</code> if type is a pointer to a QObject-derived object.  <a href="#ac1cfe96e2ff9adf4d858cf4b57bc2de1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2a189d6128e449e39b80fa8c2e8d8dd"></a><!-- doxytag: member="qpy::FloatPyArgConstructor::Type" ref="af2a189d6128e449e39b80fa8c2e8d8dd" args="() const " -->
 QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1FloatPyArgConstructor.html#af2a189d6128e449e39b80fa8c2e8d8dd">Type</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return type of constructed data. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> implementation for <code>float</code> type. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ac1cfe96e2ff9adf4d858cf4b57bc2de1"></a><!-- doxytag: member="qpy::FloatPyArgConstructor::IsQObjectPtr" ref="ac1cfe96e2ff9adf4d858cf4b57bc2de1" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classqpy_1_1FloatPyArgConstructor.html#ac1cfe96e2ff9adf4d858cf4b57bc2de1">qpy::FloatPyArgConstructor::IsQObjectPtr</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Return <code>true</code> if type is a pointer to a QObject-derived object. </p>
+<p>This is required to have the QPy run-time add the passed QObject into the Python context. The other option is to have PyArgConstructors::Create receive a reference to a <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> which introduces a two-way dependency between <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> and <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>; this would also augment PyQArgConstructor requirements with the added responsibility of having to add instances to Python. Note that it is not enough to simply check the <a class="el" href="classqpy_1_1PyArgConstructor.html" title="Abstract base class for return constructors which create PyObjects from C++ values.">PyArgConstructor</a> returned <a class="el" href="classqpy_1_1FloatPyArgConstructor.html#af2a189d6128e449e39b80fa8c2e8d8dd" title="Return type of constructed data.">Type()</a>, because in the case of custom registered types derived from QObject the returned type is not QObjectStar. </p>
+
+<p>Implements <a class="el" href="classqpy_1_1PyArgConstructor.html#ae81d844bbc4b1ad7f7f2b9d6672361e1">qpy::PyArgConstructor</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="PyDefaultArguments_8h_source.html">PyDefaultArguments.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -170,7 +194,7 @@ QMetaType::Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 17:15:32 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
