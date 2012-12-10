@@ -185,6 +185,7 @@ public:
     IntPyArgConstructor* Clone() const {
         return new IntPyArgConstructor( *this );
     }
+    bool IsQObjectPtr() const { return false; }
     QMetaType::Type Type() const { return QMetaType::Int; }
 private:
     int i_; 
@@ -208,6 +209,7 @@ public:
     StringPyArgConstructor* Clone() const {
         return new StringPyArgConstructor( *this );
     }
+    bool IsQObjectPtr() const { return false; }
     QMetaType::Type Type() const { return QMetaType::QString; }
 private:
     QString s_; 
@@ -231,6 +233,7 @@ public:
     DoublePyArgConstructor* Clone() const {
         return new DoublePyArgConstructor( *this );
     }
+    bool IsQObjectPtr() const { return false; }
     QMetaType::Type Type() const { return QMetaType::Double; }
 private:
     double d_; 
@@ -254,6 +257,7 @@ public:
     FloatPyArgConstructor* Clone() const {
         return new FloatPyArgConstructor( *this );
     }
+    bool IsQObjectPtr() const { return false; }
     QMetaType::Type Type() const { return QMetaType::Float; }
 private:
     float f_; 
@@ -269,6 +273,7 @@ public:
     VoidPyArgConstructor* Clone() const {
         return new VoidPyArgConstructor( *this );
     }
+    bool IsQObjectPtr() const { return false; }
     QMetaType::Type Type() const { return QMetaType::Void; }
 };
 

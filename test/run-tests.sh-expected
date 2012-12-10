@@ -1,20 +1,20 @@
 __________________________________
 
-./baseclass.py
+../test/baseclass.py
 
 __________________________________
 
-./basic-data.py
+../test/basic-data.py
 
 __________________________________
 
-./connect.py
+../test/connect.py
 
 __________________________________
 
-./cyclic.py
+../test/cyclic.py
 
 __________________________________
 
-./qpy-test.py
+../test/qpy-test.py
 

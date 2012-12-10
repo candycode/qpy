@@ -26,15 +26,37 @@
 
 TEST_DRIVER=$1
 TEST_DIR=$2
-
+PASSED=0
+FAILED=0
 if [ -z $TEST_DRIVER ] || [ -z $TEST_DIR ]; then
   echo "Usage: $0 <test driver> <test directory>" 
 else
   for f in $( ls $TEST_DIR/*.py ); do
+  	TOTAL=$[TOTAL+1]
     echo "__________________________________"
     echo
     echo $f
     echo
     diff <( $TEST_DRIVER $f ) <( cat $f-expected )
+    if [ $? -eq 0 ]; then
+      echo "== OK =="
+      PASSED=$[PASSED+1]
+    else
+      echo	
+      echo "!!!!!! FAILED !!!!!!"
+      FAILED=$[FAILED+1]
+    fi    
   done  
 fi
+echo
+echo "=================================="
+echo
+TOTAL=$[PASSED + FAILED]
+echo "Total tests: $TOTAL"
+echo "Passed       $PASSED"
+echo "Failed:      $FAILED"
+if [ $FAILED -ne 0 ]; then
+  echo "!!!!!!!!!! FAILED !!!!!!!!!!!"
+else
+  echo "=== PASSED ==="
+fi  

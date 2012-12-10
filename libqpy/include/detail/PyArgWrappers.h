@@ -99,7 +99,7 @@ public:
     PyObject* Create( void* p ) const {
         return ac_->Create( p );
     }
-    /// @brief retunr placeholder for storing Qt return argument
+    /// @brief return placeholder for storing Qt return argument
     QGenericReturnArgument Arg() const { return ac_->Argument(); }
     /// Type name.
     QString Type() const { 
@@ -108,9 +108,13 @@ public:
     }
     /// Meta type.
     QMetaType::Type MetaType() const { return ac_->Type(); }
-    /// Return true if wrapped type is QObject pointer.
+    /// Return true if wrapped type is QObject pointer. Required
+    /// to have PyContext add QObject wrappers to the Python interpreter.
+    /// Note that it is not enough to check the value returned by MetaType()
+    /// because custom registered objects derived from QObject do not have
+    /// a QMetaType::QObjectStar type. 
     bool IsQObjectPtr() const { return ac_->IsQObjectPtr(); }
-    /// Delete LArgConstructor instance.
+    /// Delete PyArgConstructor instance.
     ~PyArgWrapper() { delete ac_; }
 private:
     /// PyArgConstructor instance created at construction time.

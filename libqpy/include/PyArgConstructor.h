@@ -34,13 +34,22 @@
 
 namespace qpy {
 /// @brief Abstract base class for return constructors which create PyObjects
-/// from C++ values. 
+/// from C++ values.
+///
+/// There are two cases where data need to converted from Qt-C++ to Python:
+/// -# Python function/method invocation as a result of Qt signal triggered
+/// -# Return value of Qt-C++ method invoked from Python
+///
+/// In the case of (1) each parameter is directly converted to its Python
+/// format; in the case of (2) the return value must first be stored into
+/// a memory location passed to the method invocation function, and then
+/// be converted into Python format.
 class PyArgConstructor {
 public:
     /// @brief Create PyObject from value returned from QObject method.
     virtual PyObject* Create() const = 0;
     /// @brief Create PyObject from parameter passed to Python callback
-    /// when signal triggered
+    /// from Qt when signal triggered
     virtual PyObject* Create( void* ) const = 0;
     /// Virtual destructor.
     virtual ~PyArgConstructor() {}
@@ -56,8 +65,13 @@ public:
     /// This is required to have the QPy run-time add the passed QObject into
     /// the Python context. The other option is to have PyArgConstructors::Create
     /// receive a reference to a PyContext which introduces a two-way
-    /// dependency between PyArgConstructor and PyContext.
-    virtual bool IsQObjectPtr() const { return false; }
+    /// dependency between PyArgConstructor and PyContext; this would
+    /// also augment PyQArgConstructor requirements with the added responsibility
+    /// of having to add instances to Python.
+    /// Note that it is not enough to simply check the PyArgConstructor returned
+    /// Type(), because in the case of custom registered types derived from QObject
+    /// the returned type is not QObjectStar. 
+    virtual bool IsQObjectPtr() const = 0;
 protected:
     /// Creates return argument of the proper type.
     template < typename T > void SetArg( T& arg ) {
@@ -81,6 +95,7 @@ public:
         return new NoPyArgConstructor( *this );
     }
     QMetaType::Type Type() const { return QMetaType::Void; }
+    bool IsQObjectPtr() const { return false; }
 };
 typedef NoPyArgConstructor NO_PY_ARG;
 }
