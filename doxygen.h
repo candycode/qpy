@@ -52,8 +52,8 @@ All it's needed to access QPy functionality is to create an instance
 of \c PyContext and use its methods to add types and objects to Python
 modules.
 
-You make QPy functions such as \connect and \disconnect available from
-Python code by explicitly init a module with the function table returned
+You make QPy functions such as \c connect and \c disconnect available from
+Python code by explicitly initializing a module with the function table returned
 by qpy::PyContext::ModuleFunctions() method.
 
 You add new types and instances by invoking qpy::PyContext::Add<Type> and

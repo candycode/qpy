@@ -139,9 +139,11 @@ PyMethodDef* PyContext::ModuleFunctions() {
         { "disconnect", reinterpret_cast< PyCFunction >( PyQObjectDisconnect ), METH_VARARGS,
           "Disconnect Qt signal from Python function or method" },
         { "qobject_ptr", reinterpret_cast< PyCFunction >( PyQObjectPtr ), METH_VARARGS,
-          "Return pointer to embedded QObject" },           
+          "Return pointer to embedded QObject" },
+        { "tr",reinterpret_cast< PyCFunction >( PyQObjectTr), METH_VARARGS,
+          "Translate string" },             
         {0}
-                                    };
+    };
     return functions;
 }  
 
@@ -227,7 +229,7 @@ PyArgWrapper PyContext::GeneratePyArgWrapper( QString typeName ) {
 //============================================================================
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args ) {
     signal_ = false;
     PyObject* sourceObject = 0;
     const char* sourceMethod = 0;
@@ -307,7 +309,7 @@ PyObject* PyContext::PyQObjectConnect( PyObject* self, PyObject* args, PyObject*
 }
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectDisconnect( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectDisconnect( PyObject* self, PyObject* args ) {
     signal_ = false;
     PyObject* sourceObject = 0;
     const char* sourceMethod = 0;
@@ -387,7 +389,7 @@ PyObject* PyContext::PyQObjectDisconnect( PyObject* self, PyObject* args, PyObje
 }
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectIsForeignOwned( PyObject* self, PyObject* args ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
     if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
@@ -400,7 +402,7 @@ PyObject* PyContext::PyQObjectIsForeignOwned( PyObject* self, PyObject* args, Py
 }
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectIsQObject( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectIsQObject( PyObject* self, PyObject* args ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
     if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
@@ -411,7 +413,7 @@ PyObject* PyContext::PyQObjectIsQObject( PyObject* self, PyObject* args, PyObjec
 }
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectAcquire( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectAcquire( PyObject* self, PyObject* args ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
     if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
@@ -425,7 +427,7 @@ PyObject* PyContext::PyQObjectAcquire( PyObject* self, PyObject* args, PyObject*
 }
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectRelease( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectRelease( PyObject* self, PyObject* args ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
     if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
@@ -439,7 +441,7 @@ PyObject* PyContext::PyQObjectRelease( PyObject* self, PyObject* args, PyObject*
 }
 
 //----------------------------------------------------------------------------
-PyObject* PyContext::PyQObjectPtr( PyObject* self, PyObject* args, PyObject* kwargs ) {
+PyObject* PyContext::PyQObjectPtr( PyObject* self, PyObject* args ) {
     PyObject* obj = 0;
     PyArg_ParseTuple( args, "O", &obj );
     if( PyObject_HasAttrString( obj, "__qpy_qobject_tag__" ) ) {
@@ -609,6 +611,16 @@ int PyContext::PyQObjectInit( PyQObject* self, PyObject* args, PyObject* kwds ) 
     self->invoke = PyCFunction_NewEx( &md, reinterpret_cast< PyObject* >( self ),
                                       PyString_FromString( md.ml_name ) );   
     return 0;
+}
+
+//----------------------------------------------------------------------------
+PyObject* PyContext::PyQObjectTr( PyObject* self, PyObject* args ) {
+    const char* s = 0;
+    if( !PyArg_ParseTuple( args, "s", &s ) ) {
+        RaisePyError( "Not a string", PyExc_TypeError );
+        return 0;
+    }
+    return PyString_FromString( qPrintable( QObject::tr( s ) ) );
 }
 
 //----------------------------------------------------------------------------

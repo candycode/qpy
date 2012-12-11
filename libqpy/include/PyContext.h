@@ -296,18 +296,19 @@ private:
     typedef QMap< QVariant::Type, QVariantToPyObject* > QVariantToPyObjectMapType;
     typedef QMap< QVariant::Type, PyObjectToQVariant* > PyObjectToQVariantMapType;    
 private:
-    static PyObject* PyQObjectConnect( PyObject* self, PyObject* args, PyObject* kwargs );
-    static PyObject* PyQObjectDisconnect( PyObject* self, PyObject* args, PyObject* kwargs );
-    static PyObject* PyQObjectIsForeignOwned( PyObject* self, PyObject* args, PyObject* kwargs );
-    static PyObject* PyQObjectIsQObject( PyObject* self, PyObject* args, PyObject* kwargs );
-    static PyObject* PyQObjectAcquire( PyObject* self, PyObject* args, PyObject* kwargs );
-    static PyObject* PyQObjectRelease( PyObject* self, PyObject* args, PyObject* kwargs );
-    static PyObject* PyQObjectPtr( PyObject* self, PyObject* args, PyObject* kwargs );
+    static PyObject* PyQObjectConnect( PyObject* self, PyObject* args );
+    static PyObject* PyQObjectDisconnect( PyObject* self, PyObject* args );
+    static PyObject* PyQObjectIsForeignOwned( PyObject* self, PyObject* args );
+    static PyObject* PyQObjectIsQObject( PyObject* self, PyObject* args );
+    static PyObject* PyQObjectAcquire( PyObject* self, PyObject* args );
+    static PyObject* PyQObjectRelease( PyObject* self, PyObject* args );
+    static PyObject* PyQObjectPtr( PyObject* self, PyObject* args );
     static PyObject* PyQObjectGetter( PyQObject* qobj, void* closure /*method id*/ );
     static int PyQObjectSetter( PyQObject*, PyObject*, void* closure );
     static PyObject* PyQObjectNew( PyTypeObject* type, PyObject*, PyObject* );
     static PyObject* PyQObjectInvokeMethod( PyQObject* self, PyObject* args );
     static int PyQObjectInit( PyQObject* self, PyObject* args, PyObject* kwds );
+    static PyObject* PyQObjectTr( PyObject* self, PyObject* args );
     static void PyQObjectDealloc( PyQObject* self );
 private:
     PyTypeObject CreatePyType( const Type& type );
