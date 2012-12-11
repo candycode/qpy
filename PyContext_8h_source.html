@@ -203,190 +203,196 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00143"></a>00143         InitArgFactory();
 <a name="l00144"></a>00144         InitQVariantPyObjectMaps();
 <a name="l00145"></a>00145     }
-<a name="l00146"></a>00146     ~<a class="code" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>() {
-<a name="l00147"></a>00147         <span class="keywordflow">for</span>( QVariantToPyObjectMapType::iterator i = qvariantToPyObject_.begin();
-<a name="l00148"></a>00148              i != qvariantToPyObject_.end(); ++i ) {
-<a name="l00149"></a>00149             <span class="keywordflow">if</span>( !i.value()-&gt;ForeignOwned() ) <span class="keyword">delete</span> i.value();
-<a name="l00150"></a>00150         }
-<a name="l00151"></a>00151         <span class="keywordflow">for</span>( PyObjectToQVariantMapType::iterator i = pyObjectToQVariant_.begin();
-<a name="l00152"></a>00152              i != pyObjectToQVariant_.end(); ++i ) {
-<a name="l00153"></a>00153             <span class="keywordflow">if</span>( !i.value()-&gt;ForeignOwned() ) <span class="keyword">delete</span> i.value();
-<a name="l00154"></a>00154         }      
-<a name="l00155"></a>00155     }
-<a name="l00156"></a>00156     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* Version();
-<a name="l00157"></a>00157     <span class="keywordtype">void</span> AddGlobals( PyObject* module ) {
-<a name="l00158"></a>00158         PyModule_AddStringConstant( module, <span class="stringliteral">&quot;__version__&quot;</span>, Version() );
-<a name="l00159"></a>00159     }    
-<a name="l00160"></a>00160     PyTypeObject* AddType( <span class="keyword">const</span> QMetaObject* mo, 
-<a name="l00161"></a>00161                            PyObject* module,
-<a name="l00162"></a>00162                            <span class="keywordtype">bool</span> checkConstructor = <span class="keyword">true</span>,
-<a name="l00163"></a>00163                            <span class="keyword">const</span> QSet&lt; QString &gt;&amp; selectedMembers = QSet&lt; QString &gt;(),
-<a name="l00164"></a>00164                            <span class="keyword">const</span> PyMemberNameMapper&amp; mm = DefaultMemberNameMapper(),
-<a name="l00165"></a>00165                            <span class="keyword">const</span> <span class="keywordtype">char</span>* className = 0,
-<a name="l00166"></a>00166                            <span class="keyword">const</span> <span class="keywordtype">char</span>* doc = 0 );
-<a name="l00167"></a>00167     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt; <span class="keywordtype">void</span> Add( PyObject* module ) {
-<a name="l00168"></a>00168         AddType( &amp;T::staticMetaObject, module );    
-<a name="l00169"></a>00169     }
-<a name="l00170"></a>00170     PyMethodDef* ModuleFunctions();
-<a name="l00171"></a>00171     PyObject* AddObject( QObject* qobj, 
-<a name="l00172"></a>00172                          PyObject* targetModule, <span class="comment">// where instance is added </span>
-<a name="l00173"></a>00173                          PyObject* typeModule, <span class="comment">// where type is defined</span>
-<a name="l00174"></a>00174                          <span class="keyword">const</span> <span class="keywordtype">char</span>* instanceName,
-<a name="l00175"></a>00175                          <span class="keywordtype">bool</span> pythonOwned = <span class="keyword">false</span>,
-<a name="l00176"></a>00176                          <span class="keyword">const</span> QSet&lt; QString &gt;&amp; selectedMembers = QSet&lt; QString &gt;(),
-<a name="l00177"></a>00177                          <span class="keyword">const</span> PyMemberNameMapper&amp; mm = DefaultMemberNameMapper() );
-<a name="l00181"></a>00181     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> QArgConstructorT, <span class="keyword">typename</span> PyArgConstructorT &gt; 
-<a name="l00182"></a><a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">00182</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( <span class="keyword">const</span> QString&amp; typeName, <span class="keywordtype">bool</span> overwrite = <span class="keyword">false</span> ) {
-<a name="l00183"></a>00183         <span class="keywordflow">return</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( typeName, <span class="keyword">new</span> QArgConstructorT, <span class="keyword">new</span> PyArgConstructorT, overwrite );
-<a name="l00184"></a>00184     }
-<a name="l00185"></a>00185     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> QArgConstructorT, <span class="keyword">typename</span> PyArgConstructorT &gt; 
-<a name="l00186"></a>00186     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( QMetaType::Type t, <span class="keywordtype">bool</span> overwrite = <span class="keyword">false</span> ) {
-<a name="l00187"></a>00187         <span class="keywordflow">return</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( QMetaType::typeName( t ), 
-<a name="l00188"></a>00188                              <span class="keyword">new</span> QArgConstructorT, <span class="keyword">new</span> PyArgConstructorT, overwrite );
-<a name="l00189"></a>00189     }
-<a name="l00193"></a>00193     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> QArgConstructorT, <span class="keyword">typename</span> PyArgConstructorT &gt; 
-<a name="l00194"></a><a class="code" href="classqpy_1_1PyContext.html#a5c0e1b47f6ead8f5671d2706ecf8d8f2">00194</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a5c0e1b47f6ead8f5671d2706ecf8d8f2">RegisterType</a>( <span class="keyword">const</span> QString&amp; typeName, <span class="keywordtype">bool</span> overwrite = <span class="keyword">false</span> ) {
-<a name="l00195"></a>00195         <span class="keywordflow">return</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( qRegisterMetaType&lt; T &gt;( typeName.toAscii().constData() ),
-<a name="l00196"></a>00196                              <span class="keyword">new</span> QArgConstructorT, <span class="keyword">new</span> PyArgConstructorT, overwrite );
-<a name="l00197"></a>00197     }
-<a name="l00198"></a>00198     <span class="keywordtype">void</span> RegisterQVariantToPyObject( QVariant::Type t,  <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>* qp ) {
-<a name="l00199"></a>00199         <span class="keywordflow">if</span>( qvariantToPyObject_.contains( t ) ) {
-<a name="l00200"></a>00200             <span class="keywordflow">if</span>( !qvariantToPyObject_[ t ]-&gt;ForeignOwned() ) <span class="keyword">delete</span> qvariantToPyObject_[ t ];
-<a name="l00201"></a>00201         }
-<a name="l00202"></a>00202         qvariantToPyObject_[ t ] = qp;
-<a name="l00203"></a>00203     }
-<a name="l00204"></a>00204     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;
-<a name="l00205"></a>00205     <span class="keywordtype">int</span> RegisterQVariantToPyObject( QVariantToPyObject* qp ) {
-<a name="l00206"></a>00206         <span class="keyword">const</span> <span class="keywordtype">int</span> <span class="keywordtype">id</span> = qRegisterMetaType&lt; T &gt;();
-<a name="l00207"></a>00207         RegisterQVariantToPyObject( QVariant::Type( <span class="keywordtype">id</span> ), qp );
-<a name="l00208"></a>00208         <span class="keywordflow">return</span> id;
-<a name="l00209"></a>00209     }
-<a name="l00210"></a>00210     <span class="keywordtype">void</span> RegisterPyObjectToQVariant( QVariant::Type t,  PyObjectToQVariant* qp ) {
-<a name="l00211"></a>00211         <span class="keywordflow">if</span>( pyObjectToQVariant_.contains( t ) ) {
-<a name="l00212"></a>00212             <span class="keywordflow">if</span>( !pyObjectToQVariant_[ t ]-&gt;ForeignOwned() ) <span class="keyword">delete</span> pyObjectToQVariant_[ t ];
-<a name="l00213"></a>00213         }
-<a name="l00214"></a>00214         pyObjectToQVariant_[ t ] = qp;
-<a name="l00215"></a>00215     }
-<a name="l00216"></a>00216     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;
-<a name="l00217"></a>00217     <span class="keywordtype">int</span> RegisterPyObjectToQVariant( PyObjectToQVariant* qp ) {
-<a name="l00218"></a>00218         <span class="keyword">const</span> <span class="keywordtype">int</span> <span class="keywordtype">id</span> = qRegisterMetaType&lt; T &gt;();
-<a name="l00219"></a>00219         RegisterPyObjectToQVariant( qMetaTypeId&lt; T &gt;, qp );
-<a name="l00220"></a>00220         <span class="keywordflow">return</span> id;
-<a name="l00221"></a>00221     }
-<a name="l00222"></a>00222     <span class="keywordtype">void</span> UnRegisterType( <span class="keyword">const</span> QString&amp; typeName ) {
-<a name="l00223"></a>00223         <span class="keywordflow">if</span>( !argFactory_.contains( typeName ) ) <span class="keywordflow">return</span>;    
-<a name="l00224"></a>00224         argFactory_.erase( argFactory_.find( typeName ) );
-<a name="l00225"></a>00225     }
-<a name="l00230"></a><a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html">00230</a>     <span class="keyword">struct </span><a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a> {
-<a name="l00231"></a>00231         <span class="keywordtype">bool</span> qtToPy;
-<a name="l00232"></a>00232         <span class="keywordtype">bool</span> pyToQt;
-<a name="l00233"></a>00233         QString typeName;
-<a name="l00234"></a>00234         operator bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> qtToPy || pyToQt; }
-<a name="l00235"></a>00235         <a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a>() : qtToPy( <span class="keyword">false</span> ), pyToQt( <span class="keyword">false</span> ) {}
-<a name="l00236"></a>00236     };
-<a name="l00237"></a>00237     <a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a> RegTypeInfo( <span class="keyword">const</span> QString&amp; t )<span class="keyword"> const </span>{
-<a name="l00238"></a>00238         <a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a> tc;
-<a name="l00239"></a>00239         <span class="keywordflow">if</span>( !argFactory_.contains( t ) ) <span class="keywordflow">return</span> tc;
-<a name="l00240"></a>00240         tc.pyToQt = <span class="keyword">dynamic_cast&lt;</span> <span class="keyword">const </span><a class="code" href="structqpy_1_1NoQArgConstructor.html" title="Used to specify that Python -&gt; Qt constructor not available when registering new types through PyCont...">NoQArgConstructor</a>* <span class="keyword">&gt;</span>( argFactory_[ t ].QArgCtor() ) == 0;
-<a name="l00241"></a>00241         tc.qtToPy = <span class="keyword">dynamic_cast&lt;</span> <span class="keyword">const </span><a class="code" href="classqpy_1_1NoPyArgConstructor.html" title="Use this type to specify that no Qt -&gt; Python conversion exists for a type when registering types thr...">NoPyArgConstructor</a>* <span class="keyword">&gt;</span>( argFactory_[ t ].PyArgCtor() )  == 0;    
-<a name="l00242"></a>00242         tc.typeName = t;
-<a name="l00243"></a>00243         <span class="keywordflow">return</span> tc;
-<a name="l00244"></a>00244     }
-<a name="l00245"></a>00245     QList&lt; TypeConstruction &gt; RegisteredTypes()<span class="keyword"> const </span>{
-<a name="l00246"></a>00246         QList&lt; TypeConstruction &gt; tc;
-<a name="l00247"></a>00247         <span class="keywordflow">for</span>( ArgFactory::const_iterator i = argFactory_.begin(); i != argFactory_.end(); ++i ) {
-<a name="l00248"></a>00248             tc.push_back( RegTypeInfo( i.key() ) );
-<a name="l00249"></a>00249         }
-<a name="l00250"></a>00250         <span class="keywordflow">return</span> tc;
-<a name="l00251"></a>00251     }
-<a name="l00252"></a>00252 <span class="keyword">private</span>:
-<a name="l00254"></a>00254     <span class="keywordtype">void</span> InitArgFactory();
-<a name="l00256"></a>00256     <span class="keywordtype">void</span> InitQVariantPyObjectMaps();
-<a name="l00259"></a>00259     QArgWrappers GenerateQArgWrappers( <span class="keyword">const</span> ArgumentTypes&amp; at );
-<a name="l00261"></a>00261     PyArgWrapper GeneratePyArgWrapper( QString typeName );
-<a name="l00262"></a>00262 <span class="keyword">private</span>:
-<a name="l00263"></a>00263     <span class="keyword">class </span>ArgFactoryEntry {
-<a name="l00264"></a>00264     <span class="keyword">public</span>:
-<a name="l00265"></a>00265         ArgFactoryEntry() : qac_( 0 ), pac_( 0 ) {}
-<a name="l00266"></a>00266         ArgFactoryEntry( <span class="keyword">const</span> ArgFactoryEntry&amp; fe ) 
-<a name="l00267"></a>00267             : typeName_( fe.typeName_ ), qac_( 0 ), pac_( 0 ) {
-<a name="l00268"></a>00268                 <span class="keywordflow">if</span>( fe.qac_ ) qac_ = fe.qac_-&gt;Clone();
-<a name="l00269"></a>00269                 <span class="keywordflow">if</span>( fe.pac_ ) pac_ = fe.pac_-&gt;Clone();
-<a name="l00270"></a>00270         }
-<a name="l00271"></a>00271         ArgFactoryEntry( <span class="keyword">const</span> QString&amp; tn, QArgConstructor* qac, PyArgConstructor* pac )
-<a name="l00272"></a>00272             : typeName_( tn ), qac_( qac ), pac_( pac ) {}
-<a name="l00273"></a>00273         <span class="keyword">const</span> ArgFactoryEntry&amp; operator=( <span class="keyword">const</span> ArgFactoryEntry&amp; fe ) {
-<a name="l00274"></a>00274             typeName_ = fe.typeName_;
-<a name="l00275"></a>00275             qac_ = fe.qac_ ? fe.qac_-&gt;Clone() : 0;
-<a name="l00276"></a>00276             pac_ = fe.pac_ ? fe.pac_-&gt;Clone() : 0;
-<a name="l00277"></a>00277             <span class="keywordflow">return</span> *<span class="keyword">this</span>;
-<a name="l00278"></a>00278         }    
-<a name="l00279"></a>00279         ~ArgFactoryEntry() {
-<a name="l00280"></a>00280             <span class="keyword">delete</span> qac_;
-<a name="l00281"></a>00281             <span class="keyword">delete</span> pac_;
-<a name="l00282"></a>00282         }
-<a name="l00283"></a>00283         <span class="keyword">const</span> QArgConstructor* QArgCtor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> qac_; }
-<a name="l00284"></a>00284         <span class="keyword">const</span> PyArgConstructor* PyArgCtor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> pac_; }
-<a name="l00285"></a>00285         QArgConstructor* MakeQArgConstructor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> qac_-&gt;Clone(); }
-<a name="l00286"></a>00286         PyArgConstructor* MakePyArgConstructor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> pac_-&gt;Clone(); }
-<a name="l00287"></a>00287         <span class="keyword">const</span> QString&amp; TypeName()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> typeName_; }
-<a name="l00288"></a>00288     <span class="keyword">private</span>:
-<a name="l00289"></a>00289         QString typeName_;
-<a name="l00290"></a>00290         QArgConstructor* qac_;
-<a name="l00291"></a>00291         PyArgConstructor* pac_;
-<a name="l00292"></a>00292     };
-<a name="l00293"></a>00293     <span class="keyword">typedef</span> QMap&lt; QString, ArgFactoryEntry &gt; ArgFactory;
-<a name="l00294"></a>00294     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( <span class="keyword">const</span> QString&amp; typeName, QArgConstructor* qac, PyArgConstructor* pac, <span class="keywordtype">bool</span> overwrite ) {
-<a name="l00295"></a>00295         <span class="keyword">const</span> <span class="keywordtype">bool</span> typeExist = argFactory_.contains( typeName );
-<a name="l00296"></a>00296         <span class="keywordflow">if</span>( typeExist &amp;&amp; !overwrite ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00297"></a>00297         argFactory_[ typeName ] = ArgFactoryEntry( typeName, qac, pac );
-<a name="l00298"></a>00298         <span class="keywordflow">return</span> <span class="keyword">true</span>; 
-<a name="l00299"></a>00299     }
-<a name="l00300"></a>00300     Type* ExistingType( <span class="keyword">const</span> QMetaObject* mo, PyObject* module ) {
-<a name="l00301"></a>00301         <span class="keywordflow">for</span>( Types::iterator i = types_.begin(); i != types_.end(); ++i ) {
-<a name="l00302"></a>00302             <span class="keywordflow">if</span>( i-&gt;metaObject-&gt;className() == mo-&gt;className() &amp;&amp; 
-<a name="l00303"></a>00303                 i-&gt;pyModule == module ) <span class="keywordflow">return</span> &amp;( *i );
-<a name="l00304"></a>00304         }
-<a name="l00305"></a>00305         <span class="keywordflow">return</span> 0;    
-<a name="l00306"></a>00306     }
-<a name="l00307"></a>00307     <span class="keyword">typedef</span> QMap&lt; QVariant::Type, QVariantToPyObject* &gt; QVariantToPyObjectMapType;
-<a name="l00308"></a>00308     <span class="keyword">typedef</span> QMap&lt; QVariant::Type, PyObjectToQVariant* &gt; PyObjectToQVariantMapType;    
-<a name="l00309"></a>00309 <span class="keyword">private</span>:
-<a name="l00310"></a>00310     <span class="keyword">static</span> PyObject* PyQObjectConnect( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00311"></a>00311     <span class="keyword">static</span> PyObject* PyQObjectDisconnect( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00312"></a>00312     <span class="keyword">static</span> PyObject* PyQObjectIsForeignOwned( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00313"></a>00313     <span class="keyword">static</span> PyObject* PyQObjectIsQObject( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00314"></a>00314     <span class="keyword">static</span> PyObject* PyQObjectAcquire( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00315"></a>00315     <span class="keyword">static</span> PyObject* PyQObjectRelease( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00316"></a>00316     <span class="keyword">static</span> PyObject* PyQObjectPtr( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00317"></a>00317     <span class="keyword">static</span> PyObject* PyQObjectGetter( PyQObject* qobj, <span class="keywordtype">void</span>* closure <span class="comment">/*method id*/</span> );
-<a name="l00318"></a>00318     <span class="keyword">static</span> <span class="keywordtype">int</span> PyQObjectSetter( PyQObject*, PyObject*, <span class="keywordtype">void</span>* closure );
-<a name="l00319"></a>00319     <span class="keyword">static</span> PyObject* PyQObjectNew( PyTypeObject* type, PyObject*, PyObject* );
-<a name="l00320"></a>00320     <span class="keyword">static</span> PyObject* PyQObjectInvokeMethod( PyQObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00321"></a>00321     <span class="keyword">static</span> <span class="keywordtype">int</span> PyQObjectInit( PyQObject* <span class="keyword">self</span>, PyObject* args, PyObject* kwds );
-<a name="l00322"></a>00322     <span class="keyword">static</span> PyObject* PyQObjectTr( PyObject* <span class="keyword">self</span>, PyObject* args );
-<a name="l00323"></a>00323     <span class="keyword">static</span> <span class="keywordtype">void</span> PyQObjectDealloc( PyQObject* <span class="keyword">self</span> );
-<a name="l00324"></a>00324 <span class="keyword">private</span>:
-<a name="l00325"></a>00325     PyTypeObject CreatePyType( <span class="keyword">const</span> Type&amp; type );
-<a name="l00326"></a>00326     <span class="keyword">struct </span>ConnectEntry {
-<a name="l00327"></a>00327         PyQObject* pyqobj;
-<a name="l00328"></a>00328         <span class="keywordtype">int</span> methodId;
-<a name="l00329"></a>00329         ConnectEntry() : pyqobj( 0 ), methodId( -1 ) {}
-<a name="l00330"></a>00330         ConnectEntry( PyQObject* p, <span class="keywordtype">int</span> m ) : pyqobj( p ), methodId( m ) {}
+<a name="l00148"></a><a class="code" href="classqpy_1_1PyContext.html#aa10223691922c0975c6804c7d60dcb1b">00148</a>     <a class="code" href="classqpy_1_1PyContext.html#aa10223691922c0975c6804c7d60dcb1b">~PyContext</a>() {
+<a name="l00149"></a>00149         <span class="keywordflow">for</span>( QVariantToPyObjectMapType::iterator i = qvariantToPyObject_.begin();
+<a name="l00150"></a>00150              i != qvariantToPyObject_.end(); ++i ) {
+<a name="l00151"></a>00151             <span class="keywordflow">if</span>( !i.value()-&gt;ForeignOwned() ) <span class="keyword">delete</span> i.value();
+<a name="l00152"></a>00152         }
+<a name="l00153"></a>00153         <span class="keywordflow">for</span>( PyObjectToQVariantMapType::iterator i = pyObjectToQVariant_.begin();
+<a name="l00154"></a>00154              i != pyObjectToQVariant_.end(); ++i ) {
+<a name="l00155"></a>00155             <span class="keywordflow">if</span>( !i.value()-&gt;ForeignOwned() ) <span class="keyword">delete</span> i.value();
+<a name="l00156"></a>00156         }      
+<a name="l00157"></a>00157     }
+<a name="l00159"></a>00159     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classqpy_1_1PyContext.html#af22374f1f5fd7d97ed704006a55148bf" title="Return version info.">Version</a>();
+<a name="l00161"></a><a class="code" href="classqpy_1_1PyContext.html#a9902caa0764a60b2cc3f27df5cffeec8">00161</a>     <span class="keywordtype">void</span> <a class="code" href="classqpy_1_1PyContext.html#a9902caa0764a60b2cc3f27df5cffeec8" title="Add QPy globals to Python interpreter; currently only __version__ is added.">AddGlobals</a>( PyObject* module ) {
+<a name="l00162"></a>00162         PyModule_AddStringConstant( module, <span class="stringliteral">&quot;__version__&quot;</span>, <a class="code" href="classqpy_1_1PyContext.html#af22374f1f5fd7d97ed704006a55148bf" title="Return version info.">Version</a>() );
+<a name="l00163"></a>00163     }    
+<a name="l00178"></a>00178     PyTypeObject* <a class="code" href="classqpy_1_1PyContext.html#a7c1426069e4f98ddc0796cd8dbbe6170">AddType</a>( <span class="keyword">const</span> QMetaObject* mo, 
+<a name="l00179"></a>00179                            PyObject* module,
+<a name="l00180"></a>00180                            <span class="keywordtype">bool</span> checkConstructor = <span class="keyword">true</span>,
+<a name="l00181"></a>00181                            <span class="keyword">const</span> QSet&lt; QString &gt;&amp; selectedMembers = QSet&lt; QString &gt;(),
+<a name="l00182"></a>00182                            <span class="keyword">const</span> <a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a>&amp; mm = <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass-through: simply copies the names from Qt to Python without translation...">DefaultMemberNameMapper</a>(),
+<a name="l00183"></a>00183                            <span class="keyword">const</span> <span class="keywordtype">char</span>* className = 0,
+<a name="l00184"></a>00184                            <span class="keyword">const</span> <span class="keywordtype">char</span>* doc = 0 );
+<a name="l00196"></a><a class="code" href="classqpy_1_1PyContext.html#a01bf244cd5b64d9506d957b7f9b23082">00196</a>     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt; <span class="keywordtype">void</span> <a class="code" href="classqpy_1_1PyContext.html#a01bf244cd5b64d9506d957b7f9b23082">Add</a>( PyObject* module,
+<a name="l00197"></a>00197                                       <span class="keywordtype">bool</span> checkConstructor = <span class="keyword">true</span>,
+<a name="l00198"></a>00198                                       <span class="keyword">const</span> QSet&lt; QString &gt;&amp; selectedMembers = QSet&lt; QString &gt;(),
+<a name="l00199"></a>00199                                       <span class="keyword">const</span> <a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a>&amp; mm = <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass-through: simply copies the names from Qt to Python without translation...">DefaultMemberNameMapper</a>(),
+<a name="l00200"></a>00200                                       <span class="keyword">const</span> <span class="keywordtype">char</span>* className = 0,
+<a name="l00201"></a>00201                                       <span class="keyword">const</span> <span class="keywordtype">char</span>* doc = 0 ) {
+<a name="l00202"></a>00202         <a class="code" href="classqpy_1_1PyContext.html#a7c1426069e4f98ddc0796cd8dbbe6170">AddType</a>( &amp;T::staticMetaObject, module, checkConstructor, selectedMembers,
+<a name="l00203"></a>00203                  mm, className, doc );    
+<a name="l00204"></a>00204     }
+<a name="l00208"></a>00208     PyMethodDef* <a class="code" href="classqpy_1_1PyContext.html#aff5384f199f922a58f885fbcc797812a">ModuleFunctions</a>();
+<a name="l00210"></a>00210     PyObject* <a class="code" href="classqpy_1_1PyContext.html#ab0022374402cf908a64abaff9d7f5035" title="Add pre-existing QObject instance to Python module.">AddObject</a>( QObject* qobj, 
+<a name="l00211"></a>00211                          PyObject* targetModule, <span class="comment">// where instance is added </span>
+<a name="l00212"></a>00212                          PyObject* typeModule, <span class="comment">// where type is defined</span>
+<a name="l00213"></a>00213                          <span class="keyword">const</span> <span class="keywordtype">char</span>* instanceName,
+<a name="l00214"></a>00214                          <span class="keywordtype">bool</span> pythonOwned = <span class="keyword">false</span>,
+<a name="l00215"></a>00215                          <span class="keyword">const</span> QSet&lt; QString &gt;&amp; selectedMembers = QSet&lt; QString &gt;(),
+<a name="l00216"></a>00216                          <span class="keyword">const</span> <a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a>&amp; mm = <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass-through: simply copies the names from Qt to Python without translation...">DefaultMemberNameMapper</a>() );
+<a name="l00220"></a>00220     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> QArgConstructorT, <span class="keyword">typename</span> PyArgConstructorT &gt; 
+<a name="l00221"></a><a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">00221</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( <span class="keyword">const</span> QString&amp; typeName, <span class="keywordtype">bool</span> overwrite = <span class="keyword">false</span> ) {
+<a name="l00222"></a>00222         <span class="keywordflow">return</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( typeName, <span class="keyword">new</span> QArgConstructorT, <span class="keyword">new</span> PyArgConstructorT, overwrite );
+<a name="l00223"></a>00223     }
+<a name="l00224"></a>00224     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> QArgConstructorT, <span class="keyword">typename</span> PyArgConstructorT &gt; 
+<a name="l00225"></a>00225     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( QMetaType::Type t, <span class="keywordtype">bool</span> overwrite = <span class="keyword">false</span> ) {
+<a name="l00226"></a>00226         <span class="keywordflow">return</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( QMetaType::typeName( t ), 
+<a name="l00227"></a>00227                              <span class="keyword">new</span> QArgConstructorT, <span class="keyword">new</span> PyArgConstructorT, overwrite );
+<a name="l00228"></a>00228     }
+<a name="l00232"></a>00232     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T, <span class="keyword">typename</span> QArgConstructorT, <span class="keyword">typename</span> PyArgConstructorT &gt; 
+<a name="l00233"></a><a class="code" href="classqpy_1_1PyContext.html#a5c0e1b47f6ead8f5671d2706ecf8d8f2">00233</a>     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a5c0e1b47f6ead8f5671d2706ecf8d8f2">RegisterType</a>( <span class="keyword">const</span> QString&amp; typeName, <span class="keywordtype">bool</span> overwrite = <span class="keyword">false</span> ) {
+<a name="l00234"></a>00234         <span class="keywordflow">return</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( qRegisterMetaType&lt; T &gt;( typeName.toAscii().constData() ),
+<a name="l00235"></a>00235                              <span class="keyword">new</span> QArgConstructorT, <span class="keyword">new</span> PyArgConstructorT, overwrite );
+<a name="l00236"></a>00236     }
+<a name="l00237"></a>00237     <span class="keywordtype">void</span> RegisterQVariantToPyObject( QVariant::Type t,  <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>* qp ) {
+<a name="l00238"></a>00238         <span class="keywordflow">if</span>( qvariantToPyObject_.contains( t ) ) {
+<a name="l00239"></a>00239             <span class="keywordflow">if</span>( !qvariantToPyObject_[ t ]-&gt;ForeignOwned() ) <span class="keyword">delete</span> qvariantToPyObject_[ t ];
+<a name="l00240"></a>00240         }
+<a name="l00241"></a>00241         qvariantToPyObject_[ t ] = qp;
+<a name="l00242"></a>00242     }
+<a name="l00243"></a>00243     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;
+<a name="l00244"></a>00244     <span class="keywordtype">int</span> RegisterQVariantToPyObject( QVariantToPyObject* qp ) {
+<a name="l00245"></a>00245         <span class="keyword">const</span> <span class="keywordtype">int</span> <span class="keywordtype">id</span> = qRegisterMetaType&lt; T &gt;();
+<a name="l00246"></a>00246         RegisterQVariantToPyObject( QVariant::Type( <span class="keywordtype">id</span> ), qp );
+<a name="l00247"></a>00247         <span class="keywordflow">return</span> id;
+<a name="l00248"></a>00248     }
+<a name="l00249"></a>00249     <span class="keywordtype">void</span> RegisterPyObjectToQVariant( QVariant::Type t,  PyObjectToQVariant* qp ) {
+<a name="l00250"></a>00250         <span class="keywordflow">if</span>( pyObjectToQVariant_.contains( t ) ) {
+<a name="l00251"></a>00251             <span class="keywordflow">if</span>( !pyObjectToQVariant_[ t ]-&gt;ForeignOwned() ) <span class="keyword">delete</span> pyObjectToQVariant_[ t ];
+<a name="l00252"></a>00252         }
+<a name="l00253"></a>00253         pyObjectToQVariant_[ t ] = qp;
+<a name="l00254"></a>00254     }
+<a name="l00255"></a>00255     <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;
+<a name="l00256"></a>00256     <span class="keywordtype">int</span> RegisterPyObjectToQVariant( PyObjectToQVariant* qp ) {
+<a name="l00257"></a>00257         <span class="keyword">const</span> <span class="keywordtype">int</span> <span class="keywordtype">id</span> = qRegisterMetaType&lt; T &gt;();
+<a name="l00258"></a>00258         RegisterPyObjectToQVariant( qMetaTypeId&lt; T &gt;, qp );
+<a name="l00259"></a>00259         <span class="keywordflow">return</span> id;
+<a name="l00260"></a>00260     }
+<a name="l00261"></a>00261     <span class="keywordtype">void</span> UnRegisterType( <span class="keyword">const</span> QString&amp; typeName ) {
+<a name="l00262"></a>00262         <span class="keywordflow">if</span>( !argFactory_.contains( typeName ) ) <span class="keywordflow">return</span>;    
+<a name="l00263"></a>00263         argFactory_.erase( argFactory_.find( typeName ) );
+<a name="l00264"></a>00264     }
+<a name="l00269"></a><a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html">00269</a>     <span class="keyword">struct </span><a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a> {
+<a name="l00270"></a>00270         <span class="keywordtype">bool</span> qtToPy;
+<a name="l00271"></a>00271         <span class="keywordtype">bool</span> pyToQt;
+<a name="l00272"></a>00272         QString typeName;
+<a name="l00273"></a>00273         operator bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> qtToPy || pyToQt; }
+<a name="l00274"></a>00274         <a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a>() : qtToPy( <span class="keyword">false</span> ), pyToQt( <span class="keyword">false</span> ) {}
+<a name="l00275"></a>00275     };
+<a name="l00276"></a>00276     <a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a> RegTypeInfo( <span class="keyword">const</span> QString&amp; t )<span class="keyword"> const </span>{
+<a name="l00277"></a>00277         <a class="code" href="structqpy_1_1PyContext_1_1TypeConstruction.html" title="Stores information on registered types.">TypeConstruction</a> tc;
+<a name="l00278"></a>00278         <span class="keywordflow">if</span>( !argFactory_.contains( t ) ) <span class="keywordflow">return</span> tc;
+<a name="l00279"></a>00279         tc.pyToQt = <span class="keyword">dynamic_cast&lt;</span> <span class="keyword">const </span><a class="code" href="structqpy_1_1NoQArgConstructor.html" title="Used to specify that Python -&gt; Qt constructor not available when registering new types through PyCont...">NoQArgConstructor</a>* <span class="keyword">&gt;</span>( argFactory_[ t ].QArgCtor() ) == 0;
+<a name="l00280"></a>00280         tc.qtToPy = <span class="keyword">dynamic_cast&lt;</span> <span class="keyword">const </span><a class="code" href="classqpy_1_1NoPyArgConstructor.html" title="Use this type to specify that no Qt -&gt; Python conversion exists for a type when registering types thr...">NoPyArgConstructor</a>* <span class="keyword">&gt;</span>( argFactory_[ t ].PyArgCtor() )  == 0;    
+<a name="l00281"></a>00281         tc.typeName = t;
+<a name="l00282"></a>00282         <span class="keywordflow">return</span> tc;
+<a name="l00283"></a>00283     }
+<a name="l00284"></a>00284     QList&lt; TypeConstruction &gt; RegisteredTypes()<span class="keyword"> const </span>{
+<a name="l00285"></a>00285         QList&lt; TypeConstruction &gt; tc;
+<a name="l00286"></a>00286         <span class="keywordflow">for</span>( ArgFactory::const_iterator i = argFactory_.begin(); i != argFactory_.end(); ++i ) {
+<a name="l00287"></a>00287             tc.push_back( RegTypeInfo( i.key() ) );
+<a name="l00288"></a>00288         }
+<a name="l00289"></a>00289         <span class="keywordflow">return</span> tc;
+<a name="l00290"></a>00290     }
+<a name="l00291"></a>00291 <span class="keyword">private</span>:
+<a name="l00293"></a>00293     <span class="keywordtype">void</span> InitArgFactory();
+<a name="l00295"></a>00295     <span class="keywordtype">void</span> InitQVariantPyObjectMaps();
+<a name="l00298"></a>00298     QArgWrappers GenerateQArgWrappers( <span class="keyword">const</span> ArgumentTypes&amp; at );
+<a name="l00300"></a>00300     PyArgWrapper GeneratePyArgWrapper( QString typeName );
+<a name="l00301"></a>00301 <span class="keyword">private</span>:
+<a name="l00302"></a>00302     <span class="keyword">class </span>ArgFactoryEntry {
+<a name="l00303"></a>00303     <span class="keyword">public</span>:
+<a name="l00304"></a>00304         ArgFactoryEntry() : qac_( 0 ), pac_( 0 ) {}
+<a name="l00305"></a>00305         ArgFactoryEntry( <span class="keyword">const</span> ArgFactoryEntry&amp; fe ) 
+<a name="l00306"></a>00306             : typeName_( fe.typeName_ ), qac_( 0 ), pac_( 0 ) {
+<a name="l00307"></a>00307                 <span class="keywordflow">if</span>( fe.qac_ ) qac_ = fe.qac_-&gt;Clone();
+<a name="l00308"></a>00308                 <span class="keywordflow">if</span>( fe.pac_ ) pac_ = fe.pac_-&gt;Clone();
+<a name="l00309"></a>00309         }
+<a name="l00310"></a>00310         ArgFactoryEntry( <span class="keyword">const</span> QString&amp; tn, QArgConstructor* qac, PyArgConstructor* pac )
+<a name="l00311"></a>00311             : typeName_( tn ), qac_( qac ), pac_( pac ) {}
+<a name="l00312"></a>00312         <span class="keyword">const</span> ArgFactoryEntry&amp; operator=( <span class="keyword">const</span> ArgFactoryEntry&amp; fe ) {
+<a name="l00313"></a>00313             typeName_ = fe.typeName_;
+<a name="l00314"></a>00314             qac_ = fe.qac_ ? fe.qac_-&gt;Clone() : 0;
+<a name="l00315"></a>00315             pac_ = fe.pac_ ? fe.pac_-&gt;Clone() : 0;
+<a name="l00316"></a>00316             <span class="keywordflow">return</span> *<span class="keyword">this</span>;
+<a name="l00317"></a>00317         }    
+<a name="l00318"></a>00318         ~ArgFactoryEntry() {
+<a name="l00319"></a>00319             <span class="keyword">delete</span> qac_;
+<a name="l00320"></a>00320             <span class="keyword">delete</span> pac_;
+<a name="l00321"></a>00321         }
+<a name="l00322"></a>00322         <span class="keyword">const</span> QArgConstructor* QArgCtor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> qac_; }
+<a name="l00323"></a>00323         <span class="keyword">const</span> PyArgConstructor* PyArgCtor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> pac_; }
+<a name="l00324"></a>00324         QArgConstructor* MakeQArgConstructor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> qac_-&gt;Clone(); }
+<a name="l00325"></a>00325         PyArgConstructor* MakePyArgConstructor()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> pac_-&gt;Clone(); }
+<a name="l00326"></a>00326         <span class="keyword">const</span> QString&amp; TypeName()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> typeName_; }
+<a name="l00327"></a>00327     <span class="keyword">private</span>:
+<a name="l00328"></a>00328         QString typeName_;
+<a name="l00329"></a>00329         QArgConstructor* qac_;
+<a name="l00330"></a>00330         PyArgConstructor* pac_;
 <a name="l00331"></a>00331     };
-<a name="l00332"></a>00332     <span class="keyword">typedef</span> QList&lt; ConnectEntry &gt; ConnectList;
-<a name="l00333"></a>00333 <span class="keyword">private</span>:
-<a name="l00336"></a>00336     Types types_;
-<a name="l00337"></a>00337     PyCallbackDispatcher dispatcher_;
-<a name="l00338"></a>00338     ArgFactory argFactory_;
-<a name="l00339"></a>00339     QVariantToPyObjectMapType qvariantToPyObject_;
-<a name="l00340"></a>00340     PyObjectToQVariantMapType pyObjectToQVariant_;
-<a name="l00341"></a>00341     <span class="keyword">static</span> ConnectList endpoints_; <span class="comment">//thread_local if needed</span>
-<a name="l00342"></a>00342     <span class="keyword">static</span> <span class="keywordtype">int</span> getterMethodId_;
-<a name="l00343"></a>00343     <span class="keyword">static</span> <span class="keywordtype">bool</span> signal_;
-<a name="l00344"></a>00344 };
-<a name="l00345"></a>00345 
-<a name="l00346"></a>00346 }
+<a name="l00332"></a>00332     <span class="keyword">typedef</span> QMap&lt; QString, ArgFactoryEntry &gt; ArgFactory;
+<a name="l00333"></a>00333     <span class="keywordtype">bool</span> <a class="code" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a>( <span class="keyword">const</span> QString&amp; typeName, QArgConstructor* qac, PyArgConstructor* pac, <span class="keywordtype">bool</span> overwrite ) {
+<a name="l00334"></a>00334         <span class="keyword">const</span> <span class="keywordtype">bool</span> typeExist = argFactory_.contains( typeName );
+<a name="l00335"></a>00335         <span class="keywordflow">if</span>( typeExist &amp;&amp; !overwrite ) <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00336"></a>00336         argFactory_[ typeName ] = ArgFactoryEntry( typeName, qac, pac );
+<a name="l00337"></a>00337         <span class="keywordflow">return</span> <span class="keyword">true</span>; 
+<a name="l00338"></a>00338     }
+<a name="l00339"></a>00339     Type* ExistingType( <span class="keyword">const</span> QMetaObject* mo, PyObject* module ) {
+<a name="l00340"></a>00340         <span class="keywordflow">for</span>( Types::iterator i = types_.begin(); i != types_.end(); ++i ) {
+<a name="l00341"></a>00341             <span class="keywordflow">if</span>( i-&gt;metaObject-&gt;className() == mo-&gt;className() &amp;&amp; 
+<a name="l00342"></a>00342                 i-&gt;pyModule == module ) <span class="keywordflow">return</span> &amp;( *i );
+<a name="l00343"></a>00343         }
+<a name="l00344"></a>00344         <span class="keywordflow">return</span> 0;    
+<a name="l00345"></a>00345     }
+<a name="l00346"></a>00346     <span class="keyword">typedef</span> QMap&lt; QVariant::Type, QVariantToPyObject* &gt; QVariantToPyObjectMapType;
+<a name="l00347"></a>00347     <span class="keyword">typedef</span> QMap&lt; QVariant::Type, PyObjectToQVariant* &gt; PyObjectToQVariantMapType;    
+<a name="l00348"></a>00348 <span class="keyword">private</span>:
+<a name="l00349"></a>00349     <span class="keyword">static</span> PyObject* PyQObjectConnect( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00350"></a>00350     <span class="keyword">static</span> PyObject* PyQObjectDisconnect( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00351"></a>00351     <span class="keyword">static</span> PyObject* PyQObjectIsForeignOwned( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00352"></a>00352     <span class="keyword">static</span> PyObject* PyQObjectIsQObject( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00353"></a>00353     <span class="keyword">static</span> PyObject* PyQObjectAcquire( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00354"></a>00354     <span class="keyword">static</span> PyObject* PyQObjectRelease( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00355"></a>00355     <span class="keyword">static</span> PyObject* PyQObjectPtr( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00356"></a>00356     <span class="keyword">static</span> PyObject* PyQObjectGetter( PyQObject* qobj, <span class="keywordtype">void</span>* closure <span class="comment">/*method id*/</span> );
+<a name="l00357"></a>00357     <span class="keyword">static</span> <span class="keywordtype">int</span> PyQObjectSetter( PyQObject*, PyObject*, <span class="keywordtype">void</span>* closure );
+<a name="l00358"></a>00358     <span class="keyword">static</span> PyObject* PyQObjectNew( PyTypeObject* type, PyObject*, PyObject* );
+<a name="l00359"></a>00359     <span class="keyword">static</span> PyObject* PyQObjectInvokeMethod( PyQObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00360"></a>00360     <span class="keyword">static</span> <span class="keywordtype">int</span> PyQObjectInit( PyQObject* <span class="keyword">self</span>, PyObject* args, PyObject* kwds );
+<a name="l00361"></a>00361     <span class="keyword">static</span> PyObject* PyQObjectTr( PyObject* <span class="keyword">self</span>, PyObject* args );
+<a name="l00362"></a>00362     <span class="keyword">static</span> <span class="keywordtype">void</span> PyQObjectDealloc( PyQObject* <span class="keyword">self</span> );
+<a name="l00363"></a>00363 <span class="keyword">private</span>:
+<a name="l00364"></a>00364     PyTypeObject CreatePyType( <span class="keyword">const</span> Type&amp; type );
+<a name="l00365"></a>00365     <span class="keyword">struct </span>ConnectEntry {
+<a name="l00366"></a>00366         PyQObject* pyqobj;
+<a name="l00367"></a>00367         <span class="keywordtype">int</span> methodId;
+<a name="l00368"></a>00368         ConnectEntry() : pyqobj( 0 ), methodId( -1 ) {}
+<a name="l00369"></a>00369         ConnectEntry( PyQObject* p, <span class="keywordtype">int</span> m ) : pyqobj( p ), methodId( m ) {}
+<a name="l00370"></a>00370     };
+<a name="l00371"></a>00371     <span class="keyword">typedef</span> QList&lt; ConnectEntry &gt; ConnectList;
+<a name="l00372"></a>00372 <span class="keyword">private</span>:
+<a name="l00375"></a>00375     Types types_;
+<a name="l00376"></a>00376     PyCallbackDispatcher dispatcher_;
+<a name="l00377"></a>00377     ArgFactory argFactory_;
+<a name="l00378"></a>00378     QVariantToPyObjectMapType qvariantToPyObject_;
+<a name="l00379"></a>00379     PyObjectToQVariantMapType pyObjectToQVariant_;
+<a name="l00380"></a>00380     <span class="keyword">static</span> ConnectList endpoints_; <span class="comment">//thread_local if needed</span>
+<a name="l00381"></a>00381     <span class="keyword">static</span> <span class="keywordtype">int</span> getterMethodId_;
+<a name="l00382"></a>00382     <span class="keyword">static</span> <span class="keywordtype">bool</span> signal_;
+<a name="l00383"></a>00383 };
+<a name="l00384"></a>00384 
+<a name="l00385"></a>00385 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -405,7 +411,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:53:28 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

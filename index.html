@@ -92,8 +92,8 @@ Usage</h2>
 <li>connect Qt signals to Python functions and methods</li>
 </ul>
 <p>The public interface is defined in the <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">qpy::PyContext</a> class. All it's needed to access QPy functionality is to create an instance of <code>PyContext</code> and use its methods to add types and objects to Python modules.</p>
-<p>You make QPy functions such as <code>connect</code> and <code>disconnect</code> available from Python code by explicitly initializing a module with the function table returned by qpy::PyContext::ModuleFunctions() method.</p>
-<p>You add new types and instances by invoking qpy::PyContext::Add&lt;Type&gt; and PyContext::AddObject methods.</p>
+<p>You make QPy functions such as <code>connect</code> and <code>disconnect</code> available from Python code by explicitly initializing a module with the function table returned by <a class="el" href="classqpy_1_1PyContext.html#aff5384f199f922a58f885fbcc797812a">qpy::PyContext::ModuleFunctions()</a> method.</p>
+<p>You add new types and instances by invoking <a class="el" href="classqpy_1_1PyContext.html#a01bf244cd5b64d9506d957b7f9b23082">qpy::PyContext::Add&lt;Type&gt;</a> and PyContext::AddObject methods.</p>
 <h3><a class="anchor" id="Initialization"></a>
 Initialization</h3>
 <p>Create:</p>
@@ -105,19 +105,19 @@ Initialization</h3>
 <p>Add both modules to Python's __main__ module.</p>
 <div class="fragment"><pre class="fragment">Py_Initialize();
 <a class="code" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">qpy::PyContext</a> py;
-PyObject* qpyModule = Py_InitModule3( <span class="stringliteral">&quot;qpy&quot;</span>, py.ModuleFunctions(),
+PyObject* qpyModule = Py_InitModule3( <span class="stringliteral">&quot;qpy&quot;</span>, py.<a class="code" href="classqpy_1_1PyContext.html#aff5384f199f922a58f885fbcc797812a">ModuleFunctions</a>(),
                                 <span class="stringliteral">&quot;QPy module - where qpy functions reside&quot;</span> );
-py.AddGlobals( qpyModule ); <span class="comment">// optional, adds &#39;__version__&#39; info</span>
+py.<a class="code" href="classqpy_1_1PyContext.html#a9902caa0764a60b2cc3f27df5cffeec8" title="Add QPy globals to Python interpreter; currently only __version__ is added.">AddGlobals</a>( qpyModule ); <span class="comment">// optional, adds &#39;__version__&#39; info</span>
 Py_INCREF( qpyModule );
-PyObject* userModule = Py_InitModule3( <span class="stringliteral">&quot;qpy_test&quot;</span>, py.ModuleFunctions(),
+PyObject* userModule = Py_InitModule3( <span class="stringliteral">&quot;qpy_test&quot;</span>, py.<a class="code" href="classqpy_1_1PyContext.html#aff5384f199f922a58f885fbcc797812a">ModuleFunctions</a>(),
                                          <span class="stringliteral">&quot;User module - client code&quot;</span> );
 Py_INCREF( userModule );
 PyObject* mainModule = PyImport_AddModule( <span class="stringliteral">&quot;__main__&quot;</span> );
 </pre></div><p>Add types and pre-existing instances to the Python module</p>
-<div class="fragment"><pre class="fragment">py.Add&lt; QpyTestObject &gt;( userModule );
+<div class="fragment"><pre class="fragment">py.<a class="code" href="classqpy_1_1PyContext.html#a01bf244cd5b64d9506d957b7f9b23082">Add</a>&lt; QpyTestObject &gt;( userModule );
 
 QpyTestObject* to = <span class="keyword">new</span> QpyTestObject( 71 );
-py.AddObject( to, <span class="comment">// QObject-derived instance</span>
+py.<a class="code" href="classqpy_1_1PyContext.html#ab0022374402cf908a64abaff9d7f5035" title="Add pre-existing QObject instance to Python module.">AddObject</a>( to, <span class="comment">// QObject-derived instance</span>
               mainModule, <span class="comment">// location where instance is added</span>
               userModule, <span class="comment">// location where class type is defined</span>
               <span class="stringliteral">&quot;myqobj&quot;</span> <span class="comment">// global instance name</span>
@@ -191,7 +191,7 @@ Types</h3>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:32:24 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:53:28 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

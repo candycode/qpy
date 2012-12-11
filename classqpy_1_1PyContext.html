@@ -106,7 +106,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">qpy::PyContext Class Reference</div>  </div>
 </div><!--header-->
@@ -136,15 +137,201 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac9db1215d37412ac3a63f9d1ca62315"></a><!-- doxytag: member="qpy::PyContext::PyContext" ref="aac9db1215d37412ac3a63f9d1ca62315" args="()" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#aac9db1215d37412ac3a63f9d1ca62315">PyContext</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: Create <code>qpy</code> module with QPy interface. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#aa10223691922c0975c6804c7d60dcb1b">~PyContext</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9902caa0764a60b2cc3f27df5cffeec8"></a><!-- doxytag: member="qpy::PyContext::AddGlobals" ref="a9902caa0764a60b2cc3f27df5cffeec8" args="(PyObject *module)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a9902caa0764a60b2cc3f27df5cffeec8">AddGlobals</a> (PyObject *module)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Add QPy globals to Python interpreter; currently only <code>__version__</code> is added. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">PyTypeObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a7c1426069e4f98ddc0796cd8dbbe6170">AddType</a> (const QMetaObject *mo, PyObject *module, bool checkConstructor=true, const QSet&lt; QString &gt; &amp;selectedMembers=QSet&lt; QString &gt;(), const <a class="el" href="structqpy_1_1PyMemberNameMapper.html">PyMemberNameMapper</a> &amp;mm=<a class="el" href="structqpy_1_1DefaultMemberNameMapper.html">DefaultMemberNameMapper</a>(), const char *className=0, const char *doc=0)</td></tr>
+<tr><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a01bf244cd5b64d9506d957b7f9b23082">Add</a> (PyObject *module, bool checkConstructor=true, const QSet&lt; QString &gt; &amp;selectedMembers=QSet&lt; QString &gt;(), const <a class="el" href="structqpy_1_1PyMemberNameMapper.html">PyMemberNameMapper</a> &amp;mm=<a class="el" href="structqpy_1_1DefaultMemberNameMapper.html">DefaultMemberNameMapper</a>(), const char *className=0, const char *doc=0)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">PyMethodDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#aff5384f199f922a58f885fbcc797812a">ModuleFunctions</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0022374402cf908a64abaff9d7f5035"></a><!-- doxytag: member="qpy::PyContext::AddObject" ref="ab0022374402cf908a64abaff9d7f5035" args="(QObject *qobj, PyObject *targetModule, PyObject *typeModule, const char *instanceName, bool pythonOwned=false, const QSet&lt; QString &gt; &amp;selectedMembers=QSet&lt; QString &gt;(), const PyMemberNameMapper &amp;mm=DefaultMemberNameMapper())" -->
+PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#ab0022374402cf908a64abaff9d7f5035">AddObject</a> (QObject *qobj, PyObject *targetModule, PyObject *typeModule, const char *instanceName, bool pythonOwned=false, const QSet&lt; QString &gt; &amp;selectedMembers=QSet&lt; QString &gt;(), const <a class="el" href="structqpy_1_1PyMemberNameMapper.html">PyMemberNameMapper</a> &amp;mm=<a class="el" href="structqpy_1_1DefaultMemberNameMapper.html">DefaultMemberNameMapper</a>())</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Add pre-existing QObject instance to Python module. <br/></td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;typename QArgConstructorT , typename PyArgConstructorT &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a> (const QString &amp;typeName, bool overwrite=false)</td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;typename T , typename QArgConstructorT , typename PyArgConstructorT &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a5c0e1b47f6ead8f5671d2706ecf8d8f2">RegisterType</a> (const QString &amp;typeName, bool overwrite=false)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af22374f1f5fd7d97ed704006a55148bf"></a><!-- doxytag: member="qpy::PyContext::Version" ref="af22374f1f5fd7d97ed704006a55148bf" args="()" -->
+static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#af22374f1f5fd7d97ed704006a55148bf">Version</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return version info. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Python-Qt context manager. Helper methods for Qt-Python interaction. </p>
 <p>This class is the interface exposed by QPy to client code. Use the provided methods to add QObject-derived type, QObject instances and other types the Python context. <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> is also used internally by other classes to add QObjects returned by methods or received from signals to the Python context. </p>
-</div><hr/><h2>Member Function Documentation</h2>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="aa10223691922c0975c6804c7d60dcb1b"></a><!-- doxytag: member="qpy::PyContext::~PyContext" ref="aa10223691922c0975c6804c7d60dcb1b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classqpy_1_1PyContext.html#aa10223691922c0975c6804c7d60dcb1b">qpy::PyContext::~PyContext</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Destructor: free all QVariant &lt;--&gt; Python converters that are not foreign owned </p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a01bf244cd5b64d9506d957b7f9b23082"></a><!-- doxytag: member="qpy::PyContext::Add" ref="a01bf244cd5b64d9506d957b7f9b23082" args="(PyObject *module, bool checkConstructor=true, const QSet&lt; QString &gt; &amp;selectedMembers=QSet&lt; QString &gt;(), const PyMemberNameMapper &amp;mm=DefaultMemberNameMapper(), const char *className=0, const char *doc=0)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classqpy_1_1PyContext.html#a01bf244cd5b64d9506d957b7f9b23082">qpy::PyContext::Add</a> </td>
+          <td>(</td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>checkConstructor</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QSet&lt; QString &gt; &amp;&#160;</td>
+          <td class="paramname"><em>selectedMembers</em> = <code>QSet&lt;&#160;QString&#160;&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structqpy_1_1PyMemberNameMapper.html">PyMemberNameMapper</a> &amp;&#160;</td>
+          <td class="paramname"><em>mm</em> = <code><a class="el" href="structqpy_1_1DefaultMemberNameMapper.html">DefaultMemberNameMapper</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>className</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>doc</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Templated version of <code>Addtype</code>. QMetaObject is automatically extracted. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">module</td><td>Python module where type is added </td></tr>
+    <tr><td class="paramname">checkConstructor</td><td>if  the method rises an exception in case a constructor is not available; note that when adding pre-created instances through the <code>AddObject</code> method it is not required that the object be constructible from Python </td></tr>
+    <tr><td class="paramname">selectedMembers</td><td>select the members(properties or method) to make accessible from Python; if not specified all members are exposed </td></tr>
+    <tr><td class="paramname">mm</td><td>optional member name mapper </td></tr>
+    <tr><td class="paramname">className</td><td>specify class name; if NULL the Qt class name is used </td></tr>
+    <tr><td class="paramname">doc</td><td>optional documentation string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7c1426069e4f98ddc0796cd8dbbe6170"></a><!-- doxytag: member="qpy::PyContext::AddType" ref="a7c1426069e4f98ddc0796cd8dbbe6170" args="(const QMetaObject *mo, PyObject *module, bool checkConstructor=true, const QSet&lt; QString &gt; &amp;selectedMembers=QSet&lt; QString &gt;(), const PyMemberNameMapper &amp;mm=DefaultMemberNameMapper(), const char *className=0, const char *doc=0)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PyTypeObject * <a class="el" href="classqpy_1_1PyContext.html#a7c1426069e4f98ddc0796cd8dbbe6170">qpy::PyContext::AddType</a> </td>
+          <td>(</td>
+          <td class="paramtype">const QMetaObject *&#160;</td>
+          <td class="paramname"><em>mo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PyObject *&#160;</td>
+          <td class="paramname"><em>module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>checkConstructor</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QSet&lt; QString &gt; &amp;&#160;</td>
+          <td class="paramname"><em>selectedMembers</em> = <code>QSet&lt;&#160;QString&#160;&gt;()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structqpy_1_1PyMemberNameMapper.html">PyMemberNameMapper</a> &amp;&#160;</td>
+          <td class="paramname"><em>mm</em> = <code><a class="el" href="structqpy_1_1DefaultMemberNameMapper.html">DefaultMemberNameMapper</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>className</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>doc</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Add type to Python interpreter; the Qt type is wrapped with a Python class. Instances are created from within Python by explicilty invoking constructors mapped to the actual C++ constructors declared as <code>Q_INVOKABLE</code>. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mo</td><td>MetaObject pointer to the type to add </td></tr>
+    <tr><td class="paramname">module</td><td>Python module where type is added </td></tr>
+    <tr><td class="paramname">checkConstructor</td><td>if  the method rises an exception in case a constructor is not available; note that when adding pre-created instances through the <code>AddObject</code> method it is not required that the object be constructible from Python </td></tr>
+    <tr><td class="paramname">selectedMembers</td><td>select the members(properties or method) to make accessible from Python; if not specified all members are exposed </td></tr>
+    <tr><td class="paramname">mm</td><td>optional member name mapper </td></tr>
+    <tr><td class="paramname">className</td><td>specify class name; if NULL the Qt class name is used </td></tr>
+    <tr><td class="paramname">doc</td><td>optional documentation string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aff5384f199f922a58f885fbcc797812a"></a><!-- doxytag: member="qpy::PyContext::ModuleFunctions" ref="aff5384f199f922a58f885fbcc797812a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PyMethodDef * <a class="el" href="classqpy_1_1PyContext.html#aff5384f199f922a58f885fbcc797812a">qpy::PyContext::ModuleFunctions</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Return global functions to be added to Python module. These are the mainly the functions required for accessing the signal-slot binding facilities. </p>
+
+</div>
+</div>
 <a class="anchor" id="a02ebf63bcd9c42f247cbdb02dd8e0c5c"></a><!-- doxytag: member="qpy::PyContext::RegisterType" ref="a02ebf63bcd9c42f247cbdb02dd8e0c5c" args="(const QString &amp;typeName, bool overwrite=false)" -->
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +414,7 @@ template&lt;typename T , typename QArgConstructorT , typename PyArgConstructorT 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:53:28 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
