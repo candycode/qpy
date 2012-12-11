@@ -152,6 +152,10 @@ PyObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <tr><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a02ebf63bcd9c42f247cbdb02dd8e0c5c">RegisterType</a> (const QString &amp;typeName, bool overwrite=false)</td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;typename T , typename QArgConstructorT , typename PyArgConstructorT &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a5c0e1b47f6ead8f5671d2706ecf8d8f2">RegisterType</a> (const QString &amp;typeName, bool overwrite=false)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structqpy_1_1PyContext_1_1TypeConstruction.html">TypeConstruction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a2b96610551d8c317e40a8bc1bb9fc005">RegTypeInfo</a> (const QString &amp;t) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a615b31d27f201f84b6426f5d3a84c205"></a><!-- doxytag: member="qpy::PyContext::RegisteredTypes" ref="a615b31d27f201f84b6426f5d3a84c205" args="() const " -->
+QList&lt; <a class="el" href="structqpy_1_1PyContext_1_1TypeConstruction.html">TypeConstruction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqpy_1_1PyContext.html#a615b31d27f201f84b6426f5d3a84c205">RegisteredTypes</a> () const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return list of registered types. <br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af22374f1f5fd7d97ed704006a55148bf"></a><!-- doxytag: member="qpy::PyContext::Version" ref="af22374f1f5fd7d97ed704006a55148bf" args="()" -->
@@ -392,6 +396,30 @@ template&lt;typename T , typename QArgConstructorT , typename PyArgConstructorT 
 
 </div>
 </div>
+<a class="anchor" id="a2b96610551d8c317e40a8bc1bb9fc005"></a><!-- doxytag: member="qpy::PyContext::RegTypeInfo" ref="a2b96610551d8c317e40a8bc1bb9fc005" args="(const QString &amp;t) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structqpy_1_1PyContext_1_1TypeConstruction.html">TypeConstruction</a> <a class="el" href="classqpy_1_1PyContext.html#a2b96610551d8c317e40a8bc1bb9fc005">qpy::PyContext::RegTypeInfo</a> </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Return information on registered type. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>type name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="PyContext_8h_source.html">PyContext.h</a></li>
 <li>PyContext.cpp</li>
@@ -414,7 +442,7 @@ template&lt;typename T , typename QArgConstructorT , typename PyArgConstructorT 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:53:28 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 14:29:36 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
