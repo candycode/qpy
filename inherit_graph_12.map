@@ -1,5 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$structqpy_1_1QVariantToPyObject.html" title="qpy::QVariantToPyObject" alt="" coords="5,59,176,88"/>
+<area shape="rect" id="node1" href="$structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation." alt="" coords="5,59,176,88"/>
 <area shape="rect" id="node3" href="$structqpy_1_1DoubleQVariantToPyObject.html" title="double to Python float conversion" alt="" coords="225,5,436,35"/>
 <area shape="rect" id="node5" href="$structqpy_1_1IntQVariantToPyObject.html" title="int to Python int conversion" alt="" coords="237,59,424,88"/>
 <area shape="rect" id="node7" href="$structqpy_1_1StringQVariantToPyObject.html" title="QString to Python string conversion." alt="" coords="228,112,433,141"/>

@@ -119,39 +119,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035 <span class="keyword">namespace </span>qpy {
 <a name="l00036"></a>00036 
-<a name="l00038"></a><a class="code" href="structqpy_1_1IntQVariantToPyObject.html">00038</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1IntQVariantToPyObject.html" title="int to Python int conversion">IntQVariantToPyObject</a> : <a class="code" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a> {
-<a name="l00039"></a>00039     <a class="code" href="structqpy_1_1IntQVariantToPyObject.html" title="int to Python int conversion">IntQVariantToPyObject</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a>( f ) {}
+<a name="l00038"></a><a class="code" href="structqpy_1_1IntQVariantToPyObject.html">00038</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1IntQVariantToPyObject.html" title="int to Python int conversion">IntQVariantToPyObject</a> : <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a> {
+<a name="l00039"></a>00039     <a class="code" href="structqpy_1_1IntQVariantToPyObject.html" title="int to Python int conversion">IntQVariantToPyObject</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>( f ) {}
 <a name="l00040"></a>00040     PyObject* Create( <span class="keyword">const</span> QVariant&amp; v )<span class="keyword"> const </span>{
 <a name="l00041"></a>00041         <span class="keywordflow">return</span> PyInt_FromLong( v.toInt() );
 <a name="l00042"></a>00042     }
 <a name="l00043"></a>00043 };
-<a name="l00045"></a><a class="code" href="structqpy_1_1DoubleQVariantToPyObject.html">00045</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1DoubleQVariantToPyObject.html" title="double to Python float conversion">DoubleQVariantToPyObject</a> : <a class="code" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a> {
-<a name="l00046"></a>00046     <a class="code" href="structqpy_1_1DoubleQVariantToPyObject.html" title="double to Python float conversion">DoubleQVariantToPyObject</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a>( f ) {}
+<a name="l00045"></a><a class="code" href="structqpy_1_1DoubleQVariantToPyObject.html">00045</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1DoubleQVariantToPyObject.html" title="double to Python float conversion">DoubleQVariantToPyObject</a> : <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a> {
+<a name="l00046"></a>00046     <a class="code" href="structqpy_1_1DoubleQVariantToPyObject.html" title="double to Python float conversion">DoubleQVariantToPyObject</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>( f ) {}
 <a name="l00047"></a>00047     PyObject* Create( <span class="keyword">const</span> QVariant&amp; v )<span class="keyword"> const </span>{
 <a name="l00048"></a>00048         <span class="keywordflow">return</span> PyFloat_FromDouble( v.toDouble() );
 <a name="l00049"></a>00049     }
 <a name="l00050"></a>00050 };
-<a name="l00052"></a><a class="code" href="structqpy_1_1StringQVariantToPyObject.html">00052</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1StringQVariantToPyObject.html" title="QString to Python string conversion.">StringQVariantToPyObject</a> : <a class="code" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a> {
-<a name="l00053"></a>00053     <a class="code" href="structqpy_1_1StringQVariantToPyObject.html" title="QString to Python string conversion.">StringQVariantToPyObject</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a>( f ) {}
+<a name="l00052"></a><a class="code" href="structqpy_1_1StringQVariantToPyObject.html">00052</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1StringQVariantToPyObject.html" title="QString to Python string conversion.">StringQVariantToPyObject</a> : <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a> {
+<a name="l00053"></a>00053     <a class="code" href="structqpy_1_1StringQVariantToPyObject.html" title="QString to Python string conversion.">StringQVariantToPyObject</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>( f ) {}
 <a name="l00054"></a>00054     PyObject* Create( <span class="keyword">const</span> QVariant&amp; v )<span class="keyword"> const </span>{
 <a name="l00055"></a>00055         <span class="keywordflow">return</span> PyString_FromString( qPrintable( v.toString() ) );
 <a name="l00056"></a>00056     } 
 <a name="l00057"></a>00057 };
 <a name="l00058"></a>00058 
-<a name="l00060"></a><a class="code" href="structqpy_1_1IntPyObjectToQVariant.html">00060</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1IntPyObjectToQVariant.html" title="Python int to QVariant conversion.">IntPyObjectToQVariant</a> : <a class="code" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a> {
-<a name="l00061"></a>00061     <a class="code" href="structqpy_1_1IntPyObjectToQVariant.html" title="Python int to QVariant conversion.">IntPyObjectToQVariant</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a>( f ) {}
+<a name="l00060"></a><a class="code" href="structqpy_1_1IntPyObjectToQVariant.html">00060</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1IntPyObjectToQVariant.html" title="Python int to QVariant conversion.">IntPyObjectToQVariant</a> : <a class="code" href="structqpy_1_1PyObjectToQVariant.html" title="Abstract base class for constructing Python to Qt data converters.">PyObjectToQVariant</a> {
+<a name="l00061"></a>00061     <a class="code" href="structqpy_1_1IntPyObjectToQVariant.html" title="Python int to QVariant conversion.">IntPyObjectToQVariant</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1PyObjectToQVariant.html" title="Abstract base class for constructing Python to Qt data converters.">PyObjectToQVariant</a>( f ) {}
 <a name="l00062"></a>00062     QVariant Create( PyObject* obj )<span class="keyword"> const </span>{
 <a name="l00063"></a>00063         <span class="keywordflow">return</span> QVariant( <span class="keywordtype">int</span>( PyInt_AsLong( obj ) ) );
 <a name="l00064"></a>00064     }
 <a name="l00065"></a>00065 };
-<a name="l00067"></a><a class="code" href="structqpy_1_1DoublePyObjectToQVariant.html">00067</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1DoublePyObjectToQVariant.html" title="Python float to QVariant conversion.">DoublePyObjectToQVariant</a> : <a class="code" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a> {
-<a name="l00068"></a>00068     <a class="code" href="structqpy_1_1DoublePyObjectToQVariant.html" title="Python float to QVariant conversion.">DoublePyObjectToQVariant</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a>( f ) {}
+<a name="l00067"></a><a class="code" href="structqpy_1_1DoublePyObjectToQVariant.html">00067</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1DoublePyObjectToQVariant.html" title="Python float to QVariant conversion.">DoublePyObjectToQVariant</a> : <a class="code" href="structqpy_1_1PyObjectToQVariant.html" title="Abstract base class for constructing Python to Qt data converters.">PyObjectToQVariant</a> {
+<a name="l00068"></a>00068     <a class="code" href="structqpy_1_1DoublePyObjectToQVariant.html" title="Python float to QVariant conversion.">DoublePyObjectToQVariant</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1PyObjectToQVariant.html" title="Abstract base class for constructing Python to Qt data converters.">PyObjectToQVariant</a>( f ) {}
 <a name="l00069"></a>00069     QVariant Create( PyObject* obj )<span class="keyword"> const </span>{
 <a name="l00070"></a>00070         <span class="keywordflow">return</span> QVariant( PyFloat_AsDouble( obj ) );
 <a name="l00071"></a>00071     }
 <a name="l00072"></a>00072 };
-<a name="l00074"></a><a class="code" href="structqpy_1_1StringPyObjectToQVariant.html">00074</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1StringPyObjectToQVariant.html" title="Python string to QVariant conversion.">StringPyObjectToQVariant</a> : <a class="code" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a> {
-<a name="l00075"></a>00075     <a class="code" href="structqpy_1_1StringPyObjectToQVariant.html" title="Python string to QVariant conversion.">StringPyObjectToQVariant</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a>( f ) {}
+<a name="l00074"></a><a class="code" href="structqpy_1_1StringPyObjectToQVariant.html">00074</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1StringPyObjectToQVariant.html" title="Python string to QVariant conversion.">StringPyObjectToQVariant</a> : <a class="code" href="structqpy_1_1PyObjectToQVariant.html" title="Abstract base class for constructing Python to Qt data converters.">PyObjectToQVariant</a> {
+<a name="l00075"></a>00075     <a class="code" href="structqpy_1_1StringPyObjectToQVariant.html" title="Python string to QVariant conversion.">StringPyObjectToQVariant</a>( <span class="keywordtype">bool</span> f ) : <a class="code" href="structqpy_1_1PyObjectToQVariant.html" title="Abstract base class for constructing Python to Qt data converters.">PyObjectToQVariant</a>( f ) {}
 <a name="l00076"></a>00076     QVariant Create( PyObject* obj )<span class="keyword"> const </span>{
 <a name="l00077"></a>00077         <span class="keywordflow">return</span> QVariant( PyString_AsString( obj ) );
 <a name="l00078"></a>00078     }
@@ -176,7 +176,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 11:55:47 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:18:20 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

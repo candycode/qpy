@@ -111,6 +111,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="qpy::NoQArgConstructor" --><!-- doxytag: inherits="qpy::QArgConstructor" -->
+<p>Used to specify that Python -&gt; Qt constructor not available when registering new types through <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>.  
+ <a href="structqpy_1_1NoQArgConstructor.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="PyQArgConstructor_8h_source.html">PyQArgConstructor.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for qpy::NoQArgConstructor:</div>
@@ -139,8 +142,11 @@ virtual <a class="el" href="structqpy_1_1QArgConstructor.html">QArgConstructor</
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new instance of the current class. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Useful to specify that Python -&gt; Qt constructor not available when registering new types through <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a> </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<div class="textblock"><p>Used to specify that Python -&gt; Qt constructor not available when registering new types through <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>. </p>
+<p>e.g. </p>
+<div class="fragment"><pre class="fragment"> RegisterType&lt; NoQArgConstructor,
+               VoidPyArgConstructor &gt;( QMetaType::Void );
+</pre></div> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="PyQArgConstructor_8h_source.html">PyQArgConstructor.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -161,7 +167,7 @@ virtual <a class="el" href="structqpy_1_1QArgConstructor.html">QArgConstructor</
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 11:55:47 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:18:20 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

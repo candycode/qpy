@@ -123,16 +123,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00049"></a>00049     <span class="keyword">virtual</span> <a class="code" href="structqpy_1_1QArgConstructor.html" title="Interface for constructor objects which generate C++ values from PyObjects.">QArgConstructor</a>* <a class="code" href="structqpy_1_1QArgConstructor.html#ac30da2cba12bc0dd5e493c40daec4141" title="Create a new instance of the current class.">Clone</a>() <span class="keyword">const</span> = 0;
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051 };
-<a name="l00054"></a><a class="code" href="structqpy_1_1NoQArgConstructor.html">00054</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1NoQArgConstructor.html">NoQArgConstructor</a> : <a class="code" href="structqpy_1_1QArgConstructor.html" title="Interface for constructor objects which generate C++ values from PyObjects.">QArgConstructor</a> {
-<a name="l00056"></a><a class="code" href="structqpy_1_1NoQArgConstructor.html#ac6024303c5dd8ed2c78921b6ba2c5bda">00056</a>     <span class="keyword">virtual</span> QGenericArgument <a class="code" href="structqpy_1_1NoQArgConstructor.html#ac6024303c5dd8ed2c78921b6ba2c5bda" title="Create a QGenericArgument from Python values.">Create</a>( PyObject* )<span class="keyword"> const </span>{
-<a name="l00057"></a>00057         <span class="keywordflow">throw</span> std::logic_error( <span class="stringliteral">&quot;QArgConstructor not available&quot;</span> );
-<a name="l00058"></a>00058         <span class="keywordflow">return</span> QGenericArgument();
-<a name="l00059"></a>00059     }
-<a name="l00061"></a><a class="code" href="structqpy_1_1NoQArgConstructor.html#a9651ae47a5ffdbdafc8b208ea81340d5">00061</a>     <span class="keyword">virtual</span> <a class="code" href="structqpy_1_1QArgConstructor.html" title="Interface for constructor objects which generate C++ values from PyObjects.">QArgConstructor</a>* <a class="code" href="structqpy_1_1NoQArgConstructor.html#a9651ae47a5ffdbdafc8b208ea81340d5" title="Create a new instance of the current class.">Clone</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="structqpy_1_1NoQArgConstructor.html">NoQArgConstructor</a>( *<span class="keyword">this</span> ); }
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063 };
-<a name="l00064"></a>00064 <span class="keyword">typedef</span> NoQArgConstructor NO_QT_ARG;
-<a name="l00065"></a>00065 }
+<a name="l00060"></a><a class="code" href="structqpy_1_1NoQArgConstructor.html">00060</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1NoQArgConstructor.html" title="Used to specify that Python -&gt; Qt constructor not available when registering new types through PyCont...">NoQArgConstructor</a> : <a class="code" href="structqpy_1_1QArgConstructor.html" title="Interface for constructor objects which generate C++ values from PyObjects.">QArgConstructor</a> {
+<a name="l00062"></a><a class="code" href="structqpy_1_1NoQArgConstructor.html#ac6024303c5dd8ed2c78921b6ba2c5bda">00062</a>     <span class="keyword">virtual</span> QGenericArgument <a class="code" href="structqpy_1_1NoQArgConstructor.html#ac6024303c5dd8ed2c78921b6ba2c5bda" title="Create a QGenericArgument from Python values.">Create</a>( PyObject* )<span class="keyword"> const </span>{
+<a name="l00063"></a>00063         <span class="keywordflow">throw</span> std::logic_error( <span class="stringliteral">&quot;QArgConstructor not available&quot;</span> );
+<a name="l00064"></a>00064         <span class="keywordflow">return</span> QGenericArgument();
+<a name="l00065"></a>00065     }
+<a name="l00067"></a><a class="code" href="structqpy_1_1NoQArgConstructor.html#a9651ae47a5ffdbdafc8b208ea81340d5">00067</a>     <span class="keyword">virtual</span> <a class="code" href="structqpy_1_1QArgConstructor.html" title="Interface for constructor objects which generate C++ values from PyObjects.">QArgConstructor</a>* <a class="code" href="structqpy_1_1NoQArgConstructor.html#a9651ae47a5ffdbdafc8b208ea81340d5" title="Create a new instance of the current class.">Clone</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="structqpy_1_1NoQArgConstructor.html" title="Used to specify that Python -&gt; Qt constructor not available when registering new types through PyCont...">NoQArgConstructor</a>( *<span class="keyword">this</span> ); }
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 };
+<a name="l00070"></a>00070 <span class="keyword">typedef</span> NoQArgConstructor NO_QT_ARG;
+<a name="l00071"></a>00071 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -151,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 11:55:47 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:18:20 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
