@@ -118,16 +118,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a>00033 <span class="keyword">namespace </span>qpy {
 <a name="l00034"></a>00034 
 <a name="l00040"></a><a class="code" href="structqpy_1_1QVariantToPyObject.html">00040</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a> {
-<a name="l00041"></a>00041     <a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>( <span class="keywordtype">bool</span> fo ) : foreignOwned_( fo ) {}
-<a name="l00042"></a>00042     <span class="keywordtype">bool</span> ForeignOwned()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> foreignOwned_; }
-<a name="l00043"></a>00043     <span class="keyword">virtual</span> PyObject* Create( <span class="keyword">const</span> QVariant&amp; ) <span class="keyword">const</span> = 0;
-<a name="l00044"></a>00044     <span class="keyword">virtual</span> ~<a class="code" href="structqpy_1_1QVariantToPyObject.html" title="Abstract base class to create converters for Qt to Python data translation.">QVariantToPyObject</a>() {}
-<a name="l00045"></a>00045 <span class="keyword">private</span>:
-<a name="l00046"></a>00046     <span class="keywordtype">bool</span> foreignOwned_;    
-<a name="l00047"></a>00047 };
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050 }
+<a name="l00044"></a><a class="code" href="structqpy_1_1QVariantToPyObject.html#ad1131b7336c3d01da3a7cbedae110053">00044</a>     <a class="code" href="structqpy_1_1QVariantToPyObject.html#ad1131b7336c3d01da3a7cbedae110053">QVariantToPyObject</a>( <span class="keywordtype">bool</span> fo ) : foreignOwned_( fo ) {}
+<a name="l00046"></a><a class="code" href="structqpy_1_1QVariantToPyObject.html#a0f92731943cb28dfdc172ecdc08916b5">00046</a>     <span class="keywordtype">bool</span> <a class="code" href="structqpy_1_1QVariantToPyObject.html#a0f92731943cb28dfdc172ecdc08916b5" title="Return ownership info.">ForeignOwned</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> foreignOwned_; }
+<a name="l00048"></a>00048     <span class="keyword">virtual</span> PyObject* <a class="code" href="structqpy_1_1QVariantToPyObject.html#a94ccbb7070d96315ccc86837b7250c2f" title="Create PyObject from QVariant.">Create</a>( <span class="keyword">const</span> QVariant&amp; ) <span class="keyword">const</span> = 0;
+<a name="l00050"></a><a class="code" href="structqpy_1_1QVariantToPyObject.html#a25f655ca9df2503c8f74959ca3aa5fff">00050</a>     <span class="keyword">virtual</span> <a class="code" href="structqpy_1_1QVariantToPyObject.html#a25f655ca9df2503c8f74959ca3aa5fff" title="Virtual destructor.">~QVariantToPyObject</a>() {}
+<a name="l00051"></a>00051 <span class="keyword">private</span>:
+<a name="l00052"></a>00052     <span class="keywordtype">bool</span> foreignOwned_;    
+<a name="l00053"></a>00053 };
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -146,7 +146,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:18:56 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

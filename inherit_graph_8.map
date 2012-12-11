@@ -1,4 +1,4 @@
 <map id="G" name="G">
 <area shape="rect" id="node1" href="$structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python." alt="" coords="5,5,197,35"/>
-<area shape="rect" id="node3" href="$structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass&#45;through: simply copies the names from Qt to Python without translations..." alt="" coords="245,5,464,35"/>
+<area shape="rect" id="node3" href="$structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass&#45;through: simply copies the names from Qt to Python without translation..." alt="" coords="245,5,464,35"/>
 </map>

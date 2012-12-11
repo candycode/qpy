@@ -77,12 +77,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="namespaces.html"><span>Namespace&#160;List</span></a></li>
+      <li><a href="namespacemembers.html"><span>Namespace&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">qpy Namespace Reference</div>  </div>
 </div><!--header-->
@@ -146,7 +148,7 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html">PyMemberNameMapper</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Map Qt method and property names to Python.  <a href="structqpy_1_1PyMemberNameMapper.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1DefaultMemberNameMapper.html">DefaultMemberNameMapper</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default name mapper; pass-through: simply copies the names from Qt to Python without translations.  <a href="structqpy_1_1DefaultMemberNameMapper.html#details">More...</a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default name mapper; pass-through: simply copies the names from Qt to Python without translation.  <a href="structqpy_1_1DefaultMemberNameMapper.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyObjectToQVariant.html">PyObjectToQVariant</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract base class for constructing Python to Qt data converters.  <a href="structqpy_1_1PyObjectToQVariant.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1QArgConstructor.html">QArgConstructor</a></td></tr>
@@ -155,6 +157,11 @@ Classes</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to specify that Python -&gt; Qt constructor not available when registering new types through <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">PyContext</a>.  <a href="structqpy_1_1NoQArgConstructor.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1QVariantToPyObject.html">QVariantToPyObject</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract base class to create converters for Qt to Python data translation.  <a href="structqpy_1_1QVariantToPyObject.html#details">More...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af746fb1e1c57127a6ea9ce9bc125b8d5"></a><!-- doxytag: member="qpy::RaisePyError" ref="af746fb1e1c57127a6ea9ce9bc125b8d5" args="(const char *errMsg=0, PyObject *errType=PyExc_Exception)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceqpy.html#af746fb1e1c57127a6ea9ce9bc125b8d5">RaisePyError</a> (const char *errMsg=0, PyObject *errType=PyExc_Exception)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Raise python exception. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>QPy namespace. </p>
@@ -177,7 +184,7 @@ Classes</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:18:56 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

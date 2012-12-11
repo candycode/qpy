@@ -104,6 +104,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">qpy::PyMemberNameMapper Struct Reference</div>  </div>
 </div><!--header-->
@@ -118,10 +120,32 @@ Inheritance diagram for qpy::PyMemberNameMapper:</div>
 <div class="dyncontent">
 <div class="center"><img src="structqpy_1_1PyMemberNameMapper__inherit__graph.png" border="0" usemap="#qpy_1_1PyMemberNameMapper_inherit__map" alt="Inheritance graph"/></div>
 <map name="qpy_1_1PyMemberNameMapper_inherit__map" id="qpy_1_1PyMemberNameMapper_inherit__map">
-<area shape="rect" id="node3" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass&#45;through: simply copies the names from Qt to Python without translations..." alt="" coords="5,227,224,381"/></map>
+<area shape="rect" id="node3" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass&#45;through: simply copies the names from Qt to Python without translation..." alt="" coords="5,227,224,381"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="structqpy_1_1PyMemberNameMapper-members.html">List of all members.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e430b22d611e4fad13bd39f68f2e84b"></a><!-- doxytag: member="qpy::PyMemberNameMapper::Init" ref="a7e430b22d611e4fad13bd39f68f2e84b" args="(const QMetaObject &amp;mo) const =0" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html#a7e430b22d611e4fad13bd39f68f2e84b">Init</a> (const QMetaObject &amp;mo) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3ea8e51bda78b0e1adb68f83c0632d8"></a><!-- doxytag: member="qpy::PyMemberNameMapper::property" ref="ac3ea8e51bda78b0e1adb68f83c0632d8" args="(const QString &amp;name) const =0" -->
+virtual QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html#ac3ea8e51bda78b0e1adb68f83c0632d8">property</a> (const QString &amp;name) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return mapped property name. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87f4f107998f448bef6bf8ee76111204"></a><!-- doxytag: member="qpy::PyMemberNameMapper::signature" ref="a87f4f107998f448bef6bf8ee76111204" args="(const QString &amp;sig) const =0" -->
+virtual QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html#a87f4f107998f448bef6bf8ee76111204">signature</a> (const QString &amp;sig) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return mapped method signature. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3f78c82bc4d09b84f8716d414c4736b"></a><!-- doxytag: member="qpy::PyMemberNameMapper::propertyDoc" ref="af3f78c82bc4d09b84f8716d414c4736b" args="(const QString &amp;name) const =0" -->
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html#af3f78c82bc4d09b84f8716d414c4736b">propertyDoc</a> (const QString &amp;name) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return documentation string for property. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e5fd1549817dcad6105891ea4ea1001"></a><!-- doxytag: member="qpy::PyMemberNameMapper::methodDoc" ref="a2e5fd1549817dcad6105891ea4ea1001" args="(const QString &amp;sig) const =0" -->
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html#a2e5fd1549817dcad6105891ea4ea1001">methodDoc</a> (const QString &amp;sig) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return dicumentation string for method. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaab6cd9f0f01f670689b96da6e116e28"></a><!-- doxytag: member="qpy::PyMemberNameMapper::~PyMemberNameMapper" ref="aaab6cd9f0f01f670689b96da6e116e28" args="()" -->
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyMemberNameMapper.html#aaab6cd9f0f01f670689b96da6e116e28">~PyMemberNameMapper</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor. <br/></td></tr>
+</table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Map Qt method and property names to Python. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
@@ -145,7 +169,7 @@ Inheritance diagram for qpy::PyMemberNameMapper:</div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:18:56 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

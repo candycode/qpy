@@ -119,28 +119,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00034"></a>00034 <span class="keyword">namespace </span>qpy {
 <a name="l00035"></a>00035 
 <a name="l00037"></a><a class="code" href="structqpy_1_1PyMemberNameMapper.html">00037</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a> {
-<a name="l00038"></a>00038     <span class="keyword">virtual</span> <span class="keywordtype">void</span> Init( <span class="keyword">const</span> QMetaObject&amp; mo ) <span class="keyword">const</span> = 0;
-<a name="l00039"></a>00039     <span class="keyword">virtual</span> QString property( <span class="keyword">const</span> QString&amp; name ) <span class="keyword">const</span> = 0;
-<a name="l00040"></a>00040     <span class="keyword">virtual</span> QString signature( <span class="keyword">const</span> QString&amp; sig ) <span class="keyword">const</span> = 0;
-<a name="l00041"></a>00041     <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* propertyDoc( <span class="keyword">const</span> QString&amp; name ) <span class="keyword">const</span> = 0;
-<a name="l00042"></a>00042     <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* methodDoc( <span class="keyword">const</span> QString&amp; sig ) <span class="keyword">const</span> = 0;
-<a name="l00043"></a>00043     <span class="keyword">virtual</span> ~<a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a>() {} 
-<a name="l00044"></a>00044 };
-<a name="l00045"></a>00045 
-<a name="l00048"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html">00048</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass-through: simply copies the names from Qt to Python without translations...">DefaultMemberNameMapper</a> : <a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a> {
-<a name="l00049"></a>00049     <span class="keywordtype">void</span> Init( <span class="keyword">const</span> QMetaObject&amp; mo )<span class="keyword"> const </span>{}
-<a name="l00050"></a>00050     QString property( <span class="keyword">const</span> QString&amp; name )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> name; }
-<a name="l00051"></a>00051     QString signature( <span class="keyword">const</span> QString&amp; sig )<span class="keyword"> const </span>{
-<a name="l00052"></a>00052         QString r = sig;
-<a name="l00053"></a>00053         r.truncate( r.indexOf( <span class="stringliteral">&quot;(&quot;</span> ) );   
-<a name="l00054"></a>00054         <span class="keywordflow">return</span> r;
-<a name="l00055"></a>00055     };
-<a name="l00056"></a>00056     <span class="keyword">const</span> <span class="keywordtype">char</span>* propertyDoc( <span class="keyword">const</span> QString&amp; name )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> name.toAscii().constData(); }
-<a name="l00057"></a>00057     <span class="keyword">const</span> <span class="keywordtype">char</span>* methodDoc( <span class="keyword">const</span> QString&amp; sig )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> sig.toAscii().constData(); }
-<a name="l00058"></a>00058 };
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 }
+<a name="l00039"></a>00039     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="structqpy_1_1PyMemberNameMapper.html#a7e430b22d611e4fad13bd39f68f2e84b" title="Initialize.">Init</a>( <span class="keyword">const</span> QMetaObject&amp; mo ) <span class="keyword">const</span> = 0;
+<a name="l00041"></a>00041     <span class="keyword">virtual</span> QString <a class="code" href="structqpy_1_1PyMemberNameMapper.html#ac3ea8e51bda78b0e1adb68f83c0632d8" title="Return mapped property name.">property</a>( <span class="keyword">const</span> QString&amp; name ) <span class="keyword">const</span> = 0;
+<a name="l00043"></a>00043     <span class="keyword">virtual</span> QString <a class="code" href="structqpy_1_1PyMemberNameMapper.html#a87f4f107998f448bef6bf8ee76111204" title="Return mapped method signature.">signature</a>( <span class="keyword">const</span> QString&amp; sig ) <span class="keyword">const</span> = 0;
+<a name="l00045"></a>00045     <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="structqpy_1_1PyMemberNameMapper.html#af3f78c82bc4d09b84f8716d414c4736b" title="Return documentation string for property.">propertyDoc</a>( <span class="keyword">const</span> QString&amp; name ) <span class="keyword">const</span> = 0;
+<a name="l00047"></a>00047     <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="structqpy_1_1PyMemberNameMapper.html#a2e5fd1549817dcad6105891ea4ea1001" title="Return dicumentation string for method.">methodDoc</a>( <span class="keyword">const</span> QString&amp; sig ) <span class="keyword">const</span> = 0;
+<a name="l00049"></a><a class="code" href="structqpy_1_1PyMemberNameMapper.html#aaab6cd9f0f01f670689b96da6e116e28">00049</a>     <span class="keyword">virtual</span> <a class="code" href="structqpy_1_1PyMemberNameMapper.html#aaab6cd9f0f01f670689b96da6e116e28" title="Virtual destructor.">~PyMemberNameMapper</a>() {} 
+<a name="l00050"></a>00050 };
+<a name="l00051"></a>00051 
+<a name="l00054"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html">00054</a> <span class="keyword">struct </span><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html" title="Default name mapper; pass-through: simply copies the names from Qt to Python without translation...">DefaultMemberNameMapper</a> : <a class="code" href="structqpy_1_1PyMemberNameMapper.html" title="Map Qt method and property names to Python.">PyMemberNameMapper</a> {
+<a name="l00056"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a2bd8685412ee7fd36ecb7c5bcd50fe57">00056</a>     <span class="keywordtype">void</span> <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a2bd8685412ee7fd36ecb7c5bcd50fe57" title="NOP.">Init</a>( <span class="keyword">const</span> QMetaObject&amp; mo )<span class="keyword"> const </span>{}
+<a name="l00058"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a7fce9de1b2497bb802c583b7b7e5579c">00058</a>     QString <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a7fce9de1b2497bb802c583b7b7e5579c" title="Return Qt property name.">property</a>( <span class="keyword">const</span> QString&amp; name )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> name; }
+<a name="l00060"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a2d716c733e54ab49c8fcbe7d300d61d2">00060</a>     QString <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a2d716c733e54ab49c8fcbe7d300d61d2" title="Extract and return method name from signature.">signature</a>( <span class="keyword">const</span> QString&amp; sig )<span class="keyword"> const </span>{
+<a name="l00061"></a>00061         QString r = sig;
+<a name="l00062"></a>00062         r.truncate( r.indexOf( <span class="stringliteral">&quot;(&quot;</span> ) );   
+<a name="l00063"></a>00063         <span class="keywordflow">return</span> r;
+<a name="l00064"></a>00064     };
+<a name="l00066"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a64defe29de2b1670f973245978373fe4">00066</a>     <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a64defe29de2b1670f973245978373fe4" title="Return property name as doc string.">propertyDoc</a>( <span class="keyword">const</span> QString&amp; name )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> name.toAscii().constData(); }
+<a name="l00068"></a><a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a0f2fbf6f65b38492b64634488768e984">00068</a>     <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="structqpy_1_1DefaultMemberNameMapper.html#a0f2fbf6f65b38492b64634488768e984" title="Return method name as doc string.">methodDoc</a>( <span class="keyword">const</span> QString&amp; sig )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> sig.toAscii().constData(); }
+<a name="l00069"></a>00069 };
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -159,7 +159,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:18:56 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

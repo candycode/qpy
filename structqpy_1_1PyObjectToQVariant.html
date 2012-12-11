@@ -104,6 +104,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">qpy::PyObjectToQVariant Struct Reference</div>  </div>
 </div><!--header-->
@@ -122,10 +124,49 @@ Inheritance diagram for qpy::PyObjectToQVariant:</div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="structqpy_1_1PyObjectToQVariant-members.html">List of all members.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyObjectToQVariant.html#a3748072ded1027e9e13f14fdbb515fd1">PyObjectToQVariant</a> (bool fo)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12e99c142f866b1e3886a965e1c9644a"></a><!-- doxytag: member="qpy::PyObjectToQVariant::ForeignOwned" ref="a12e99c142f866b1e3886a965e1c9644a" args="() const " -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyObjectToQVariant.html#a12e99c142f866b1e3886a965e1c9644a">ForeignOwned</a> () const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return ownership. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1845152e60cbfb40276727e75d7e6690"></a><!-- doxytag: member="qpy::PyObjectToQVariant::Create" ref="a1845152e60cbfb40276727e75d7e6690" args="(PyObject *) const =0" -->
+virtual QVariant&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyObjectToQVariant.html#a1845152e60cbfb40276727e75d7e6690">Create</a> (PyObject *) const =0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create QVariant from PyObject. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a695821f4bff04621fd01c01c4254eba5"></a><!-- doxytag: member="qpy::PyObjectToQVariant::~PyObjectToQVariant" ref="a695821f4bff04621fd01c01c4254eba5" args="()" -->
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqpy_1_1PyObjectToQVariant.html#a695821f4bff04621fd01c01c4254eba5">~PyObjectToQVariant</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor. <br/></td></tr>
+</table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Abstract base class for constructing Python to Qt data converters. </p>
 <p>Client code is required to specify if instances are owned by the client code itself or if ownership is to be transferred to the QPy run-time. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a3748072ded1027e9e13f14fdbb515fd1"></a><!-- doxytag: member="qpy::PyObjectToQVariant::PyObjectToQVariant" ref="a3748072ded1027e9e13f14fdbb515fd1" args="(bool fo)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structqpy_1_1PyObjectToQVariant.html#a3748072ded1027e9e13f14fdbb515fd1">qpy::PyObjectToQVariant::PyObjectToQVariant</a> </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fo</em></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Constructor </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fo</td><td>Set to true if foreign owned, i.e. if it is destroyed by client code </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li><a class="el" href="PyObjectToQVariant_8h_source.html">PyObjectToQVariant.h</a></li>
 </ul>
 </div><!-- contents -->
@@ -146,7 +187,7 @@ Inheritance diagram for qpy::PyObjectToQVariant:</div>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 11 2012 12:18:56 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 12:32:23 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
