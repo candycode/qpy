@@ -27,7 +27,7 @@
 
 /**\mainpage QPy
 
-\warning IN PROGRESS...actual c++ doxygen comments still missing for the most part
+...in progress...
 
 QPy is a Qt <--> Python run-time binding framework.
 

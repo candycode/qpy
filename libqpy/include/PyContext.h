@@ -52,6 +52,7 @@
 
 namespace qpy {
 
+/// @brief Raise python exception.
 inline void RaisePyError( const char* errMsg = 0, 
                           PyObject* errType = PyExc_Exception  ) {
     PyErr_SetString( errType, errMsg );
@@ -100,7 +101,12 @@ public:
 public:  //must be public because type access might be needed
          //from PyArguments; declaring some PyArguments as friend
          //won't work when new argument constructors provided by
-         //client code need to be registered  
+         //client code need to be registered
+    /// @brief Stores type information needed for invoking
+    /// methods from Python.
+    ///
+    /// Instances of this struct are embedded into the PyObject
+    /// type wrapping Qt classes.  
     struct Type {
         const QMetaObject* metaObject; 
         //for overloading purposes:
@@ -120,7 +126,8 @@ public:  //must be public because type access might be needed
         PyObject* pyModule;
         PyContext* pyContext;
     };
-    typedef QList< Type > Types;   
+    typedef QList< Type > Types;
+    /// @bried PyObject type   
     struct PyQObject {
         PyObject_HEAD
         char qobjectTag;
@@ -216,6 +223,10 @@ public:
         if( !argFactory_.contains( typeName ) ) return;    
         argFactory_.erase( argFactory_.find( typeName ) );
     }
+    /// @brief Stores information on registered types.
+    /// 
+    /// - type name
+    /// - availability of Python <--> Qt converters
     struct TypeConstruction {
         bool qtToPy;
         bool pyToQt;

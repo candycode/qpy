@@ -32,10 +32,21 @@
 
 namespace qpy {
 
+/// @brief Abstract base class to create converters
+/// for Qt to Python data translation.
+///
+/// Client code is required to specify if ownership of
+/// instances belongs to QPy or not.
 struct QVariantToPyObject {
+	/// Constructor
+	/// @param fo set to true if instance to be deleted by
+	///        client code 
     QVariantToPyObject( bool fo ) : foreignOwned_( fo ) {}
+    /// Return ownership info
     bool ForeignOwned() const { return foreignOwned_; }
+    /// Create PyObject from QVariant
     virtual PyObject* Create( const QVariant& ) const = 0;
+    /// Virtual destructor
     virtual ~QVariantToPyObject() {}
 private:
 	bool foreignOwned_;    

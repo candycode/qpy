@@ -49,8 +49,14 @@ struct QArgConstructor {
     virtual QArgConstructor* Clone() const = 0;
 
 };
-/// Useful to specify that Python -> Qt constructor not available
+/// @brief Used to specify that Python -> Qt constructor not available
 /// when registering new types through PyContext
+///
+/// e.g.
+/// @code
+/// RegisterType< NoQArgConstructor,
+///               VoidPyArgConstructor >( QMetaType::Void );
+/// @endcode
 struct NoQArgConstructor : QArgConstructor {
     /// Create a QGenericArgument from Python values.
     virtual QGenericArgument Create( PyObject* ) const {

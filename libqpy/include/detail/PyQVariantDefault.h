@@ -34,18 +34,21 @@
 
 namespace qpy {
 
+/// @brief int to Python int conversion
 struct IntQVariantToPyObject : QVariantToPyObject {
     IntQVariantToPyObject( bool f ) : QVariantToPyObject( f ) {}
     PyObject* Create( const QVariant& v ) const {
         return PyInt_FromLong( v.toInt() );
     }
 };
+/// @brief double to Python float conversion
 struct DoubleQVariantToPyObject : QVariantToPyObject {
     DoubleQVariantToPyObject( bool f ) : QVariantToPyObject( f ) {}
     PyObject* Create( const QVariant& v ) const {
         return PyFloat_FromDouble( v.toDouble() );
     }
 };
+/// @brief QString to Python string conversion
 struct StringQVariantToPyObject : QVariantToPyObject {
     StringQVariantToPyObject( bool f ) : QVariantToPyObject( f ) {}
     PyObject* Create( const QVariant& v ) const {
@@ -53,19 +56,21 @@ struct StringQVariantToPyObject : QVariantToPyObject {
     } 
 };
 
-
+/// @brief Python int to QVariant conversion
 struct IntPyObjectToQVariant : PyObjectToQVariant {
     IntPyObjectToQVariant( bool f ) : PyObjectToQVariant( f ) {}
     QVariant Create( PyObject* obj ) const {
         return QVariant( int( PyInt_AsLong( obj ) ) );
     }
 };
+/// @brief Python float to QVariant conversion
 struct DoublePyObjectToQVariant : PyObjectToQVariant {
     DoublePyObjectToQVariant( bool f ) : PyObjectToQVariant( f ) {}
     QVariant Create( PyObject* obj ) const {
         return QVariant( PyFloat_AsDouble( obj ) );
     }
 };
+/// @brief Python string to QVariant conversion
 struct StringPyObjectToQVariant : PyObjectToQVariant {
     StringPyObjectToQVariant( bool f ) : PyObjectToQVariant( f ) {}
     QVariant Create( PyObject* obj ) const {

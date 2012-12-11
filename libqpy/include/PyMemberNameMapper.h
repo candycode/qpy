@@ -33,25 +33,38 @@ class QMetaObject;
 
 namespace qpy {
 
+/// @brief Map Qt method and property names to Python 
 struct PyMemberNameMapper {
+    /// Initialize
     virtual void Init( const QMetaObject& mo ) const = 0;
+    /// Return mapped property name
     virtual QString property( const QString& name ) const = 0;
+    /// Return mapped method signature
     virtual QString signature( const QString& sig ) const = 0;
+    /// Return documentation string for property
     virtual const char* propertyDoc( const QString& name ) const = 0;
+    /// Return dicumentation string for method
     virtual const char* methodDoc( const QString& sig ) const = 0;
+    /// Virtual destructor
     virtual ~PyMemberNameMapper() {} 
 };
 
-
+/// @brief Default name mapper; pass-through: simply copies the
+/// names from Qt to Python without translation  
 struct DefaultMemberNameMapper : PyMemberNameMapper {
+    /// NOP
     void Init( const QMetaObject& mo ) const {}
+    /// Return Qt property name
     QString property( const QString& name ) const { return name; }
+    /// Extract and return method name from signature
     QString signature( const QString& sig ) const {
         QString r = sig;
         r.truncate( r.indexOf( "(" ) );   
         return r;
     };
+    /// Return property name as doc string
     const char* propertyDoc( const QString& name ) const { return name.toAscii().constData(); }
+    /// Return method name as doc string
     const char* methodDoc( const QString& sig ) const { return sig.toAscii().constData(); }
 };
 

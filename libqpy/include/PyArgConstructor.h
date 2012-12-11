@@ -81,8 +81,15 @@ private:
     /// Placeholder for returned data. 
     QGenericReturnArgument ga_; // not private, breaks encapsulation
 };
-/// Use this type to specify that no Qt -> Python conversion exist for
+
+/// @brief Use this type to specify that no Qt -> Python conversion exists for
 /// a type when registering types through PyContext
+///
+/// e.g. 
+/// @code
+/// RegisterType< VoidStarQArgConstructor,
+///               NoPyArgConstructor >( QMetaType::VoidStar );
+/// @endcode    
 class NoPyArgConstructor : public PyArgConstructor {
 public:
     PyObject* Create( void*  ) const {
