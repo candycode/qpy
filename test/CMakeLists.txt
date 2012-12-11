@@ -40,3 +40,8 @@ set( MOC_HEADERS TestObject.h QpyTestObject.h )
 QT4_WRAP_CPP( MOC_SRCS ${MOC_HEADERS} )
 add_executable( qpy-test qpy-test.cpp ${MOC_SRCS} ${MOC_HEADERS} )
 target_link_libraries( qpy-test qpy ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ) 
+
+install( TARGETS qpy-test DESTINATION share/bin )
+file( GLOB PY_TESTS_AND_RESULTS "*.py*" )
+install( FILES  ${PY_TESTS_AND_RESULTS} DESTINATION share/qpy-tests )
+install( FILES run-tests.sh DESTINATION share/qpy-tests )

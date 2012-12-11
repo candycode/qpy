@@ -62,3 +62,7 @@ set( DETAIL_HEADERS include/detail/PyArgWrappers.h include/detail/PyDefaultArgum
 set( SRC src/PyDefaultArguments.cpp src/PyCallbackDispatcher.cpp src/PyContext.cpp )
 add_library( qpy ${HEADERS} ${DETAIL_HEADERS} ${SRC} )
 target_link_libraries( qpy ${PYTHON_LIBRARIES} ${QT_LIBRARIES} ) 
+
+install( TARGETS qpy DESTINATION lib )
+install( FILES ${HEADERS} DESTINATION include )
+install( FILES ${DETAIL_HEADERS} DESTINATION include/detail )
