@@ -92,7 +92,7 @@ Usage</h2>
 <li>connect Qt signals to Python functions and methods</li>
 </ul>
 <p>The public interface is defined in the <a class="el" href="classqpy_1_1PyContext.html" title="Python-Qt context manager. Helper methods for Qt-Python interaction.">qpy::PyContext</a> class. All it's needed to access QPy functionality is to create an instance of <code>PyContext</code> and use its methods to add types and objects to Python modules.</p>
-<p>You make QPy functions such as  and  available from Python code by explicitly init a module with the function table returned by qpy::PyContext::ModuleFunctions() method.</p>
+<p>You make QPy functions such as <code>connect</code> and <code>disconnect</code> available from Python code by explicitly init a module with the function table returned by qpy::PyContext::ModuleFunctions() method.</p>
 <p>You add new types and instances by invoking qpy::PyContext::Add&lt;Type&gt; and PyContext::AddObject methods.</p>
 <h3><a class="anchor" id="Initialization"></a>
 Initialization</h3>
@@ -191,7 +191,7 @@ Types</h3>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 10 2012 15:48:11 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 11 2012 10:04:33 for QPy by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

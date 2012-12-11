@@ -1,10 +1,11 @@
 <map id="G" name="G">
-<area shape="rect" id="node31" href="$PyDefaultArguments_8h.html" title="Declarations and definitions of constructors for creating C++ values from PyObjects." alt="" coords="1171,83,1360,112"/>
-<area shape="rect" id="node59" href="$PyArgWrappers_8h.html" title="Declarations and definitions of argumant wrappers for conversion bewtween C++/Qt and Python..." alt="" coords="1412,83,1572,112"/>
-<area shape="rect" id="node64" href="$PyCallbackDispatcher_8h.html" title="Qt signals to Python callback functions." alt="" coords="564,83,762,112"/>
-<area shape="rect" id="node71" href="$PyQVariantDefault_8h.html" title="Declarations and definitions of PyObject &lt;&#45;&#45;&gt; QVariant converters." alt="" coords="219,83,395,112"/>
-<area shape="rect" id="node49" href="$PyQArgConstructor_8h.html" title="Declaration constructors for creating C++ values from PyObjects." alt="" coords="1782,160,1939,189"/>
-<area shape="rect" id="node53" href="$PyArgConstructor_8h_source.html" title="../PyArgConstructor.h" alt="" coords="1558,160,1707,189"/>
-<area shape="rect" id="node75" href="$PyQVariantToPyObject_8h.html" title="Declaration of QVariant to PyObject* converter." alt="" coords="216,160,398,189"/>
-<area shape="rect" id="node79" href="$PyObjectToQVariant_8h.html" title="Declaration of PyObject to QVariant converter." alt="" coords="27,160,192,189"/>
+<area shape="rect" id="node31" href="$PyDefaultArguments_8h.html" title="Declarations and definitions of constructors for creating C++ values from PyObjects." alt="" coords="1301,83,1490,112"/>
+<area shape="rect" id="node59" href="$PyArgWrappers_8h.html" title="Declarations and definitions of argumant wrappers for conversion bewtween C++/Qt and Python..." alt="" coords="985,83,1145,112"/>
+<area shape="rect" id="node64" href="$PyCallbackDispatcher_8h.html" title="Qt signals to Python callback functions." alt="" coords="561,83,758,112"/>
+<area shape="rect" id="node71" href="$PyQVariantDefault_8h.html" title="Declarations and definitions of PyObject &lt;&#45;&#45;&gt; QVariant converters." alt="" coords="222,83,398,112"/>
+<area shape="rect" id="node83" href="$PyMemberNameMapper_8h_source.html" title="PyMemberNameMapper.h" alt="" coords="1514,83,1687,112"/>
+<area shape="rect" id="node49" href="$PyQArgConstructor_8h.html" title="Declaration constructors for creating C++ values from PyObjects." alt="" coords="1099,160,1257,189"/>
+<area shape="rect" id="node53" href="$PyArgConstructor_8h_source.html" title="../PyArgConstructor.h" alt="" coords="926,160,1075,189"/>
+<area shape="rect" id="node75" href="$PyQVariantToPyObject_8h.html" title="Declaration of QVariant to PyObject* converter." alt="" coords="27,160,209,189"/>
+<area shape="rect" id="node79" href="$PyObjectToQVariant_8h.html" title="Declaration of PyObject to QVariant converter." alt="" coords="233,160,398,189"/>
 </map>

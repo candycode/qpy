@@ -1,10 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$structqpy_1_1QArgConstructor.html" title="Interface for constructor objects which generate C++ values from PyObjects." alt="" coords="5,165,155,195"/>
-<area shape="rect" id="node3" href="$classqpy_1_1DoubleQArgConstructor.html" title="QArgConstructor implementation for QString type." alt="" coords="213,5,403,35"/>
-<area shape="rect" id="node5" href="$classqpy_1_1FloatQArgConstructor.html" title="QArgConstructor implementation for QString type." alt="" coords="219,59,397,88"/>
-<area shape="rect" id="node7" href="$classqpy_1_1IntQArgConstructor.html" title="QArgConstructor implementation for integer type." alt="" coords="227,112,389,141"/>
-<area shape="rect" id="node9" href="$structqpy_1_1NoQArgConstructor.html" title="qpy::NoQArgConstructor" alt="" coords="225,165,391,195"/>
-<area shape="rect" id="node11" href="$classqpy_1_1ObjectStarQArgConstructor.html" title="QArgConstructor implementation for integer type." alt="" coords="203,219,413,248"/>
-<area shape="rect" id="node13" href="$classqpy_1_1StringQArgConstructor.html" title="QArgConstructor implementation for QString type." alt="" coords="217,272,399,301"/>
-<area shape="rect" id="node15" href="$classqpy_1_1VoidStarQArgConstructor.html" title="QArgConstructor implementation for integer type." alt="" coords="209,325,407,355"/>
+<area shape="rect" id="node1" href="$structqpy_1_1PyObjectToQVariant.html" title="qpy::PyObjectToQVariant" alt="" coords="5,59,176,88"/>
+<area shape="rect" id="node3" href="$structqpy_1_1DoublePyObjectToQVariant.html" title="qpy::DoublePyObjectToQVariant" alt="" coords="225,5,436,35"/>
+<area shape="rect" id="node5" href="$structqpy_1_1IntPyObjectToQVariant.html" title="qpy::IntPyObjectToQVariant" alt="" coords="237,59,424,88"/>
+<area shape="rect" id="node7" href="$structqpy_1_1StringPyObjectToQVariant.html" title="qpy::StringPyObjectToQVariant" alt="" coords="228,112,433,141"/>
 </map>
