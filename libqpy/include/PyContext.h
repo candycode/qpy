@@ -273,6 +273,8 @@ public:
         operator bool() const { return qtToPy || pyToQt; }
         TypeConstruction() : qtToPy( false ), pyToQt( false ) {}
     };
+    /// Return information on registered type.
+    /// @param t type name
     TypeConstruction RegTypeInfo( const QString& t ) const {
         TypeConstruction tc;
         if( !argFactory_.contains( t ) ) return tc;
@@ -281,6 +283,7 @@ public:
         tc.typeName = t;
         return tc;
     }
+    /// Return list of registered types 
     QList< TypeConstruction > RegisteredTypes() const {
         QList< TypeConstruction > tc;
         for( ArgFactory::const_iterator i = argFactory_.begin(); i != argFactory_.end(); ++i ) {

@@ -1,4 +1,8 @@
 #!/bin/bash
+#use from source root dir
+git add -A
+git commit -m"Updated doxygen comments"
+git push
 cd gh-pages
 git rm -rf *
 cd ..
