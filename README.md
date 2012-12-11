@@ -130,6 +130,9 @@ easily copy and paste the source code directly into any project.
 When building with the default CMake-generated Makefile the output is found
 under the ```<build dir>/libqpy``` directory.
 
+To install library, include, test driver and test scripts simply set the
+installation directory(default ```/usr/local```) and run ```make install```.
+
 Being a binding between Qt and Python the only dependencies are Python and a Qt 
 distribution.
 You should be able to build QPy on any platform that works with Qt >= 4.7 
