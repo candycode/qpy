@@ -1,0 +1,2 @@
+import qpy
+print('QPy version {version}'.format(version=qpy.__version__))
