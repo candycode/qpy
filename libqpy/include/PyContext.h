@@ -143,6 +143,8 @@ public:
         InitArgFactory();
         InitQVariantPyObjectMaps();
     }
+    /// Destructor: free all QVariant <--> Python converters that are not
+    /// foreign owned
     ~PyContext() {
         for( QVariantToPyObjectMapType::iterator i = qvariantToPyObject_.begin();
              i != qvariantToPyObject_.end(); ++i ) {
@@ -153,10 +155,26 @@ public:
             if( !i.value()->ForeignOwned() ) delete i.value();
         }      
     }
+    /// Return version info
     static const char* Version();
+    /// Add QPy globals to Python interpreter; currently only @c __version__ is added.
     void AddGlobals( PyObject* module ) {
         PyModule_AddStringConstant( module, "__version__", Version() );
     }    
+    /// Add type to Python interpreter; the Qt type is wrapped with a Python class.
+    /// Instances are created from within Python by explicilty invoking constructors
+    /// mapped to the actual C++ constructors declared as @c Q_INVOKABLE.
+    /// @param mo MetaObject pointer to the type to add
+    /// @param module Python module where type is added
+    /// @param checkConstructor if @true the method rises an exception in case a
+    ///        constructor is not available; note that when adding pre-created
+    ///        instances through the @c AddObject method it is not required
+    ///        that the object be constructible from Python
+    /// @param selectedMembers select the members(properties or method) to make
+    ///        accessible from Python; if not specified all members are exposed
+    /// @param mm optional member name mapper
+    /// @param className specify class name; if NULL the Qt class name is used
+    /// @param doc optional documentation string
     PyTypeObject* AddType( const QMetaObject* mo, 
                            PyObject* module,
                            bool checkConstructor = true,
@@ -164,10 +182,31 @@ public:
                            const PyMemberNameMapper& mm = DefaultMemberNameMapper(),
                            const char* className = 0,
                            const char* doc = 0 );
-    template < typename T > void Add( PyObject* module ) {
-        AddType( &T::staticMetaObject, module );    
+    /// Templated version of @c Addtype. QMetaObject is automatically extracted.
+    /// @param module Python module where type is added
+    /// @param checkConstructor if @true the method rises an exception in case a
+    ///        constructor is not available; note that when adding pre-created
+    ///        instances through the @c AddObject method it is not required
+    ///        that the object be constructible from Python
+    /// @param selectedMembers select the members(properties or method) to make
+    ///        accessible from Python; if not specified all members are exposed
+    /// @param mm optional member name mapper
+    /// @param className specify class name; if NULL the Qt class name is used
+    /// @param doc optional documentation string
+    template < typename T > void Add( PyObject* module,
+                                      bool checkConstructor = true,
+                                      const QSet< QString >& selectedMembers = QSet< QString >(),
+                                      const PyMemberNameMapper& mm = DefaultMemberNameMapper(),
+                                      const char* className = 0,
+                                      const char* doc = 0 ) {
+        AddType( &T::staticMetaObject, module, checkConstructor, selectedMembers,
+                 mm, className, doc );    
     }
+    /// Return global functions to be added to Python module.
+    /// These are the mainly the functions required for accessing the signal-slot binding
+    /// facilities.
     PyMethodDef* ModuleFunctions();
+    /// Add pre-existing QObject instance to Python module. 
     PyObject* AddObject( QObject* qobj, 
                          PyObject* targetModule, // where instance is added 
                          PyObject* typeModule, // where type is defined
