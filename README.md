@@ -127,6 +127,9 @@ A CMake configuration file is provided to build the library and test code.
 Since however there are no pre-compilation configuration steps you can very
 easily copy and paste the source code directly into any project.
 
+When building with the default CMake-generated Makefile the output is found
+under the ```<build dir>/libqpy``` directory.
+
 Being a binding between Qt and Python the only dependencies are Python and a Qt 
 distribution.
 You should be able to build QPy on any platform that works with Qt >= 4.7 

@@ -41,6 +41,8 @@ interpreter by calling object constructors matching their C++ invokable counterp
 All the QObject constructors declared as Q_INVOKABLE are automatically accessible
 from Python.
 
+Development site: http://github.com/candycode/qpy
+
 \section Usage
 
 The main usage for QPy is:
