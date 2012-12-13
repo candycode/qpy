@@ -1,7 +1,7 @@
 QPy
 ====
 
-QPy is a binding between Python and Qt(tested with versions 
+QPy is a run-time binding library between Python and Qt(tested with versions 
 4.7 and 4.8).
 
 The main use of QPy is to make a pre-existing application or library
